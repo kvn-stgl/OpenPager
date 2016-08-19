@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="rule_title"
+        android:maxLines="1"
+        android:title="@string/pref_title_name" />
+    <!--
+            <CheckBoxPreference
+                android:key="rule_activate"
+                android:title="@string/pref_title_activate"
+                android:summary="@string/pref_desc_activate"
+                android:defaultValue="true"/>
+    -->
+
+    <EditTextPreference
+        android:key="rule_searchText"
+        android:summary="@string/pref_desc_searchText"
+        android:title="@string/pref_title_searchText" />
+
+    <EditTextPreference
+        android:inputType="numberSigned"
+        android:key="rule_priority"
+        android:summary="@string/pref_desc_priority"
+        android:title="@string/pref_title_priority" />
+
+    <de.openfiresource.falarm.dialogs.TimePreference
+        android:defaultValue="00:00"
+        android:key="rule_startTime"
+        android:title="@string/pref_title_starttime" />
+
+    <de.openfiresource.falarm.dialogs.TimePreference
+        android:defaultValue="23:59"
+        android:key="rule_stopTime"
+        android:title="@string/pref_title_stoptime" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="rule_ownNotification"
+        android:summary="@string/pref_desc_ownNotification"
+        android:title="@string/pref_title_ownNotification" />
+</PreferenceScreen>

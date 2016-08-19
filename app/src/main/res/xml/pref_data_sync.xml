@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="sync_encryption"
+        android:title="@string/pref_title_encryption"
+        android:summary="@string/pref_desc_encryption" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_display_name"
+        android:inputType="textCapWords"
+        android:key="sync_password"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_password"
+        android:summary="@string/pref_desc_password"
+        android:dependency="sync_encryption"/>
+
+</PreferenceScreen>

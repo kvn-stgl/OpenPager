@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "451524092715",
+    "firebase_url": "https://falarm-62672.firebaseio.com",
+    "project_id": "falarm-62672",
+    "storage_bucket": "falarm-62672.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451524092715:android:09f578e15d8457d4",
+        "android_client_info": {
+          "package_name": "de.openfiresource.falarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451524092715-5ekq9etemdel8kuuck7v4fb2hjnn9qbv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMz0XWrBMm9Vhezv0vSjvXMwi8BQ_KxaI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

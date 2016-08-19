@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="activate"
+        android:summary="@string/pref_description_activate_app"
+        android:title="@string/pref_title_activate_app" />
+
+
+    <ListPreference
+        android:defaultValue="120"
+        android:entries="@array/pref_alarm_timeout_titles"
+        android:entryValues="@array/pref_alarm_timeout_values"
+        android:key="general_alarm_timeout"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_alarm_timeout" />
+
+</PreferenceScreen>

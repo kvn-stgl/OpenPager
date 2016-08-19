@@ -1,0 +1,153 @@
+<resources>
+    <string name="app_name">fAlarm</string>
+    <string name="action_rules">Regeln</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_about">About</string>
+    <string name="action_navigation">Navi</string>
+
+    <!-- Operation -->
+    <string name="operation_tab_info">Info</string>
+    <string name="operation_tab_map">Karte</string>
+    <string name="operation_confirm">Alarm bestätigen</string>
+
+    <!-- Strings related to Main -->
+    <string name="welcome_card_title">Willkommen beim fAlarm</string>
+    <string name="welcome_card_subtitle">Der AlarmierungsApp für OpenFireSource!</string>
+    <string name="welcome_card_desc">Um alamiert werden zu können, musst du deiner Zuständigen
+        Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
+        \n\nVielen Dank für die Benutzung :=)
+    </string>
+
+    <!-- Strings related to About -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
+    <string name="title_activity_settings">Einstellungen</string>
+
+    <!-- Strings related to Settings -->
+    <string name="fcm_key_copied">FMC-ID in Zwischenablage kopiert!</string>
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Allgemeines</string>
+
+    <string name="pref_title_activate_app">Dienst aktivieren</string>
+    <string name="pref_description_activate_app">Warnung: Wenn deaktiviert werden keine Nachrichten empfangen!</string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+
+    <string name="pref_title_alarm_timeout">Alarm Timeout</string>
+    <string-array name="pref_alarm_timeout_titles">
+        <item>Nie</item>
+        <item>3 Sekunden</item>
+        <item>5 Sekunden</item>
+        <item>10 Sekunden</item>
+        <item>15 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>5 Minuten</item>
+    </string-array>
+    <string-array name="pref_alarm_timeout_values">
+        <item>0</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>300</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_encryption">Verschlüsselung</string>
+    <string name="pref_desc_encryption">Aktiviert die Verschlüsselung der Nachrichten</string>
+    <string name="pref_title_password">Passwort</string>
+    <string name="pref_desc_password">Passwort für die Verschlüsselung</string>
+    <string name="pref_title_fcm">FCM-ID</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Benachrichtigungen</string>
+    <string name="pref_title_playsound">Sound abspielen</string>
+    <string name="pref_desc_paysound">Sound abspielen wenn eine Nachricht eingeht</string>
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_ringtone">Ton auswählen</string>
+    <string name="pref_title_vibrate">Vibrationsmuster</string>
+    <string name="pref_desc_vibrate">Vibrationsalarm wenn eine Nachricht eingeht</string>
+    <string-array name="pref_notification_vibrate_titles">
+        <item>Aus</item>
+        <item>Kurz</item>
+        <item>Mittel</item>
+        <item>Lang</item>
+    </string-array>
+    <string-array name="pref_notification_vibrate_values">
+        <item>0</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+    </string-array>
+
+    <string name="pref_title_led_flash">LED blinken</string>
+    <string name="pref_desc_led_flash">LED blinken wenn eine Nachricht eingeht</string>
+
+
+    <string name="pref_title_notification_volume">Lautstärke bei eingehenden Alarms</string>
+    <string-array name="pref_notification_volume_titles">
+        <item>25%</item>
+        <item>50%</item>
+        <item>75%</item>
+        <item>100%</item>
+        <item>Telefon</item>
+    </string-array>
+    <string-array name="pref_notification_volume_values">
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+        <item>0</item>
+    </string-array>
+
+    <!-- Regeln -->
+    <string name="title_rule_list">Regeln</string>
+    <string name="title_rule_detail">Regeln Detail</string>
+    <string name="rule_diag_new_title">Regel erstellen</string>
+    <string name="rule_diag_new_desc">Name für die neue Regel eingeben</string>
+    <string name="rule_delete_title">Regel löschen</string>
+    <string name="rule_delete_desc">Möchtest du die Regel wirklich löschen?</string>
+
+    <string name="settings_filter">Filtereinstellungen</string>
+    <string name="pref_title_name">Name</string>
+    <string name="pref_desc_name">Name der Regeln</string>
+    <string name="pref_title_activate">Benachrichtigungen aktivieren</string>
+    <string name="pref_desc_activate">Wenn deaktiviert werden Nachrichten empfangen, aber nicht aktiv Benachrichtigt (nur eine Notification).</string>
+    <string name="pref_title_starttime">Startzeit</string>
+    <string name="pref_title_stoptime">Stopzeit</string>
+    <string name="pref_title_notification_own">Eigene Benachrichtigungen</string>
+    <string name="pref_desc_notification_own">Wenn aktiviert werden die Default-Einstellungen überschrieben</string>
+    <string name="pref_title_searchText">Inhalt</string>
+    <string name="pref_desc_searchText">Inhalt welcher Vorhanden sein muss, um die Regel auszuführen.</string>
+    <string name="pref_title_delete">Regel löschen</string>
+    <string name="pref_desc_delete">Die Regel wird unwiederruflich gelöscht.</string>
+    <string name="pref_title_notification">Benachrichtigungen</string>
+    <string name="pref_desc_notification">Benachrichtigungen für diese Regel festlegen.</string>
+    <string name="pref_title_ownNotification">Eigene Benachrichtigungen?</string>
+    <string name="pref_desc_ownNotification">Sollen eigene Benachrichtigungen für diese Regel aktiviert werden?</string>
+    <string name="pref_title_priority">Priorität</string>
+    <string name="pref_desc_priority">Welche Priorität hat die Regel?</string>
+
+    <!-- General -->
+    <string name="cancel">Abbrechen</string>
+    <string name="create">Erstellen</string>
+    <string name="delete">Löschen</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_operation">Alarmnachricht</string>
+
+    <!-- Permission -->
+    <string name="permission_rationale_title">Berechtigungen</string>
+    <string name="permission_rationale_message">Diese Berechtigungen sind für den vollen Funktionsumfang von fAlarm notwendig.</string>
+    <string name="permission_rationale_settings_button_text">SETTINGS</string>
+</resources>
