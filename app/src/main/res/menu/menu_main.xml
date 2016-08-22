@@ -4,6 +4,7 @@
     tools:mContext=".ui.MainActivity" >
     <item android:id="@+id/action_rules"
         android:title="@string/action_rules"
+        android:icon="@drawable/ic_group_white_24dp"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/action_settings"

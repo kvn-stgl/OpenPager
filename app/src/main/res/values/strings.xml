@@ -17,6 +17,8 @@
         Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
         \n\nVielen Dank für die Benutzung :=)
     </string>
+    <string name="main_long_click_header">Option auswählen</string>
+    <string name="main_dialog_delete">Alarm wirklich löschen?</string>
 
     <!-- Strings related to About -->
     <string name="aboutLibraries_description_showIcon">true</string>
