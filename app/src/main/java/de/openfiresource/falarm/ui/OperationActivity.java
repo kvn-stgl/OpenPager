@@ -1,10 +1,12 @@
 package de.openfiresource.falarm.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 
 import butterknife.BindView;
@@ -38,7 +41,8 @@ public class OperationActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private OperationMessage mOperationMessage;
-    private boolean isAlarm;
+    private boolean mIsAlarm;
+    private boolean mHaveMap;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -64,26 +68,26 @@ public class OperationActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        isAlarm = getIntent().getBooleanExtra(EXTRA_TYPE_ALARM, false);
-        if (isAlarm) {
+        mIsAlarm = getIntent().getBooleanExtra(EXTRA_TYPE_ALARM, false);
+        if (mIsAlarm) {
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                            WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
         }
 
         long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
         if (notificationId != 0) {
             mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
 
-            boolean haveMap = true;
+            mHaveMap = true;
             if (TextUtils.isEmpty(mOperationMessage.getLatlng()))
-                haveMap = false;
+                mHaveMap = false;
 
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), haveMap);
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mHaveMap);
 
             // Set up the ViewPager with the sections adapter.
             mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -97,6 +101,10 @@ public class OperationActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_operation, menu);
+
+        if (!this.mHaveMap)
+            menu.getItem(0).setVisible(false);
+
         return true;
     }
 
@@ -121,6 +129,28 @@ public class OperationActivity extends AppCompatActivity {
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
                 return true;
+
+            case R.id.action_delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.main_dialog_delete)
+                        .setPositiveButton(android.R.string.ok, (dialog, id1) -> {
+                            mOperationMessage.delete();
+
+                            //Send Broadcast
+                            Intent brIntent = new Intent();
+                            brIntent.setAction(MainActivity.INTENT_RECEIVED_MESSAGE);
+                            sendBroadcast(brIntent);
+
+                            NavUtils.navigateUpFromSameTask(this);
+                        })
+                        .setNegativeButton(android.R.string.cancel, (dialog1, which) -> {})
+                        .setCancelable(true);
+
+                // Create the AlertDialog object and return it
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,7 +173,7 @@ public class OperationActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return OperationFragment.newInstance(mOperationMessage.getTitle(), mOperationMessage.getMessage(), mOperationMessage.getTimestamp().getTime(), OperationActivity.this.isAlarm);
+                    return OperationFragment.newInstance(mOperationMessage.getTitle(), mOperationMessage.getMessage(), mOperationMessage.getTimestamp().getTime(), OperationActivity.this.mIsAlarm);
                 case 1:
                     String[] latlng = mOperationMessage.getLatlng().split(";");
                     double lat = Double.parseDouble(latlng[0]);

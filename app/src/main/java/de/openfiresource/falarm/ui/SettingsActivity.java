@@ -288,20 +288,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             gcmPreference.setTitle(getString(R.string.pref_title_fcm));
             final String token = FirebaseInstanceId.getInstance().getToken();
             gcmPreference.setSummary(token);
-            gcmPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                    android.content.ClipData clip = android.content.ClipData.newPlainText("FCM-ID", token);
-                    clipboard.setPrimaryClip(clip);
+            gcmPreference.setOnPreferenceClickListener(preference -> {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("FCM-ID", token);
+                clipboard.setPrimaryClip(clip);
 
-                    //Show a toast
-                    String message = getString(R.string.fcm_key_copied);
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
-                    toast.show();
+                //Show a toast
+                String message = getString(R.string.fcm_key_copied);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
+                toast.show();
 
-                    return true;
-                }
+                return true;
             });
             getPreferenceScreen().addPreference(gcmPreference);
         }

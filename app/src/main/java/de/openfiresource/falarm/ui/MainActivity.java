@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +30,7 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.listeners.RecyclerItemClickListener;
 import com.dexafree.materialList.view.MaterialListView;
+import com.google.android.gms.contextmanager.internal.InterestUpdateBatchImpl;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -53,6 +56,9 @@ import de.openfiresource.falarm.utils.PlayServiceUtils;
 public class MainActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
 
     public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
+    public static final String SHOW_WELCOME_CARD = "showWelcomeCard";
+
+    private SharedPreferences mSharedPreferences;
 
     @BindView(android.R.id.content)
     ViewGroup rootView;
@@ -124,7 +130,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
 
     private void updateNotifications() {
         mListView.getAdapter().clearAll();
-        createWelcomeCard();
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (mSharedPreferences.getBoolean(SHOW_WELCOME_CARD, true)) {
+            createWelcomeCard();
+        }
 
         List<OperationMessage> notifications = OperationMessage.find(OperationMessage.class, null, null, null, "id desc", "15");
 
@@ -149,11 +159,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                 .addAction(R.id.ok_button, new WelcomeButtonAction(this)
                         .setText("Okay!")
                         .setTextColor(Color.WHITE)
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            public void onActionClicked(View view, Card card) {
-                                mListView.getAdapter().remove(card, true);
-                            }
+                        .setListener((view, card1) -> {
+                            mListView.getAdapter().remove(card1, true);
+                            mSharedPreferences.edit()
+                                    .putBoolean(SHOW_WELCOME_CARD, false)
+                                    .commit();
                         }))
                 .endConfig()
                 .build();
@@ -226,6 +236,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
 
     @Override
     public void onItemLongClick(@NonNull Card card, int position) {
+        if (card.getTag() != null) {
+            long id = (long) card.getTag();
 
+            final CharSequence[] items = {getString(R.string.delete)};
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.main_long_click_header);
+            builder.setItems(items, (dialog, item) -> {
+                switch (item) {
+                    case 0:
+                        OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, id);
+                        operationMessage.delete();
+                        updateNotifications();
+                        break;
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 }
