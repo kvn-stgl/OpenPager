@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
 
     public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
     public static final String SHOW_WELCOME_CARD = "showWelcomeCard";
+    public static final String SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
 
     private SharedPreferences mSharedPreferences;
 
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
         updateNotifications();
         mListView.addOnItemTouchListener(this);
 
-
         //Load permissions
         CompositeMultiplePermissionsListener compositeMultiplePermissionsListener
                 = new CompositeMultiplePermissionsListener(new MainMultiplePermissionsListener(this),
@@ -102,8 +103,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                 Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
-    public void showPermissionRationale(final PermissionToken token) {
-
+    public int getVersionCode() {
+        PackageManager pm = getBaseContext().getPackageManager();
+        try {
+            PackageInfo pi = pm.getPackageInfo(getBaseContext().getPackageName(), 0);
+            return pi.versionCode;
+        } catch (PackageManager.NameNotFoundException ex) {}
+        return 0;
     }
 
     @Override
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                             mListView.getAdapter().remove(card1, true);
                             mSharedPreferences.edit()
                                     .putBoolean(SHOW_WELCOME_CARD, false)
+                                    .putInt(SHOW_WELCOME_CARD_VERSION, getVersionCode())
                                     .commit();
                         }))
                 .endConfig()

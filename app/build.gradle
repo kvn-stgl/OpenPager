@@ -32,8 +32,8 @@ android {
         applicationId "de.openfiresource.falarm"
         //minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName '1.0.1'
 
         // Enabling multidex support.
         multiDexEnabled true
@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
