@@ -5,6 +5,8 @@
     <string name="action_about">About</string>
     <string name="action_navigation">Navi</string>
 
+    <string name="send_to">Sende zu</string>
+
     <!-- Operation -->
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Karte</string>

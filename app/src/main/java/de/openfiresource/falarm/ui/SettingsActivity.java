@@ -285,11 +285,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("sync_password"));
 
-            Preference gcmPreference = new Preference(getActivity());
-            gcmPreference.setTitle(getString(R.string.pref_title_fcm));
+            Preference fcmPreference = new Preference(getActivity());
+            fcmPreference.setTitle(getString(R.string.pref_title_fcm));
             final String token = FirebaseInstanceId.getInstance().getToken();
-            gcmPreference.setSummary(token);
-            gcmPreference.setOnPreferenceClickListener(preference -> {
+            fcmPreference.setSummary(token);
+            fcmPreference.setOnPreferenceClickListener(preference -> {
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, token);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+
+                /**
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 android.content.ClipData clip = android.content.ClipData.newPlainText("FCM-ID", token);
                 clipboard.setPrimaryClip(clip);
@@ -297,11 +305,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 //Show a toast
                 String message = getString(R.string.fcm_key_copied);
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
-                toast.show();
+                toast.show(); */
 
                 return true;
             });
-            getPreferenceScreen().addPreference(gcmPreference);
+            getPreferenceScreen().addPreference(fcmPreference);
         }
 
         @Override
