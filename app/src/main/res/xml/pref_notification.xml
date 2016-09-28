@@ -30,7 +30,7 @@
 
 
     <ListPreference
-        android:defaultValue="200"
+        android:defaultValue="2000"
         android:entries="@array/pref_notification_vibrate_titles"
         android:entryValues="@array/pref_notification_vibrate_values"
         android:key="notifications_new_message_vibrate"

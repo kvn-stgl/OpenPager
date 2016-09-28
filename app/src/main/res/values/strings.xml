@@ -96,13 +96,12 @@
     <string name="pref_title_led_flash">LED blinken</string>
     <string name="pref_desc_led_flash">LED blinken wenn eine Nachricht eingeht</string>
 
-
     <string name="pref_title_notification_volume">Lautstärke bei eingehenden Alarms</string>
     <string-array name="pref_notification_volume_titles">
-        <item>25%</item>
-        <item>50%</item>
-        <item>75%</item>
-        <item>100%</item>
+        <item>25&#65130;</item>
+        <item>50&#65130;</item>
+        <item>75&#65130;</item>
+        <item>100&#65130;</item>
         <item>Telefon</item>
     </string-array>
     <string-array name="pref_notification_volume_values">

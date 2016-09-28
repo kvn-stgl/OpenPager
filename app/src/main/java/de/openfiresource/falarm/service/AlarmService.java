@@ -38,7 +38,7 @@ public class AlarmService extends Service {
     private static final String TAG = "AlarmService";
 
     // Time period between two vibration events
-    private final static int VIBRATE_DELAY_TIME = 2000;
+    private final static int VIBRATE_DELAY_TIME = 1000;
     private MediaPlayer mPlayer;
     private Vibrator mVibrator;
     private OperationMessage mOperationMessage;
