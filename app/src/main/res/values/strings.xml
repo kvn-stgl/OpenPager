@@ -2,7 +2,7 @@
     <string name="app_name">fAlarm</string>
     <string name="action_rules">Regeln</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="action_about">About</string>
+    <string name="action_about">Über</string>
     <string name="action_navigation">Navi</string>
 
     <string name="send_to">Sende zu</string>
@@ -23,8 +23,8 @@
     <string name="main_dialog_delete">Alarm wirklich löschen?</string>
 
     <!-- Strings related to About -->
-    <string name="aboutLibraries_description_showIcon">true</string>
-    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
+    <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
     <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
     <string name="title_activity_settings">Einstellungen</string>
 
@@ -36,10 +36,6 @@
 
     <string name="pref_title_activate_app">Dienst aktivieren</string>
     <string name="pref_description_activate_app">Warnung: Wenn deaktiviert werden keine Nachrichten empfangen!</string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
 
     <string name="pref_title_alarm_timeout">Alarm Timeout</string>
     <string-array name="pref_alarm_timeout_titles">
@@ -66,7 +62,7 @@
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_header_data_sync">Daten &amp; Sync</string>
 
     <string name="pref_title_encryption">Verschlüsselung</string>
     <string name="pref_desc_encryption">Aktiviert die Verschlüsselung der Nachrichten</string>
@@ -129,8 +125,6 @@
     <string name="pref_desc_activate">Wenn deaktiviert werden Nachrichten empfangen, aber nicht aktiv Benachrichtigt (nur eine Notification).</string>
     <string name="pref_title_starttime">Startzeit</string>
     <string name="pref_title_stoptime">Stopzeit</string>
-    <string name="pref_title_notification_own">Eigene Benachrichtigungen</string>
-    <string name="pref_desc_notification_own">Wenn aktiviert werden die Default-Einstellungen überschrieben</string>
     <string name="pref_title_searchText">Inhalt</string>
     <string name="pref_desc_searchText">Inhalt welcher Vorhanden sein muss, um die Regel auszuführen.</string>
     <string name="pref_title_delete">Regel löschen</string>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">fAlarm</string>
+    <string name="action_about">About</string>
+    <string name="action_navigation">Navi</string>
+    <string name="action_rules">Rules</string>
+    <string name="action_settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
+    <string name="delete">Delete</string>
+    <string name="fcm_key_copied">FCM-ID copied in the clipboard!</string>
+    <string name="aboutLibraries_description_text">fAlarm is a alarm app for German firefighters. Have fun with it :=)</string>
+    <string name="main_dialog_delete">Alarm seriously delete?</string>
+    <string name="main_long_click_header">Select Option</string>
+    <string name="operation_confirm">Confirm Alarm</string>
+    <string name="operation_tab_info">Info</string>
+    <string name="operation_tab_map">Map</string>
+    <string name="permission_rationale_message">These permissions are necessary for full functionality.</string>
+    <string name="permission_rationale_settings_button_text">SETTINGS</string>
+    <string name="permission_rationale_title">Permissions</string>
+    <string name="pref_desc_activate">If deactived you will receive messages but no push notification.</string>
+    <string name="pref_desc_delete">Rule will be deleted permanently.</string>
+    <string name="pref_desc_encryption">Activate the encrypted message</string>
+    <string name="pref_desc_led_flash" translatable="false">Blink LED on new message</string>
+    <string name="pref_desc_name">Name of the rule</string>
+    <string name="pref_desc_notification">Notifications for the new rule</string>
+    <string name="pref_desc_password">Password for the encryption</string>
+    <string name="pref_desc_ownNotification">Should be activated own notifications for this rule?</string>
+    <string name="pref_desc_paysound">Play sound on new message</string>
+    <string name="pref_desc_priority">Priority of the rule</string>
+    <string name="pref_desc_searchText">Content that must be present to execute the rule.</string>
+    <string name="pref_desc_vibrate">Vibrate on new message</string>
+    <string name="pref_description_activate_app">"Warning: If disabled, no messages will be received! "</string>
+    <string name="pref_header_data_sync">Data &amp; Sync</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_activate">Activate notifications</string>
+    <string name="pref_title_activate_app">Activate service</string>
+    <string name="pref_title_alarm_timeout">Alarm Timeout</string>
+    <string name="pref_title_delete">Delete rule</string>
+    <string name="pref_title_encryption">Encryption</string>
+    <string name="pref_title_fcm">FCM-ID</string>
+    <string name="pref_title_led_flash">LED flash</string>
+    <string name="pref_title_name">Name</string>
+    <string name="pref_title_notification">Notifications</string>
+    <string name="pref_title_notification_volume">Volume on new alarm</string>
+    <string name="pref_title_ownNotification">Own Notifications?</string>
+    <string name="pref_title_password">Password</string>
+    <string name="pref_title_playsound">Play sound</string>
+    <string name="pref_title_priority">Priority</string>
+    <string name="pref_title_ringtone">Select sound</string>
+    <string name="pref_title_searchText">Content</string>
+    <string name="pref_title_starttime">Start Time</string>
+    <string name="pref_title_stoptime">Stop Time</string>
+    <string name="pref_title_vibrate">Vibrationpattern</string>
+    <string name="rule_delete_desc">Are you sure you want to delete the rule?</string>
+    <string name="rule_delete_title">Delete rule</string>
+    <string name="rule_diag_new_desc">Name for the new rule</string>
+    <string name="rule_diag_new_title">Create rule</string>
+    <string name="send_to">Send to</string>
+    <string name="settings_filter">Filter settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_operation">Alarm message</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_rule_detail">Rule details</string>
+    <string name="title_rule_list">Rule</string>
+    <string name="welcome_card_subtitle">The AlarmApp for OpenFireSource!</string>
+    <string name="welcome_card_title">Welcome to fAlarm</string>
+    <string name="welcome_card_desc">You have to send the FCM-ID in the settings to the relevant person to be alarmed.</string>
+    <string-array name="pref_alarm_timeout_titles">
+        <item>Never</item>
+        <item>3 Seconds</item>
+        <item>5 Seconds</item>
+        <item>10 Seconds</item>
+        <item>15 Seconds</item>
+        <item>30 Seconds</item>
+        <item>1 Minute</item>
+        <item>2 Minutes</item>
+        <item>5 Minutes</item>
+    </string-array>
+    <string-array name="pref_notification_vibrate_titles">
+        <item>Off</item>
+        <item>Short</item>
+        <item>Medium</item>
+        <item>Long</item>
+    </string-array>
+    <string-array name="pref_notification_volume_titles">
+        <item>25&#65130;</item>
+        <item>50&#65130;</item>
+        <item>75&#65130;</item>
+        <item>100&#65130;</item>
+        <item>Phone</item>
+    </string-array>
+</resources>
