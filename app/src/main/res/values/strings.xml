@@ -10,6 +10,7 @@
     <!-- Operation -->
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Karte</string>
+    <string name="operation_tab_osm">OFM</string>
     <string name="operation_confirm">Alarm bestätigen</string>
 
     <!-- Strings related to Main -->
@@ -140,6 +141,7 @@
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
     <string name="delete">Löschen</string>
+    <string name="operation_base">Einsatzort</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_operation">Alarmnachricht</string>
 

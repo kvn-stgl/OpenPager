@@ -15,6 +15,8 @@
     <string name="operation_confirm">Confirm Alarm</string>
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Map</string>
+    <string name="operation_tab_osm">OFM</string>
+    <string name="operation_base">Operation base</string>
     <string name="permission_rationale_message">These permissions are necessary for full functionality.</string>
     <string name="permission_rationale_settings_button_text">SETTINGS</string>
     <string name="permission_rationale_title">Permissions</string>
