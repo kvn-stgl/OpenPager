@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -55,7 +56,9 @@ public class OsmMapFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //important! set your user agent to prevent getting banned from the osm servers
-        org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
+        OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
+        //this will set the disk cache size in MB to 100MB , 90Kb trim size
+        OpenStreetMapTileProviderConstants.setCacheSizes(100L, 90L);
 
     }
 
