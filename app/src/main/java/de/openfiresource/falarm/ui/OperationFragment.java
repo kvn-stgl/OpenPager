@@ -85,8 +85,33 @@ public class OperationFragment extends Fragment {
             mIsAlarm = getArguments().getBoolean(ARG_ALARM, false);
         }
 
-        int period = 1000; // repeat every sec.
+    }
 
+    @OnClick(R.id.operation_received)
+    public void operationReceived(View view) {
+        Intent intent = new Intent(getActivity(), AlarmService.class);
+        getActivity().stopService(intent);
+
+        buttonOperationReceived.setVisibility(View.GONE);
+        mIsAlarm = false;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_operation, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
+        textViewTitle.setText(mTitle);
+        textViewMessage.setText(mMessage);
+
+        if (!mIsAlarm) {
+            buttonOperationReceived.setVisibility(View.GONE);
+        } else {
+            textViewTimer.setTextColor(Color.RED);
+        }
+
+        int period = 1000; // repeat every sec.
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -116,31 +141,6 @@ public class OperationFragment extends Fragment {
                 });
             }
         }, 0, period);
-    }
-
-    @OnClick(R.id.operation_received)
-    public void operationReceived(View view) {
-        Intent intent = new Intent(getActivity(), AlarmService.class);
-        getActivity().stopService(intent);
-
-        buttonOperationReceived.setVisibility(View.GONE);
-        mIsAlarm = false;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_operation, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
-        textViewTitle.setText(mTitle);
-        textViewMessage.setText(mMessage);
-
-        if (!mIsAlarm) {
-            buttonOperationReceived.setVisibility(View.GONE);
-        } else {
-            textViewTimer.setTextColor(Color.RED);
-        }
 
         return view;
     }
@@ -149,8 +149,9 @@ public class OperationFragment extends Fragment {
     public void onDestroyView() {
         mTimer.cancel();
 
-        super.onDestroyView();
         if (mUnbinder != null)
             mUnbinder.unbind();
+        
+        super.onDestroyView();
     }
 }
