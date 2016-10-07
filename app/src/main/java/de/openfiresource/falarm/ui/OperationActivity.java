@@ -1,7 +1,9 @@
 package de.openfiresource.falarm.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -172,6 +174,9 @@ public class OperationActivity extends AppCompatActivity {
             super(fm);
             mWithMap = withMap;
 
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OperationActivity.this);
+            String alarmMaps = preferences.getString("general_alarm_maps", "both");
+
             String[] latlng = mOperationMessage.getLatlng().split(";");
             double lat = Double.parseDouble(latlng[0]);
             double lng = Double.parseDouble(latlng[1]);
@@ -183,11 +188,15 @@ public class OperationActivity extends AppCompatActivity {
                     OperationActivity.this.mIsAlarm));
 
             if(mWithMap) {
-                mItemNames.add(getString(R.string.operation_tab_map));
-                mItemValues.add(MapFragment.newInstance(lat, lng));
+                if(alarmMaps.equals("both") || alarmMaps.equals("gmap")) {
+                    mItemNames.add(getString(R.string.operation_tab_map));
+                    mItemValues.add(MapFragment.newInstance(lat, lng));
+                }
 
-                mItemNames.add(getString(R.string.operation_tab_osm));
-                mItemValues.add(OsmMapFragment.newInstance(lat, lng));
+                if(alarmMaps.equals("both") || alarmMaps.equals("ofm")) {
+                    mItemNames.add(getString(R.string.operation_tab_osm));
+                    mItemValues.add(OsmMapFragment.newInstance(lat, lng));
+                }
             }
         }
 

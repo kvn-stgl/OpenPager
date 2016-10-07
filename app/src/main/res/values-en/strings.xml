@@ -94,4 +94,10 @@
         <item>100&#65130;</item>
         <item>Phone</item>
     </string-array>
+    <string name="pref_title_alarm_maps">Alarmmaps (Phone)</string>
+    <string-array name="pref_alarm_maps_titles">
+        <item>Google Maps &amp; OpenFireMap</item>
+        <item>Only GoogleMaps</item>
+        <item>Only OpenFireMap</item>
+    </string-array>
 </resources>

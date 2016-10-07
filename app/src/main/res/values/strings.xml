@@ -62,6 +62,18 @@
         <item>300</item>
     </string-array>
 
+    <string name="pref_title_alarm_maps">Alarmkarten (Phone)</string>
+    <string-array name="pref_alarm_maps_titles">
+        <item>Google Maps &amp; OpenFireMap</item>
+        <item>Nur GoogleMaps</item>
+        <item>Nur OpenFireMap</item>
+    </string-array>
+    <string-array name="pref_alarm_maps_values">
+        <item>both</item>
+        <item>gmap</item>
+        <item>ofm</item>
+    </string-array>
+
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Daten &amp; Sync</string>
 

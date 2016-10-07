@@ -6,7 +6,6 @@
         android:summary="@string/pref_description_activate_app"
         android:title="@string/pref_title_activate_app" />
 
-
     <ListPreference
         android:defaultValue="120"
         android:entries="@array/pref_alarm_timeout_titles"
@@ -15,5 +14,14 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_alarm_timeout" />
+
+    <ListPreference
+        android:defaultValue="both"
+        android:entries="@array/pref_alarm_maps_titles"
+        android:entryValues="@array/pref_alarm_maps_values"
+        android:key="general_alarm_maps"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_alarm_maps" />
 
 </PreferenceScreen>
