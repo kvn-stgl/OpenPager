@@ -1,8 +1,9 @@
 package de.openfiresource.falarm.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -18,8 +19,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -143,7 +146,8 @@ public class OperationActivity extends AppCompatActivity {
 
                             NavUtils.navigateUpFromSameTask(this);
                         })
-                        .setNegativeButton(android.R.string.cancel, (dialog1, which) -> {})
+                        .setNegativeButton(android.R.string.cancel, (dialog1, which) -> {
+                        })
                         .setCancelable(true);
 
                 // Create the AlertDialog object and return it
@@ -163,44 +167,55 @@ public class OperationActivity extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private boolean mWithMap;
+        private List<String> mItemNames = new ArrayList<>();
+        private List<Fragment> mItemValues = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm, boolean withMap) {
             super(fm);
-            this.mWithMap = withMap;
+            mWithMap = withMap;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OperationActivity.this);
+            String alarmMaps = preferences.getString("general_alarm_maps", "both");
+
+            String[] latlng = mOperationMessage.getLatlng().split(";");
+            double lat = Double.parseDouble(latlng[0]);
+            double lng = Double.parseDouble(latlng[1]);
+
+            mItemNames.add(getString(R.string.operation_tab_info));
+            mItemValues.add(OperationFragment.newInstance(mOperationMessage.getTitle(),
+                    mOperationMessage.getMessage(),
+                    mOperationMessage.getTimestamp().getTime(),
+                    OperationActivity.this.mIsAlarm));
+
+            if(mWithMap) {
+                if(alarmMaps.equals("both") || alarmMaps.equals("gmap")) {
+                    mItemNames.add(getString(R.string.operation_tab_map));
+                    mItemValues.add(MapFragment.newInstance(lat, lng));
+                }
+
+                if(alarmMaps.equals("both") || alarmMaps.equals("ofm")) {
+                    mItemNames.add(getString(R.string.operation_tab_osm));
+                    mItemValues.add(OsmMapFragment.newInstance(lat, lng));
+                }
+            }
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return OperationFragment.newInstance(mOperationMessage.getTitle(), mOperationMessage.getMessage(), mOperationMessage.getTimestamp().getTime(), OperationActivity.this.mIsAlarm);
-                case 1:
-                    String[] latlng = mOperationMessage.getLatlng().split(";");
-                    double lat = Double.parseDouble(latlng[0]);
-                    double lng = Double.parseDouble(latlng[1]);
-                    return MapFragment.newInstance(lat, lng);
-                default:
-                    return null;
-            }
+            return mItemValues.get(position);
         }
 
         @Override
         public int getCount() {
             if (mWithMap)
-                return 2;
+                return mItemNames.size();
             else
                 return 1;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.operation_tab_info);
-                case 1:
-                    return getString(R.string.operation_tab_map);
-            }
-            return null;
+            return mItemNames.get(position);
         }
     }
 }

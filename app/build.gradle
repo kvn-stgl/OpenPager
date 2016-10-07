@@ -69,6 +69,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.orhanobut:logger:1.15'
     compile 'com.karumi:dexter:2.2.2'
+    compile 'org.osmdroid:osmdroid-android:5.4.1:release@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

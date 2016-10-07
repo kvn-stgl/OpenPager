@@ -15,6 +15,8 @@
     <string name="operation_confirm">Confirm Alarm</string>
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Map</string>
+    <string name="operation_tab_osm">OFM</string>
+    <string name="operation_base">Operation base</string>
     <string name="permission_rationale_message">These permissions are necessary for full functionality.</string>
     <string name="permission_rationale_settings_button_text">SETTINGS</string>
     <string name="permission_rationale_title">Permissions</string>
@@ -91,5 +93,11 @@
         <item>75&#65130;</item>
         <item>100&#65130;</item>
         <item>Phone</item>
+    </string-array>
+    <string name="pref_title_alarm_maps">Alarmmaps (Phone)</string>
+    <string-array name="pref_alarm_maps_titles">
+        <item>Google Maps &amp; OpenFireMap</item>
+        <item>Only GoogleMaps</item>
+        <item>Only OpenFireMap</item>
     </string-array>
 </resources>

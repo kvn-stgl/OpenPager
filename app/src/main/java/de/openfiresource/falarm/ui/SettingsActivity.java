@@ -200,6 +200,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
 
             bindPreferenceSummaryToValue(findPreference("general_alarm_timeout"));
+            bindPreferenceSummaryToValue(findPreference("general_alarm_maps"));
         }
 
         @Override
