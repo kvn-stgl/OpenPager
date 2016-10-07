@@ -125,8 +125,9 @@ public class RuleDetailFragment extends PreferenceFragment {
                         = new SettingsActivity.NotificationPreferenceFragment();
                 fragment.setArguments(bundle);
 
-                RuleDetailFragment.this.getFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.rule_detail_container, fragment)
+                        .addToBackStack(null)
                         .commit();
 
                 return true;
@@ -179,7 +180,12 @@ public class RuleDetailFragment extends PreferenceFragment {
 
         try {
             getter = mItem.getClass().getMethod(methodName);
-            sBindPreferenceToDatabaseListener.onPreferenceChange(preference, getter.invoke(mItem));
+            Object value = getter.invoke(mItem);
+
+            if (preference instanceof CheckBoxPreference)
+                ((CheckBoxPreference) preference).setChecked((Boolean) value);
+
+            sBindPreferenceToDatabaseListener.onPreferenceChange(preference, value);
         } catch (SecurityException e) {
             Logger.e(e, "Security Exception on relfection");
         } catch (NoSuchMethodException e) {

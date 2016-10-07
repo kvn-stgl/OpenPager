@@ -1,7 +1,7 @@
 package de.openfiresource.falarm.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -64,7 +64,10 @@ public class RuleDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            navigateUpTo(new Intent(this, RuleListActivity.class));
+            if(getFragmentManager().getBackStackEntryCount() > 0)
+                getFragmentManager().popBackStack();
+            else
+                NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
