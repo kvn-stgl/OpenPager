@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -43,8 +45,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean activate = preferences.getBoolean("activate", true);
+
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+        if (remoteMessage.getData().size() > 0 && activate) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             OperationMessage operationMessage = OperationMessage.fromFCM(this, remoteMessage.getData());
             if (operationMessage != null) {
