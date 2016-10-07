@@ -1,6 +1,7 @@
 package de.openfiresource.falarm.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -137,6 +138,8 @@ public class OperationFragment extends Fragment {
 
         if (!mIsAlarm) {
             buttonOperationReceived.setVisibility(View.GONE);
+        } else {
+            textViewTimer.setTextColor(Color.RED);
         }
 
         return view;
