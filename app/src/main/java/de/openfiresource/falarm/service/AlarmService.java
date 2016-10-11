@@ -41,8 +41,8 @@ public class AlarmService extends Service {
     private final static int VIBRATE_DELAY_TIME = 1000;
     private MediaPlayer mPlayer;
     private Vibrator mVibrator;
-    private OperationMessage mOperationMessage;
     private int mVibrateDelayTime;
+    private OperationMessage mOperationMessage;
     private Notification mNotification;
 
     private Handler mHandler = new Handler();
@@ -76,11 +76,14 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
+
         mOperationMessage = OperationMessage.findById(OperationMessage.class, operationId);
         OperationRule rule = mOperationMessage.getRule();
         mNotification = Notification.byRule(rule, this);
 
+        //Start alarm Service
         startPlayer();
+
         // Start the activity where you can stop alarm
         Intent i = new Intent(this, OperationActivity.class);
         i.putExtra(OperationActivity.EXTRA_ID, mOperationMessage.getId());

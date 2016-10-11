@@ -2,6 +2,7 @@ package de.openfiresource.falarm.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Path;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -27,9 +28,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.OperationMessage;
+import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.service.SpeakService;
 
 public class OperationActivity extends AppCompatActivity {
+
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TYPE_ALARM = "alarm";
 
@@ -44,6 +49,7 @@ public class OperationActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private OperationMessage mOperationMessage;
+    private Notification mNotification;
     private boolean mIsAlarm;
     private boolean mHaveMap;
 
@@ -83,6 +89,8 @@ public class OperationActivity extends AppCompatActivity {
         long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
         if (notificationId != 0) {
             mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
+            OperationRule operationRule = mOperationMessage.getRule();
+            mNotification = Notification.byRule(operationRule, this);
 
             mHaveMap = true;
             if (TextUtils.isEmpty(mOperationMessage.getLatlng()))
@@ -108,6 +116,10 @@ public class OperationActivity extends AppCompatActivity {
         if (!this.mHaveMap)
             menu.getItem(0).setVisible(false);
 
+        if (!this.mIsAlarm
+                || !mNotification.isSpeakServiceEnabled())
+            menu.getItem(1).setVisible(false);
+
         return true;
     }
 
@@ -131,6 +143,12 @@ public class OperationActivity extends AppCompatActivity {
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
+                return true;
+
+            case R.id.action_stopSpeak:
+                Intent intentData = new Intent(getBaseContext(), SpeakService.class);
+                intentData.putExtra(SpeakService.STOP_NOW, true);
+                startService(intentData);
                 return true;
 
             case R.id.action_delete:
@@ -182,18 +200,15 @@ public class OperationActivity extends AppCompatActivity {
             double lng = Double.parseDouble(latlng[1]);
 
             mItemNames.add(getString(R.string.operation_tab_info));
-            mItemValues.add(OperationFragment.newInstance(mOperationMessage.getTitle(),
-                    mOperationMessage.getMessage(),
-                    mOperationMessage.getTimestamp().getTime(),
-                    OperationActivity.this.mIsAlarm));
+            mItemValues.add(OperationFragment.newInstance(mOperationMessage.getId(), OperationActivity.this.mIsAlarm));
 
-            if(mWithMap) {
-                if(alarmMaps.equals("both") || alarmMaps.equals("gmap")) {
+            if (mWithMap) {
+                if (alarmMaps.equals("both") || alarmMaps.equals("gmap")) {
                     mItemNames.add(getString(R.string.operation_tab_map));
                     mItemValues.add(MapFragment.newInstance(lat, lng));
                 }
 
-                if(alarmMaps.equals("both") || alarmMaps.equals("ofm")) {
+                if (alarmMaps.equals("both") || alarmMaps.equals("ofm")) {
                     mItemNames.add(getString(R.string.operation_tab_osm));
                     mItemValues.add(OsmMapFragment.newInstance(lat, lng));
                 }

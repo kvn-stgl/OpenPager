@@ -4,10 +4,16 @@
     tools:mContext="de.openfiresource.falarm.ui.OperationActivity">
     <item
         android:id="@+id/action_navigation"
-        android:orderInCategory="100"
+        android:orderInCategory="0"
         android:title="@string/action_navigation"
         android:icon="@drawable/ic_local_taxi_white_24dp"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_stopSpeak"
+        android:orderInCategory="1"
+        android:title="@string/action_stopSpeak"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_delete"

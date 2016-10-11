@@ -19,22 +19,22 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.Notification;
+import de.openfiresource.falarm.models.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
+import de.openfiresource.falarm.service.SpeakService;
 
 /**
  * Created by stieglit on 12.08.2016.
  */
 public class OperationFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_TITLE = "title";
-    private static final String ARG_MESSAGE = "message";
+    private static final String ARG_ID = "id";
     private static final String ARG_ALARM = "alarm";
-    private static final String ARG_STARTTIME = "starttime";
+
+    private OperationMessage mOperationMessage;
 
     private Unbinder mUnbinder;
-    private String mTitle;
-    private String mMessage;
-    private Date mStartTime;
     private Boolean mIsAlarm;
     private Timer mTimer;
 
@@ -58,18 +58,14 @@ public class OperationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param title     Title of the operation.
-     * @param message   Message of the operation.
-     * @param startTime Time when the operation started.
+     * @param operationMessageId     Id of the operation Message.
      * @param alarm     Is ooperation an active alarm
      * @return A new instance of fragment OperationFragment.
      */
-    public static OperationFragment newInstance(String title, String message, long startTime, boolean alarm) {
+    public static OperationFragment newInstance(long operationMessageId, boolean alarm) {
         OperationFragment fragment = new OperationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
-        args.putString(ARG_MESSAGE, message);
-        args.putLong(ARG_STARTTIME, startTime);
+        args.putLong(ARG_ID, operationMessageId);
         args.putBoolean(ARG_ALARM, alarm);
         fragment.setArguments(args);
         return fragment;
@@ -79,9 +75,8 @@ public class OperationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mTitle = getArguments().getString(ARG_TITLE);
-            mMessage = getArguments().getString(ARG_MESSAGE);
-            mStartTime = new Date(getArguments().getLong(ARG_STARTTIME, 0));
+            long notificationId = getArguments().getLong(ARG_ID);
+            mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
             mIsAlarm = getArguments().getBoolean(ARG_ALARM, false);
         }
 
@@ -94,6 +89,16 @@ public class OperationFragment extends Fragment {
 
         buttonOperationReceived.setVisibility(View.GONE);
         mIsAlarm = false;
+
+        //Start speak service
+        Notification notification = Notification.byRule(mOperationMessage.getRule(), getContext());
+
+        if(notification.isSpeakServiceEnabled() && notification.isPlayingSound()) {
+            Intent intentData = new Intent(getContext(),
+                    SpeakService.class);
+            intentData.putExtra(OperationActivity.EXTRA_ID, mOperationMessage.getId());
+            getActivity().startService(intentData);
+        }
     }
 
     @Override
@@ -102,8 +107,8 @@ public class OperationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_operation, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        textViewTitle.setText(mTitle);
-        textViewMessage.setText(mMessage);
+        textViewTitle.setText(mOperationMessage.getTitle());
+        textViewMessage.setText(mOperationMessage.getMessage());
 
         if (!mIsAlarm) {
             buttonOperationReceived.setVisibility(View.GONE);
@@ -117,7 +122,7 @@ public class OperationFragment extends Fragment {
             @Override
             public void run() {
                 Date actual = new Date();
-                long diffInSeconds = (actual.getTime() - mStartTime.getTime()) / 1000;
+                long diffInSeconds = (actual.getTime() - mOperationMessage.getTimestamp().getTime()) / 1000;
                 long diff[] = new long[]{0, 0, 0, 0};
                 /* sec */
                 diff[3] = (diffInSeconds >= 60 ? diffInSeconds % 60 : diffInSeconds);

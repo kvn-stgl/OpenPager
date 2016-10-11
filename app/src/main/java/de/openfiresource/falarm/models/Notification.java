@@ -93,6 +93,16 @@ public class Notification {
         return mSharedPreferences.getBoolean("notifications_new_message_led", false);
     }
 
+    /**
+     * Gibt an, ob der SpeakService aktiviert ist.
+     *
+     * @return True, wenn aktiviert
+     */
+    public Boolean isSpeakServiceEnabled() {
+        assert mSharedPreferences != null;
+        return mSharedPreferences.getBoolean("notifications_speak", false);
+    }
+
     public void delete() {
         mSharedPreferences.edit().clear().commit();
     }

@@ -5,6 +5,7 @@
     <string name="action_navigation">Navi</string>
     <string name="action_rules">Rules</string>
     <string name="action_settings">Settings</string>
+    <string name="action_stopSpeak">Stop SpeakService</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="delete">Delete</string>
@@ -60,6 +61,8 @@
     <string name="rule_delete_title">Delete rule</string>
     <string name="rule_diag_new_desc">Name for the new rule</string>
     <string name="rule_diag_new_title">Create rule</string>
+    <string name="pref_title_speak">Read Alarm Message</string>
+    <string name="pref_desc_speak">Read the alarm message after the alarm is confirmed.</string>
     <string name="send_to">Send to</string>
     <string name="settings_filter">Filter settings</string>
     <string name="title_activity_maps">Map</string>

@@ -4,6 +4,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="action_about">Über</string>
     <string name="action_navigation">Navi</string>
+    <string name="action_stopSpeak">Vorlesen anhalten</string>
 
     <string name="send_to">Sende zu</string>
 
@@ -148,6 +149,8 @@
     <string name="pref_desc_ownNotification">Sollen eigene Benachrichtigungen für diese Regel aktiviert werden?</string>
     <string name="pref_title_priority">Priorität</string>
     <string name="pref_desc_priority">Welche Priorität hat die Regel?</string>
+    <string name="pref_title_speak">Alarmnachricht vorlesen</string>
+    <string name="pref_desc_speak">Liest die Alarmnachricht vor, nachdem diese bestätigt wurde.</string>
 
     <!-- General -->
     <string name="cancel">Abbrechen</string>

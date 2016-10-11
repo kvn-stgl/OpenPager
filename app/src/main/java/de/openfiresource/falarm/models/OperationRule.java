@@ -95,9 +95,9 @@ public class OperationRule extends SugarRecord {
         this.ownNotification = ownNotification;
     }
 
-    public Notification getNotification(Context context) {
-        return Notification.byRule(this, context);
-    }
+    //public Notification getNotification(Context context) {
+    //    return Notification.byRule(this, context);
+    //}
 
     @Override
     public boolean delete() {
