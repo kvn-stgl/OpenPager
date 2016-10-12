@@ -1,10 +1,8 @@
 package de.openfiresource.falarm.ui;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -14,35 +12,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.dexafree.materialList.card.Card;
 import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.listeners.RecyclerItemClickListener;
 import com.dexafree.materialList.view.MaterialListView;
-import com.google.android.gms.contextmanager.internal.InterestUpdateBatchImpl;
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener;
-import com.karumi.dexter.listener.multi.DialogOnAnyDeniedMultiplePermissionsListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
-import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.List;
@@ -109,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
         try {
             PackageInfo pi = pm.getPackageInfo(getBaseContext().getPackageName(), 0);
             return pi.versionCode;
-        } catch (PackageManager.NameNotFoundException ex) {}
+        } catch (PackageManager.NameNotFoundException ex) {
+        }
         return 0;
     }
 
@@ -139,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
         mListView.getAdapter().clearAll();
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (mSharedPreferences.getBoolean(SHOW_WELCOME_CARD, true)) {
+        int lastVersion = mSharedPreferences.getInt(SHOW_WELCOME_CARD_VERSION, 0);
+        if (lastVersion < getVersionCode()) {
             createWelcomeCard();
         }
 
@@ -153,12 +140,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
     }
 
     private void createWelcomeCard() {
+        String text = null;
+        int lastVersion = mSharedPreferences.getInt(SHOW_WELCOME_CARD_VERSION, 0);
+        if (lastVersion != 0) {
+            switch (getVersionCode()) {
+                case 3:
+                    text = getString(R.string.welcome_card_desc_v3);
+                    break;
+            }
+        }
+
+        if (text == null)
+            text = getString(R.string.welcome_card_desc);
+
         Card card = new Card.Builder(this)
                 .withProvider(new CardProvider())
                 .setLayout(R.layout.material_welcome_card_layout)
                 .setTitle(getString(R.string.welcome_card_title))
                 .setTitleColor(Color.WHITE)
-                .setDescription(getString(R.string.welcome_card_desc))
+                .setDescription(text)
                 .setDescriptionColor(Color.WHITE)
                 .setSubtitle(getString(R.string.welcome_card_subtitle))
                 .setSubtitleColor(Color.WHITE)
@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                         .setListener((view, card1) -> {
                             mListView.getAdapter().remove(card1, true);
                             mSharedPreferences.edit()
-                                    .putBoolean(SHOW_WELCOME_CARD, false)
                                     .putInt(SHOW_WELCOME_CARD_VERSION, getVersionCode())
                                     .commit();
                         }))

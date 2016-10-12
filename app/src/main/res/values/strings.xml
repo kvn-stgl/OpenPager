@@ -21,6 +21,10 @@
         Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
         \n\nVielen Dank für die Benutzung :=)
     </string>
+    <string name="welcome_card_desc_v3">Neuerungen bei Version 1.1:\n
+        - OpenFireMap jetzt auswählbar\n
+        - Sprachausgabe ist aktivierbar
+    </string>
     <string name="main_long_click_header">Option auswählen</string>
     <string name="main_dialog_delete">Alarm wirklich löschen?</string>
 
@@ -51,7 +55,7 @@
         <item>2 Minuten</item>
         <item>5 Minuten</item>
     </string-array>
-    <string-array name="pref_alarm_timeout_values">
+    <string-array name="pref_alarm_timeout_values" translatable="false">
         <item>0</item>
         <item>3</item>
         <item>5</item>
@@ -69,7 +73,7 @@
         <item>Nur GoogleMaps</item>
         <item>Nur OpenFireMap</item>
     </string-array>
-    <string-array name="pref_alarm_maps_values">
+    <string-array name="pref_alarm_maps_values" translatable="false">
         <item>both</item>
         <item>gmap</item>
         <item>ofm</item>
@@ -98,7 +102,7 @@
         <item>Mittel</item>
         <item>Lang</item>
     </string-array>
-    <string-array name="pref_notification_vibrate_values">
+    <string-array name="pref_notification_vibrate_values" translatable="false">
         <item>0</item>
         <item>500</item>
         <item>1000</item>
@@ -116,7 +120,7 @@
         <item>100&#65130;</item>
         <item>Telefon</item>
     </string-array>
-    <string-array name="pref_notification_volume_values">
+    <string-array name="pref_notification_volume_values" translatable="false">
         <item>25</item>
         <item>50</item>
         <item>75</item>

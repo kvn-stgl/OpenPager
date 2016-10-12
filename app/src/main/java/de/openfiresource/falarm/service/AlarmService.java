@@ -1,10 +1,7 @@
 package de.openfiresource.falarm.service;
 
 import android.Manifest;
-import android.app.IntentService;
-import android.app.KeyguardManager;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,19 +10,15 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.os.Vibrator;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
-import com.google.android.gms.contextmanager.internal.InterestUpdateBatchImpl;
 import com.orhanobut.logger.Logger;
 
 import de.openfiresource.falarm.models.Notification;
@@ -124,7 +117,7 @@ public class AlarmService extends Service {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int alarmTimeout = Integer.parseInt(preferences.getString("general_alarm_timeout", "120"));
-        if(alarmTimeout > 0) {
+        if (alarmTimeout > 0) {
             mHandler.postDelayed(() -> stopSelf(), alarmTimeout * 1000);
         }
 

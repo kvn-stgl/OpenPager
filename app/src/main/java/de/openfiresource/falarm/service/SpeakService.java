@@ -1,32 +1,21 @@
 package de.openfiresource.falarm.service;
 
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Vector;
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.os.Build;
-import android.speech.tts.TextToSpeech;
-
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import de.openfiresource.falarm.R;
+import java.util.Locale;
+import java.util.Vector;
+
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.OperationMessage;
 import de.openfiresource.falarm.models.OperationRule;

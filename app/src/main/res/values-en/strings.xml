@@ -24,7 +24,7 @@
     <string name="pref_desc_activate">If deactived you will receive messages but no push notification.</string>
     <string name="pref_desc_delete">Rule will be deleted permanently.</string>
     <string name="pref_desc_encryption">Activate the encrypted message</string>
-    <string name="pref_desc_led_flash" translatable="false">Blink LED on new message</string>
+    <string name="pref_desc_led_flash">Blink LED on new message</string>
     <string name="pref_desc_name">Name of the rule</string>
     <string name="pref_desc_notification">Notifications for the new rule</string>
     <string name="pref_desc_password">Password for the encryption</string>
@@ -73,6 +73,10 @@
     <string name="welcome_card_subtitle">The AlarmApp for OpenFireSource!</string>
     <string name="welcome_card_title">Welcome to fAlarm</string>
     <string name="welcome_card_desc">You have to send the FCM-ID in the settings to the relevant person to be alarmed.</string>
+        <string name="welcome_card_desc_v3">Features in version 1.1:\n
+        - OpenFireMap\n
+        - SpeakService for the alarm message
+    </string>
     <string-array name="pref_alarm_timeout_titles">
         <item>Never</item>
         <item>3 Seconds</item>
