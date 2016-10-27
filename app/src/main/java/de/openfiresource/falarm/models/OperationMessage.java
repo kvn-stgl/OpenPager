@@ -176,6 +176,10 @@ public class OperationMessage extends SugarRecord {
             return null;
         }
 
+        //We can't do anything without message or title
+        if(incoming.getMessage() == null || incoming.getTitle() == null) {
+            return null;
+        }
         //Get the rule
         OperationRule bestRule = null;
         SimpleDateFormat ho = new SimpleDateFormat("HH:mm", Locale.GERMAN);
