@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                 case 5:
                     text = getString(R.string.welcome_card_desc_v5);
                     break;
+                case 6:
+                    text = getString(R.string.welcome_card_desc_v5);
+                    break;
             }
         }
 

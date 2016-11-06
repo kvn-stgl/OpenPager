@@ -84,7 +84,7 @@ public class AlarmService extends Service {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override

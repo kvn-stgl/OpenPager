@@ -29,8 +29,11 @@
         - Bugfix für ankommende Alarme
     </string>
     <string name="welcome_card_desc_v5">Neuerungen bei Version 1.1.2:\n
-        - Bugfix für Abstürze bei der Sprachausgabe
+        - Bugfix für Abstürze bei der Sprachausgabe\n
         - Bugfix für Fehler in der Karte bei der Änderung der Ausrichtung des Bildschirmes
+    </string>
+    <string name="welcome_card_desc_v6">Neuerungen bei Version 1.1.3:\n
+        - Bugfix
     </string>
     <string name="main_long_click_header">Option auswählen</string>
     <string name="main_dialog_delete">Alarm wirklich löschen?</string>

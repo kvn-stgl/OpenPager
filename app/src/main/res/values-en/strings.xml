@@ -82,8 +82,11 @@
         - Bufix for alarms
     </string>
     <string name="welcome_card_desc_v5">Features in version 1.1.2:\n
-        - Bufix for SpeakService
+        - Bufix for SpeakService\n
         - Bufix for errors in the maps after the change of the screen orientation
+    </string>
+    <string name="welcome_card_desc_v6">Features in version 1.1.3:\n
+        - Bufix
     </string>
     <string-array name="pref_alarm_timeout_titles">
         <item>Never</item>

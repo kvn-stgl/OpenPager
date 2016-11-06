@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -90,7 +91,12 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
             am.setStreamVolume(am.STREAM_MUSIC, amVolume, 0);
         }
         String utteranceId = "id" + this.hashCode();
-        tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+
+        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        } else {
+            tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     @Override
