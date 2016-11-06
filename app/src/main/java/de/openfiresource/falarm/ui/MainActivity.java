@@ -42,7 +42,6 @@ import de.openfiresource.falarm.utils.PlayServiceUtils;
 public class MainActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
 
     public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
-    public static final String SHOW_WELCOME_CARD = "showWelcomeCard";
     public static final String SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
 
     private SharedPreferences mSharedPreferences;
@@ -146,6 +145,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
             switch (getVersionCode()) {
                 case 3:
                     text = getString(R.string.welcome_card_desc_v3);
+                    break;
+                case 4:
+                    text = getString(R.string.welcome_card_desc_v4);
+                    break;
+                case 5:
+                    text = getString(R.string.welcome_card_desc_v5);
                     break;
             }
         }
