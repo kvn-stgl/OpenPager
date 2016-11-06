@@ -19,7 +19,7 @@
     <string name="welcome_card_subtitle">Der AlarmierungsApp für OpenFireSource!</string>
     <string name="welcome_card_desc">Um alamiert werden zu können, musst du deiner Zuständigen
         Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
-        \n\nVielen Dank für die Benutzung \uD83D\uDE0A
+        \n\nVielen Dank für die Benutzung :=)
     </string>
     <string name="welcome_card_desc_v3">Neuerungen bei Version 1.1:\n
         - OpenFireMap jetzt auswählbar\n
@@ -38,7 +38,7 @@
     <!-- Strings related to About -->
     <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
     <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
-    <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit \uD83D\uDE0A</string>
+    <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
     <string name="title_activity_settings">Einstellungen</string>
 
     <!-- Strings related to Settings -->

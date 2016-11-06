@@ -10,7 +10,7 @@
     <string name="create">Create</string>
     <string name="delete">Delete</string>
     <string name="fcm_key_copied">FCM-ID copied in the clipboard!</string>
-    <string name="aboutLibraries_description_text">fAlarm is a alarm app for German firefighters. Have fun with it \uD83D\uDE0A</string>
+    <string name="aboutLibraries_description_text">fAlarm is a alarm app for German firefighters. Have fun with it :=)</string>
     <string name="main_dialog_delete">Alarm seriously delete?</string>
     <string name="main_long_click_header">Select Option</string>
     <string name="operation_confirm">Confirm Alarm</string>
@@ -73,7 +73,7 @@
     <string name="welcome_card_subtitle">The AlarmApp for OpenFireSource!</string>
     <string name="welcome_card_title">Welcome to fAlarm</string>
     <string name="welcome_card_desc">You have to send the FCM-ID in the settings to the relevant person to be alarmed.
-        \n\nThanks for using this app \uD83D\uDE0A</string>
+        \n\nThanks for using this app :=)</string>
     <string name="welcome_card_desc_v3">Features in version 1.1:\n
         - OpenFireMap\n
         - SpeakService for the alarm message
