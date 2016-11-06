@@ -107,32 +107,32 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        if (intent == null) {
+            //We should not reach here with no intent because START_REDELIVER_INTENT
+            throw new java.lang.IllegalArgumentException("No intent found.");
+        }
+
         long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
         boolean stopInstead = intent.getExtras().getBoolean(SpeakService.STOP_NOW);
 
         if (stopInstead && tts != null) {
             this.tts.stop();
-            return START_STICKY;
+        } else if (operationId != 0 && !temporaryDisable) {
+            OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, operationId);
+
+            //TODO: Delay inmplementation
+            int delaySend = 0;
+
+            Message msg = Message.obtain();
+            msg.obj = operationMessage;
+            if (delaySend > 0) {
+                handler.sendMessageDelayed(msg, delaySend * 1000);
+            } else {
+                handler.sendMessage(msg);
+            }
         }
 
-        if (intent == null || operationId == 0 || temporaryDisable) {
-            return START_STICKY;
-        }
-
-        OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, operationId);
-
-        //TODO: Delay inmplementation
-        int delaySend = 0;
-
-        Message msg = Message.obtain();
-        msg.obj = operationMessage;
-        if (delaySend > 0) {
-            handler.sendMessageDelayed(msg, delaySend * 1000);
-        } else {
-            handler.sendMessage(msg);
-        }
-
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override
