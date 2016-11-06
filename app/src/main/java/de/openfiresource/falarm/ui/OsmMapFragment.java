@@ -48,6 +48,7 @@ public class OsmMapFragment extends Fragment {
         OsmMapFragment mapFragment = new OsmMapFragment();
         mapFragment.mLat = lat;
         mapFragment.mLng = lng;
+        mapFragment.setRetainInstance(true);
         return mapFragment;
     }
 

@@ -35,6 +35,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         mapFragment.getMapAsync(mapFragment);
         mapFragment.mLat = lat;
         mapFragment.mLng = lng;
+        mapFragment.setRetainInstance(true);
         return mapFragment;
     }
 
