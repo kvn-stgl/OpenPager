@@ -142,7 +142,9 @@ public class OperationFragment extends Fragment {
                 final String finalText = text + String.format("%d Sekunde%s", diff[3], diff[3] > 1 ? "n" : "");
 
                 getActivity().runOnUiThread(() -> {
-                    textViewTimer.setText(finalText);
+                    if(textViewTimer != null) {
+                        textViewTimer.setText(finalText);
+                    }
                 });
             }
         }, 0, period);

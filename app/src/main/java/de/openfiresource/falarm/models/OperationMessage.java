@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.google.android.gms.contextmanager.internal.InterestUpdateBatchImpl;
 import com.orhanobut.logger.Logger;
 import com.orm.SugarRecord;
 
