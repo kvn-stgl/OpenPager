@@ -89,21 +89,23 @@ public class OperationActivity extends AppCompatActivity {
         long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
         if (notificationId != 0) {
             mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
-            OperationRule operationRule = mOperationMessage.getRule();
-            mNotification = Notification.byRule(operationRule, this);
+            if(mOperationMessage != null) {
+                OperationRule operationRule = mOperationMessage.getRule();
+                mNotification = Notification.byRule(operationRule, this);
 
-            mHaveMap = true;
-            if (TextUtils.isEmpty(mOperationMessage.getLatlng()))
-                mHaveMap = false;
+                mHaveMap = true;
+                if (TextUtils.isEmpty(mOperationMessage.getLatlng()))
+                    mHaveMap = false;
 
-            // Create the adapter that will return a fragment for each of the three
-            // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mHaveMap);
+                // Create the adapter that will return a fragment for each of the three
+                // primary sections of the activity.
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mHaveMap);
 
-            // Set up the ViewPager with the sections adapter.
-            mViewPager.setAdapter(mSectionsPagerAdapter);
+                // Set up the ViewPager with the sections adapter.
+                mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            tabLayout.setupWithViewPager(mViewPager);
+                tabLayout.setupWithViewPager(mViewPager);
+            }
         }
     }
 

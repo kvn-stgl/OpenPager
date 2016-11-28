@@ -63,7 +63,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //Start alarm Service
                 Intent intentData = new Intent(getBaseContext(),
                         AlarmService.class);
-                intentData.putExtra(OperationActivity.EXTRA_ID, operationMessage.getId());
+                intentData.putExtra(OperationActivity.EXTRA_ID, notificationId);
 
                 //Firt stop old service when exist, then start new
                 stopService(intentData);

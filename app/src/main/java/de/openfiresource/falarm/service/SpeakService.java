@@ -62,7 +62,6 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
      */
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-
             synchronized (queue) {
                 if (!initialized) {
                     queue.add((OperationMessage) msg.obj);
@@ -75,7 +74,7 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
 
 
     private void speak(OperationMessage operationMessage) {
-        if (temporaryDisable)
+        if (temporaryDisable || operationMessage == null)
             return;
 
         OperationRule rule = operationMessage.getRule();
