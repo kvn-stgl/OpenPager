@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="HeaderTest"
         android:textAlignment="center"
-        android:textSize="24dp"
+        android:textSize="26sp"
         android:textStyle="bold" />
 
     <TextView

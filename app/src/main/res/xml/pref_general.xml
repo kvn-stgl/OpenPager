@@ -24,4 +24,13 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_alarm_maps" />
 
+    <ListPreference
+        android:defaultValue="14"
+        android:entries="@array/pref_alarm_fontsize_titles"
+        android:entryValues="@array/pref_alarm_fontsize_values"
+        android:key="general_alarm_fontsize"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_alarm_fontsize" />
+
 </PreferenceScreen>

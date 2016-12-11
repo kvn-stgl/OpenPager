@@ -1,9 +1,12 @@
 package de.openfiresource.falarm.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,10 +79,10 @@ public class OperationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             long notificationId = getArguments().getLong(ARG_ID);
+
             mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
             mIsAlarm = getArguments().getBoolean(ARG_ALARM, false);
         }
-
     }
 
     @OnClick(R.id.operation_received)
@@ -106,8 +109,14 @@ public class OperationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_operation, container, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String fontSizeString = preferences.getString("general_alarm_fontsize", "14");
+        int fontSize = Integer.parseInt(fontSizeString);
+
         mUnbinder = ButterKnife.bind(this, view);
+
         textViewTitle.setText(mOperationMessage.getTitle());
+        textViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
         textViewMessage.setText(mOperationMessage.getMessage());
 
         if (!mIsAlarm) {
