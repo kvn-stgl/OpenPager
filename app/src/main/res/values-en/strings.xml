@@ -121,4 +121,5 @@
         <item>Only GoogleMaps</item>
         <item>Only OpenFireMap</item>
     </string-array>
+    <string name="pref_title_alarm_fontsize">Alarm message fontsize</string>
 </resources>

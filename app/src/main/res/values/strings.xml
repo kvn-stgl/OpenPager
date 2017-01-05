@@ -81,7 +81,7 @@
     </string-array>
 
     <string name="pref_title_alarm_fontsize">Alarmnachricht Schriftgröße</string>
-    <string-array name="pref_alarm_fontsize_titles">
+    <string-array name="pref_alarm_fontsize_titles" translatable="false">
         <item>12sp</item>
         <item>14sp</item>
         <item>16sp</item>
