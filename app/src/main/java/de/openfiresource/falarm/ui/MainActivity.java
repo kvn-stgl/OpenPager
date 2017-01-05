@@ -81,11 +81,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                         R.string.permission_rationale_message)
                         .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
                         .build());
-        Dexter.checkPermissions(compositeMultiplePermissionsListener,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(compositeMultiplePermissionsListener).check();
     }
 
     public int getVersionCode() {

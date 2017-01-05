@@ -23,7 +23,6 @@ public class App extends SugarApp {
         super.onCreate();
         SugarContext.init(this);
         LeakCanary.install(this);
-        Dexter.initialize(this);
 
         //Load Default settings
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
