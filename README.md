@@ -1,4 +1,4 @@
-# fAlarm App (for Android)
+# fAlarm App (for Android) ![Travis CI](https://api.travis-ci.org/ForrestFalcon/fAlarm.svg?branch=master)
 
 ## UI-Design
 The design of the app is modeled on the [Material Design](https://www.google.com/design/spec/material-design/introduction.html) of Google.
