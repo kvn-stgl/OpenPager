@@ -14,8 +14,7 @@ public class PlayServiceUtils {
         int result = googleAPI.isGooglePlayServicesAvailable(appCompatActivity);
         if(result != ConnectionResult.SUCCESS) {
             if(googleAPI.isUserResolvableError(result)) {
-                googleAPI.getErrorDialog(appCompatActivity, result,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                googleAPI.getErrorDialog(appCompatActivity, result, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             }
 
             return false;

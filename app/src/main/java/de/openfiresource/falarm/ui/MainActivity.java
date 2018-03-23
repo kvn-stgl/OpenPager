@@ -9,10 +9,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -25,30 +24,30 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.dialogs.MainMultiplePermissionsListener;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
+import de.openfiresource.falarm.ui.settings.RuleListActivity;
+import de.openfiresource.falarm.ui.settings.SettingsActivity;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 
 public class MainActivity extends AppCompatActivity implements Injectable {
 
-    public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
-    public static final String SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
+    private static final String TAG = "MainActivity";
 
-    private SharedPreferences mSharedPreferences;
+    public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
+    public static final String PREF_SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
+
+    @Inject
+    SharedPreferences sharedPreferences;
 
     @Inject
     AppDatabase database;
 
-    @BindView(android.R.id.content)
     ViewGroup rootView;
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -63,14 +62,17 @@ public class MainActivity extends AppCompatActivity implements Injectable {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        rootView = findViewById(android.R.id.content);
+
         //Toolbar
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
+        checkPermissions();
         updateNotifications();
+    }
 
-        //Load permissions
-        CompositeMultiplePermissionsListener compositeMultiplePermissionsListener
-                = new CompositeMultiplePermissionsListener(new MainMultiplePermissionsListener(this),
+    private void checkPermissions() {
+        CompositeMultiplePermissionsListener compositeMultiplePermissionsListener = new CompositeMultiplePermissionsListener(new MainMultiplePermissionsListener(this),
                 SnackbarOnAnyDeniedMultiplePermissionsListener.Builder.with(rootView,
                         R.string.permission_rationale_message)
                         .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
@@ -85,12 +87,13 @@ public class MainActivity extends AppCompatActivity implements Injectable {
                 ).withListener(compositeMultiplePermissionsListener).check();
     }
 
-    public int getVersionCode() {
+    private int getVersionCode() {
         PackageManager pm = getBaseContext().getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(getBaseContext().getPackageName(), 0);
             return pi.versionCode;
         } catch (PackageManager.NameNotFoundException ex) {
+            Log.e(TAG, "getVersionCode: ", ex);
         }
         return 0;
     }
@@ -118,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     }
 
     private void updateNotifications() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int lastVersion = mSharedPreferences.getInt(SHOW_WELCOME_CARD_VERSION, 0);
+        int lastVersion = sharedPreferences.getInt(PREF_SHOW_WELCOME_CARD_VERSION, 0);
         if (lastVersion < getVersionCode()) {
             createWelcomeCard();
         }
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements Injectable {
 
     private void createWelcomeCard() {
         String text = null;
-        int lastVersion = mSharedPreferences.getInt(SHOW_WELCOME_CARD_VERSION, 0);
+        int lastVersion = sharedPreferences.getInt(PREF_SHOW_WELCOME_CARD_VERSION, 0);
         if (lastVersion != 0) {
             switch (getVersionCode()) {
                 case 3:
@@ -174,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements Injectable {
 //                        .setTextColor(Color.WHITE)
 //                        .setListener((view, card1) -> {
 //                            mListView.getAdapter().remove(card1, true);
-//                            mSharedPreferences.edit()
-//                                    .putInt(SHOW_WELCOME_CARD_VERSION, getVersionCode())
+//                            sharedPreferences.edit()
+//                                    .putInt(PREF_SHOW_WELCOME_CARD_VERSION, getVersionCode())
 //                                    .commit();
 //                        }))
 //                .endConfig()
@@ -214,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
 
         Intent intent;
 
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_rules:
                 intent = new Intent(this, RuleListActivity.class);

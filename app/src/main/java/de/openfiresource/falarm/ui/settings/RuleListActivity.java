@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.ui;
+package de.openfiresource.falarm.ui.settings;
 
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
@@ -18,11 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.database.OperationRule;
-import de.openfiresource.falarm.viewadapter.SimpleItemRecyclerViewAdapter;
 
 /**
  * An activity representing a list of Rules. This activity
@@ -38,12 +36,7 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
     private static final String TAG = "RuleListActivity";
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.rule_list)
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -65,10 +58,14 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
         ButterKnife.bind(this);
 
         //Action Bar
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
+
+        recyclerView = findViewById(R.id.rule_list);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -123,9 +120,11 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setupRecyclerView() {
-        assert recyclerView != null;
         FragmentManager fragmentManager = null;
-        if (mTwoPane) fragmentManager = getFragmentManager();
+        if (mTwoPane) {
+            fragmentManager = getFragmentManager();
+        }
+
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(fragmentManager, getApplicationContext()));
     }
 

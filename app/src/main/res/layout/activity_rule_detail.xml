@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:mContext="de.openfiresource.falarm.ui.RuleDetailActivity"
+    tools:mContext="de.openfiresource.falarm.ui.settings.RuleDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout

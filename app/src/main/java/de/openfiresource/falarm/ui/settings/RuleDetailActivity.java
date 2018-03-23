@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.ui;
+package de.openfiresource.falarm.ui.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

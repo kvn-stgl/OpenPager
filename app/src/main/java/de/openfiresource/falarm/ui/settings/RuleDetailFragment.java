@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.ui;
+package de.openfiresource.falarm.ui.settings;
 
 import android.app.Activity;
 import android.content.Intent;

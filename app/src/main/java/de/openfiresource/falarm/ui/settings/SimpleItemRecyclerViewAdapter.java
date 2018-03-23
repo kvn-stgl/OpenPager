@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.viewadapter;
+package de.openfiresource.falarm.ui.settings;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -18,8 +18,6 @@ import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationRule;
-import de.openfiresource.falarm.ui.RuleDetailActivity;
-import de.openfiresource.falarm.ui.RuleDetailFragment;
 
 public class SimpleItemRecyclerViewAdapter
         extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
