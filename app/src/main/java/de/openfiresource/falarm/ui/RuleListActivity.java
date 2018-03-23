@@ -3,28 +3,25 @@ package de.openfiresource.falarm.ui;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.view.View;
-
-import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
-
-import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.viewadapter.SimpleItemRecyclerViewAdapter;
 
 /**
@@ -38,6 +35,8 @@ import de.openfiresource.falarm.viewadapter.SimpleItemRecyclerViewAdapter;
 public class RuleListActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String INTENT_RULE_CHANGED = "de.openfiresource.falarm.ui.changedRule";
+
+    private static final String TAG = "RuleListActivity";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -143,9 +142,14 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
         // Set up the buttons
         builder.setPositiveButton(getString(R.string.create), (dialog, which) -> {
             OperationRule newRule = new OperationRule(input.getText().toString());
-            new Notification(newRule.getId(), getApplication()).loadDefault();
+
+            Log.d(TAG, "onClick: rule created with id: ");
+
+            // fixme: save rule to database
+            // new Notification(newRule.getId(), getApplication()).loadDefault();
             setupRecyclerView();
         });
+
         builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
             dialog.cancel();
         });

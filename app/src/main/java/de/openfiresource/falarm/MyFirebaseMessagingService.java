@@ -1,24 +1,19 @@
 package de.openfiresource.falarm;
 
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import de.openfiresource.falarm.models.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.MainActivity;
 import de.openfiresource.falarm.ui.OperationActivity;
+import de.openfiresource.falarm.utils.OperationHelper;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -51,9 +46,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0 && activate) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            OperationMessage operationMessage = OperationMessage.fromFCM(this, remoteMessage.getData());
+            OperationMessage operationMessage = OperationHelper.CreateOperationFromFCM(this, remoteMessage.getData());
             if (operationMessage != null) {
-                long notificationId = operationMessage.save();
+                // todo: save operation
+                // long notificationId = operationMessage.save();
 
                 //Send Broadcast
                 Intent brIntent = new Intent();
@@ -63,7 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //Start alarm Service
                 Intent intentData = new Intent(getBaseContext(),
                         AlarmService.class);
-                intentData.putExtra(OperationActivity.EXTRA_ID, notificationId);
+                intentData.putExtra(OperationActivity.EXTRA_ID, 0); // todo: send operation id
 
                 //Firt stop old service when exist, then start new
                 stopService(intentData);

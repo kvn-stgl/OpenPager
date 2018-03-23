@@ -27,7 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.dialogs.MainMultiplePermissionsListener;
-import de.openfiresource.falarm.models.OperationMessage;
+import de.openfiresource.falarm.models.AppDatabase;
+import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -117,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
             createWelcomeCard();
         }
 
-        List<OperationMessage> notifications = OperationMessage.find(OperationMessage.class, null, null, null, "id desc", "15");
+        List<OperationMessage> notifications = AppDatabase.getInstance(this).operationMessageDao().getAll();
 
         for (OperationMessage operationMessage : notifications) {
             DateFormat df = new DateFormat();
-            String message = "Alarmiert am " + df.format("dd.MM.yyyy HH:mm:ss", operationMessage.getTimestamp());
+            String message = "Alarmiert am " + DateFormat.format("dd.MM.yyyy HH:mm:ss", operationMessage.getTimestamp());
             createCard(operationMessage.getTitle(), message, operationMessage.getId());
         }
     }

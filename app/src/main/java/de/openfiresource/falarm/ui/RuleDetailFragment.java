@@ -1,23 +1,13 @@
 package de.openfiresource.falarm.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.os.Bundle;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
@@ -25,8 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.models.database.OperationRule;
 
 /**
  * A fragment representing a single Rule detail screen.
@@ -44,7 +35,7 @@ public class RuleDetailFragment extends PreferenceFragment {
     /**
      * The actual notification rule.
      */
-    private OperationRule mItem;
+    private OperationRule operationRule;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,24 +57,23 @@ public class RuleDetailFragment extends PreferenceFragment {
 
         try {
             if (preference instanceof CheckBoxPreference) {
-                setter = mItem.getClass().getMethod(methodName, boolean.class);
-                setter.invoke(mItem, Boolean.parseBoolean(stringValue));
+                setter = operationRule.getClass().getMethod(methodName, boolean.class);
+                setter.invoke(operationRule, Boolean.parseBoolean(stringValue));
             } else {
-                setter = mItem.getClass().getMethod(methodName, String.class);
-                setter.invoke(mItem, stringValue);
+                setter = operationRule.getClass().getMethod(methodName, String.class);
+                setter.invoke(operationRule, stringValue);
                 preference.setSummary(stringValue);
             }
         } catch (SecurityException e) {
             Logger.e(e, "Security Exception on relfection");
         } catch (NoSuchMethodException e) {
             Logger.e(e, "Getter not found");
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        mItem.save();
+        //todo: save operationRule
+
         //Send Broadcast (title or time changed)
         Intent brIntent = new Intent();
         brIntent.setAction(RuleListActivity.INTENT_RULE_CHANGED);
@@ -97,12 +87,13 @@ public class RuleDetailFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            mItem = OperationRule.findById(OperationRule.class, getArguments().getLong(ARG_ITEM_ID));
+            long id = getArguments().getInt(ARG_ITEM_ID);
+            operationRule = AppDatabase.getInstance(getActivity()).operationRuleDao().findById(id);
 
             final Activity activity = this.getActivity();
-            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.toolbar);
+            Toolbar appBarLayout = activity.findViewById(R.id.toolbar);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.getTitle());
+                appBarLayout.setTitle(operationRule.getTitle());
             }
 
             addPreferencesFromResource(R.xml.rule_pref);
@@ -120,7 +111,7 @@ public class RuleDetailFragment extends PreferenceFragment {
             notification.setDependency("rule_ownNotification");
             notification.setOnPreferenceClickListener(preference -> {
                 Bundle bundle = new Bundle();
-                bundle.putLong(SettingsActivity.NotificationPreferenceFragment.ARG_RULE_ID, mItem.getId());
+                bundle.putLong(SettingsActivity.NotificationPreferenceFragment.ARG_RULE_ID, operationRule.getId());
                 SettingsActivity.NotificationPreferenceFragment fragment
                         = new SettingsActivity.NotificationPreferenceFragment();
                 fragment.setArguments(bundle);
@@ -144,8 +135,10 @@ public class RuleDetailFragment extends PreferenceFragment {
                         .setMessage(getString(R.string.pref_desc_delete))
                         .setPositiveButton(getString(R.string.delete),
                                 (dialog, whichButton) -> {
-                                    new Notification(mItem.getId(), getActivity()).delete();
-                                    mItem.delete();
+                                    new Notification(operationRule.getId(), getActivity()).delete();
+
+                                    // todo: delete operationRule
+
                                     if (activity.getClass().equals(RuleDetailActivity.class))
                                         activity.navigateUpTo(new Intent(activity, RuleListActivity.class));
                                     else
@@ -179,8 +172,8 @@ public class RuleDetailFragment extends PreferenceFragment {
         String methodName = getMethodFromPrefKey(preference, type);
 
         try {
-            getter = mItem.getClass().getMethod(methodName);
-            Object value = getter.invoke(mItem);
+            getter = operationRule.getClass().getMethod(methodName);
+            Object value = getter.invoke(operationRule);
 
             if (preference instanceof CheckBoxPreference)
                 ((CheckBoxPreference) preference).setChecked((Boolean) value);
@@ -190,9 +183,7 @@ public class RuleDetailFragment extends PreferenceFragment {
             Logger.e(e, "Security Exception on relfection");
         } catch (NoSuchMethodException e) {
             Logger.e(e, "Getter not found");
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

@@ -17,9 +17,10 @@ import android.telephony.TelephonyManager;
 import java.util.Locale;
 import java.util.Vector;
 
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationMessage;
-import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.models.database.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.OperationActivity;
 
 public class SpeakService extends Service implements TextToSpeech.OnInitListener {
@@ -123,7 +124,7 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
         if (stopInstead && tts != null) {
             this.tts.stop();
         } else if (operationId != 0 && !temporaryDisable) {
-            OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, operationId);
+            OperationMessage operationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(operationId);
 
             //TODO: Delay inmplementation
             int delaySend = 0;

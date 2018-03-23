@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,8 +23,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.service.SpeakService;
 
@@ -80,7 +82,7 @@ public class OperationFragment extends Fragment {
         if (getArguments() != null) {
             long notificationId = getArguments().getLong(ARG_ID);
 
-            mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
+            mOperationMessage = AppDatabase.getInstance(requireContext()).operationMessageDao().findById(notificationId);
             mIsAlarm = getArguments().getBoolean(ARG_ALARM, false);
         }
     }
@@ -105,7 +107,7 @@ public class OperationFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_operation, container, false);

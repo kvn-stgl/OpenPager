@@ -5,10 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.database.OperationRule;
 
-/**
- * Created by stieglit on 17.08.2016.
- */
 public class Notification {
     private Context mContext;
 
@@ -19,11 +17,11 @@ public class Notification {
     public Notification(long ruleId, Context mContext) {
         this.mContext = mContext;
         this.mRuleId = ruleId;
-        this.mSharedPreferences = mContext.getSharedPreferences(getSharedPreferencesName(ruleId), mContext.MODE_PRIVATE);
+        this.mSharedPreferences = mContext.getSharedPreferences(getSharedPreferencesName(ruleId), Context.MODE_PRIVATE);
     }
 
     public void loadDefault() {
-        PreferenceManager.setDefaultValues(mContext, getSharedPreferencesName(mRuleId), mContext.MODE_PRIVATE, R.xml.pref_notification, false);
+        PreferenceManager.setDefaultValues(mContext, getSharedPreferencesName(mRuleId), Context.MODE_PRIVATE, R.xml.pref_notification, false);
     }
 
     public static Notification byRule(OperationRule rule, Context context) {
@@ -104,6 +102,6 @@ public class Notification {
     }
 
     public void delete() {
-        mSharedPreferences.edit().clear().commit();
+        mSharedPreferences.edit().clear().apply();
     }
 }

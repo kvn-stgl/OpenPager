@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.models;
+package de.openfiresource.falarm.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
-import com.orm.SugarRecord;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,102 +21,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import de.openfiresource.falarm.utils.EncryptionUtils;
+import de.openfiresource.falarm.models.AppDatabase;
+import de.openfiresource.falarm.models.database.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationRule;
 
 import static de.openfiresource.falarm.utils.EncryptionUtils.decrypt;
 
-/**
- * Created by stieglit on 02.08.2016.
- */
-public class OperationMessage extends SugarRecord {
-    OperationRule rule;
-    String title;
-    Date timestamp;
-    Date timestampIncoming;
+public class OperationHelper {
 
-    String key;
-    String message;
-    String latlng;
-    Boolean seen;
-    JSONObject content;
-
-    public OperationMessage() {
-
-    }
-
-    public OperationRule getRule() {
-        return rule;
-    }
-
-    public void setRule(OperationRule rule) {
-        this.rule = rule;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Date getTimestampIncoming() {
-        return timestampIncoming;
-    }
-
-    public void setTimestampIncoming(Date timestampIncoming) {
-        this.timestampIncoming = timestampIncoming;
-    }
-
-    public Boolean getSeen() {
-        return seen;
-    }
-
-    public void setSeen(Boolean seen) {
-        this.seen = seen;
-    }
-
-    public JSONObject getContent() {
-        return content;
-    }
-
-    public void setContent(JSONObject content) {
-        this.content = content;
-    }
-
-    public String getLatlng() {
-        return latlng;
-    }
-
-    public void setLatlng(String latlng) {
-        this.latlng = latlng;
-    }
-
-    public static OperationMessage fromFCM(Context context, Map<String, String> extras) {
+    public static OperationMessage CreateOperationFromFCM(Context context, Map<String, String> extras) {
 
         OperationMessage incoming = new OperationMessage();
         Set<String> keys = extras.keySet();
@@ -179,12 +91,13 @@ public class OperationMessage extends SugarRecord {
         if(incoming.getMessage() == null || incoming.getTitle() == null) {
             return null;
         }
+
         //Get the rule
         OperationRule bestRule = null;
         SimpleDateFormat ho = new SimpleDateFormat("HH:mm", Locale.GERMAN);
         Calendar now = Calendar.getInstance();
 
-        for (OperationRule rule : SugarRecord.listAll(OperationRule.class)) {
+        for (OperationRule rule : AppDatabase.getInstance(context).operationRuleDao().getAll()) {
             Calendar startValue = GregorianCalendar.getInstance();
             Calendar stopValue = GregorianCalendar.getInstance();
             try {
@@ -221,7 +134,7 @@ public class OperationMessage extends SugarRecord {
                         || incoming.getMessage().matches(rule.getSearchText())) {
 
                     //Bigger priority
-                    if (bestRule == null || bestRule.getPriority() < rule.priority)
+                    if (bestRule == null || bestRule.getPriority() < rule.getPriority())
                         bestRule = rule;
                 }
             }
@@ -229,7 +142,6 @@ public class OperationMessage extends SugarRecord {
 
         Logger.d("Incoming operation: %s\n%s", incoming.getTitle(), incoming.getMessage());
 
-        incoming.setContent(content);
         incoming.setSeen(false);
         incoming.setRule(bestRule);
         incoming.setTimestampIncoming(now.getTime());

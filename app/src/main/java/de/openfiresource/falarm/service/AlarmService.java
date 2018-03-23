@@ -21,9 +21,10 @@ import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationMessage;
-import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.models.database.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.OperationActivity;
 
 
@@ -35,7 +36,6 @@ public class AlarmService extends Service {
     private MediaPlayer mPlayer;
     private Vibrator mVibrator;
     private int mVibrateDelayTime;
-    private OperationMessage mOperationMessage;
     private Notification mNotification;
 
     private Handler mHandler = new Handler();
@@ -70,7 +70,8 @@ public class AlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
 
-        mOperationMessage = OperationMessage.findById(OperationMessage.class, operationId);
+        OperationMessage mOperationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(operationId);
+
         OperationRule rule = mOperationMessage.getRule();
         mNotification = Notification.byRule(rule, this);
 

@@ -2,21 +2,19 @@ package de.openfiresource.falarm.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Path;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,9 +26,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.models.OperationMessage;
-import de.openfiresource.falarm.models.OperationRule;
+import de.openfiresource.falarm.models.database.OperationMessage;
+import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.service.SpeakService;
 
 public class OperationActivity extends AppCompatActivity {
@@ -88,14 +87,12 @@ public class OperationActivity extends AppCompatActivity {
 
         long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
         if (notificationId != 0) {
-            mOperationMessage = OperationMessage.findById(OperationMessage.class, notificationId);
+            mOperationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(notificationId);
             if(mOperationMessage != null) {
                 OperationRule operationRule = mOperationMessage.getRule();
                 mNotification = Notification.byRule(operationRule, this);
 
-                mHaveMap = true;
-                if (TextUtils.isEmpty(mOperationMessage.getLatlng()))
-                    mHaveMap = false;
+                mHaveMap = !TextUtils.isEmpty(mOperationMessage.getLatlng());
 
                 // Create the adapter that will return a fragment for each of the three
                 // primary sections of the activity.
@@ -157,7 +154,8 @@ public class OperationActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.main_dialog_delete)
                         .setPositiveButton(android.R.string.ok, (dialog, id1) -> {
-                            mOperationMessage.delete();
+
+                            // todo delete operation
 
                             //Send Broadcast
                             Intent brIntent = new Intent();
