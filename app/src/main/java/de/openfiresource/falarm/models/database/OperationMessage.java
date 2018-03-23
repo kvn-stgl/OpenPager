@@ -1,6 +1,7 @@
 package de.openfiresource.falarm.models.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -25,6 +26,7 @@ public class OperationMessage {
 
     private Boolean seen;
 
+    @Ignore
     public OperationMessage() {
         this(UUID.randomUUID().toString());
     }

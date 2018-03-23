@@ -20,19 +20,19 @@ import de.openfiresource.falarm.utils.RoomConverter;
 @TypeConverters({RoomConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
-    private final static String DATABASE = "database.db";
-
     private static volatile AppDatabase INSTANCE;
 
     public abstract OperationMessageDao operationMessageDao();
 
     public abstract OperationRuleDao operationRuleDao();
 
+
+    @Deprecated
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE)
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "database.db")
                             .allowMainThreadQueries() // todo: Remove this as soon as possible
                             .build();
                 }

@@ -23,20 +23,26 @@ import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsLi
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.dialogs.MainMultiplePermissionsListener;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Injectable {
 
     public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
     public static final String SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
 
     private SharedPreferences mSharedPreferences;
+
+    @Inject
+    AppDatabase database;
 
     @BindView(android.R.id.content)
     ViewGroup rootView;
@@ -118,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             createWelcomeCard();
         }
 
-        List<OperationMessage> notifications = AppDatabase.getInstance(this).operationMessageDao().getAll();
+        List<OperationMessage> notifications = database.operationMessageDao().getAll();
 
         for (OperationMessage operationMessage : notifications) {
             DateFormat df = new DateFormat();
