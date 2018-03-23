@@ -8,11 +8,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
@@ -20,15 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.action.WelcomeButtonAction;
-import com.dexafree.materialList.listeners.RecyclerItemClickListener;
-import com.dexafree.materialList.view.MaterialListView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.List;
 
@@ -39,7 +30,7 @@ import de.openfiresource.falarm.dialogs.MainMultiplePermissionsListener;
 import de.openfiresource.falarm.models.OperationMessage;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 
-public class MainActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
     public static final String SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
@@ -51,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    @BindView(R.id.material_listview)
-    MaterialListView mListView;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -72,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
         setSupportActionBar(mToolbar);
 
         updateNotifications();
-        mListView.addOnItemTouchListener(this);
 
         //Load permissions
         CompositeMultiplePermissionsListener compositeMultiplePermissionsListener
@@ -124,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
     }
 
     private void updateNotifications() {
-        mListView.getAdapter().clearAll();
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         int lastVersion = mSharedPreferences.getInt(SHOW_WELCOME_CARD_VERSION, 0);
         if (lastVersion < getVersionCode()) {
@@ -167,42 +152,42 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
         if (text == null)
             text = getString(R.string.welcome_card_desc);
 
-        Card card = new Card.Builder(this)
-                .withProvider(new CardProvider())
-                .setLayout(R.layout.material_welcome_card_layout)
-                .setTitle(getString(R.string.welcome_card_title))
-                .setTitleColor(Color.WHITE)
-                .setDescription(text)
-                .setDescriptionColor(Color.WHITE)
-                .setSubtitle(getString(R.string.welcome_card_subtitle))
-                .setSubtitleColor(Color.WHITE)
-                .setBackgroundColor(Color.RED)
-                .addAction(R.id.ok_button, new WelcomeButtonAction(this)
-                        .setText("Okay!")
-                        .setTextColor(Color.WHITE)
-                        .setListener((view, card1) -> {
-                            mListView.getAdapter().remove(card1, true);
-                            mSharedPreferences.edit()
-                                    .putInt(SHOW_WELCOME_CARD_VERSION, getVersionCode())
-                                    .commit();
-                        }))
-                .endConfig()
-                .build();
-        card.setDismissible(true);
-        mListView.getAdapter().add(card);
+//        Card card = new Card.Builder(this)
+//                .withProvider(new CardProvider())
+//                .setLayout(R.layout.material_welcome_card_layout)
+//                .setTitle(getString(R.string.welcome_card_title))
+//                .setTitleColor(Color.WHITE)
+//                .setDescription(text)
+//                .setDescriptionColor(Color.WHITE)
+//                .setSubtitle(getString(R.string.welcome_card_subtitle))
+//                .setSubtitleColor(Color.WHITE)
+//                .setBackgroundColor(Color.RED)
+//                .addAction(R.id.ok_button, new WelcomeButtonAction(this)
+//                        .setText("Okay!")
+//                        .setTextColor(Color.WHITE)
+//                        .setListener((view, card1) -> {
+//                            mListView.getAdapter().remove(card1, true);
+//                            mSharedPreferences.edit()
+//                                    .putInt(SHOW_WELCOME_CARD_VERSION, getVersionCode())
+//                                    .commit();
+//                        }))
+//                .endConfig()
+//                .build();
+//        card.setDismissible(true);
+//        mListView.getAdapter().add(card);
     }
 
     private void createCard(String title, String desc, long id) {
-        Card card = new Card.Builder(this)
-                .setTag(id)
-                .withProvider(new CardProvider())
-                .setLayout(R.layout.material_basic_buttons_card)
-                .setTitle(title)
-                .setDescription(desc)
-                .endConfig()
-                .build();
-
-        mListView.getAdapter().add(mListView.getAdapter().getItemCount(), card, false);
+//        Card card = new Card.Builder(this)
+//                .setTag(id)
+//                .withProvider(new CardProvider())
+//                .setLayout(R.layout.material_basic_buttons_card)
+//                .setTitle(title)
+//                .setDescription(desc)
+//                .endConfig()
+//                .build();
+//
+//        mListView.getAdapter().add(mListView.getAdapter().getItemCount(), card, false);
     }
 
     @Override
@@ -233,48 +218,42 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemClick
                 startActivity(intent);
                 return true;
             case R.id.action_about:
-                new LibsBuilder()
-                        .withFields(R.string.class.getFields())
-                        .withActivityTitle(getString(R.string.action_about))
-                        .withActivityTheme(R.style.AboutLibrariesTheme_Light)
-                        .start(this);
+                // todo: Create About section
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(@NonNull Card card, int position) {
-        if (card.getTag() != null) {
-            long id = (long) card.getTag();
-
-            Intent intent = new Intent(this, OperationActivity.class);
-            intent.putExtra(OperationActivity.EXTRA_ID, id);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onItemLongClick(@NonNull Card card, int position) {
-        if (card.getTag() != null) {
-            long id = (long) card.getTag();
-
-            final CharSequence[] items = {getString(R.string.delete)};
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.main_long_click_header);
-            builder.setItems(items, (dialog, item) -> {
-                switch (item) {
-                    case 0:
-                        OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, id);
-                        operationMessage.delete();
-                        updateNotifications();
-                        break;
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
+//    public void onItemClick(@NonNull Card card, int position) {
+//        if (card.getTag() != null) {
+//            long id = (long) card.getTag();
+//
+//            Intent intent = new Intent(this, OperationActivity.class);
+//            intent.putExtra(OperationActivity.EXTRA_ID, id);
+//            startActivity(intent);
+//        }
+//    }
+//
+//    public void onItemLongClick(@NonNull Card card, int position) {
+//        if (card.getTag() != null) {
+//            long id = (long) card.getTag();
+//
+//            final CharSequence[] items = {getString(R.string.delete)};
+//
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle(R.string.main_long_click_header);
+//            builder.setItems(items, (dialog, item) -> {
+//                switch (item) {
+//                    case 0:
+//                        OperationMessage operationMessage = OperationMessage.findById(OperationMessage.class, id);
+//                        operationMessage.delete();
+//                        updateNotifications();
+//                        break;
+//                }
+//            });
+//            AlertDialog alert = builder.create();
+//            alert.show();
+//        }
+//    }
 }
