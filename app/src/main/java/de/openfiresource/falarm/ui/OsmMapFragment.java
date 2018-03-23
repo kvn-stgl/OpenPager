@@ -2,26 +2,21 @@ package de.openfiresource.falarm.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.TilesOverlay;
 
 import butterknife.BindView;
@@ -62,7 +57,7 @@ public class OsmMapFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_osm, container, false);
@@ -73,14 +68,14 @@ public class OsmMapFragment extends Fragment {
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
-        mapView.setMaxZoomLevel(17);
+        mapView.setMaxZoomLevel(17.0);
 
         //create the second one
-        final MapTileProviderBasic ofmTileProvider = new MapTileProviderBasic(getContext());
+        final MapTileProviderBasic ofmTileProvider = new MapTileProviderBasic(requireContext());
         final ITileSource ofmTileSource = new XYTileSource("OpenFireMap", 10, 17, 256, ".png",
                 new String[]{"http://openfiremap.org/hytiles/"});
         ofmTileProvider.setTileSource(ofmTileSource);
-        final TilesOverlay ofmTilesOverlay = new TilesOverlay(ofmTileProvider, getContext());
+        final TilesOverlay ofmTilesOverlay = new TilesOverlay(ofmTileProvider, requireContext());
         ofmTilesOverlay.setLoadingBackgroundColor(Color.TRANSPARENT);
         mapView.getOverlays().add(ofmTilesOverlay);
 
