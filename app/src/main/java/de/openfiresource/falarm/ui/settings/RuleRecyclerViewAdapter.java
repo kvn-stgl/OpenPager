@@ -13,21 +13,18 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
-import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationRule;
 
-public class SimpleItemRecyclerViewAdapter
-        extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+public class RuleRecyclerViewAdapter
+        extends RecyclerView.Adapter<RuleRecyclerViewAdapter.ViewHolder> {
 
-    private final List<OperationRule> mValues;
-    private final FragmentManager mFragmentManager;
+    private final List<OperationRule> operationRules;
+    private final FragmentManager fragmentManager;
 
-    public SimpleItemRecyclerViewAdapter(FragmentManager fragmentManager, Context context) {
-        mValues = AppDatabase.getInstance(context).operationRuleDao().getAll();
-        mFragmentManager = fragmentManager;
+    RuleRecyclerViewAdapter(FragmentManager fragmentManager, List<OperationRule> operationRules) {
+        this.operationRules = operationRules;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -40,21 +37,21 @@ public class SimpleItemRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mCountView.setText(Integer.toString(position + 1));
-        holder.mContentView.setText(mValues.get(position).toString());
+        holder.mItem = operationRules.get(position);
+        holder.countView.setText(Integer.toString(position + 1));
+        holder.contentView.setText(operationRules.get(position).toString());
 
-        holder.mView.setOnClickListener((v) -> {
-                if (mFragmentManager != null) {
+        holder.view.setOnClickListener((clickedView) -> {
+                if (fragmentManager != null) {
                     Bundle arguments = new Bundle();
                     arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                     RuleDetailFragment fragment = new RuleDetailFragment();
                     fragment.setArguments(arguments);
-                    mFragmentManager.beginTransaction()
+                    fragmentManager.beginTransaction()
                             .replace(R.id.rule_detail_container, fragment)
                             .commit();
                 } else {
-                    Context context = v.getContext();
+                    Context context = clickedView.getContext();
                     Intent intent = new Intent(context, RuleDetailActivity.class);
                     intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                     context.startActivity(intent);
@@ -64,29 +61,34 @@ public class SimpleItemRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return operationRules.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
 
-        @BindView(R.id.id)
-        TextView mCountView;
+        TextView countView;
 
-        @BindView(R.id.content)
-        TextView mContentView;
+        TextView contentView;
+
+        View view;
 
         OperationRule mItem;
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
-            mView = view;
+            this.view  = view;
+            countView = view.findViewById(R.id.id);
+            contentView = view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return "ViewHolder{" +
+                    "countView=" + countView +
+                    ", contentView=" + contentView +
+                    ", view=" + view +
+                    ", mItem=" + mItem +
+                    '}';
         }
     }
 }

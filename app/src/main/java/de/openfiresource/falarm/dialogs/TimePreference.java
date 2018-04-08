@@ -1,9 +1,5 @@
 package de.openfiresource.falarm.dialogs;
 
-/**
- * Created by stieglit on 05.08.2016.
- */
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
