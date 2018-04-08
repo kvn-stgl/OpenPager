@@ -37,14 +37,14 @@ public class RuleRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mItem = operationRules.get(position);
+        holder.operationRule = operationRules.get(position);
         holder.countView.setText(Integer.toString(position + 1));
         holder.contentView.setText(operationRules.get(position).toString());
 
         holder.view.setOnClickListener((clickedView) -> {
                 if (fragmentManager != null) {
                     Bundle arguments = new Bundle();
-                    arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+                    arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
                     RuleDetailFragment fragment = new RuleDetailFragment();
                     fragment.setArguments(arguments);
                     fragmentManager.beginTransaction()
@@ -53,7 +53,7 @@ public class RuleRecyclerViewAdapter
                 } else {
                     Context context = clickedView.getContext();
                     Intent intent = new Intent(context, RuleDetailActivity.class);
-                    intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+                    intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
                     context.startActivity(intent);
                 }
         });
@@ -72,7 +72,7 @@ public class RuleRecyclerViewAdapter
 
         View view;
 
-        OperationRule mItem;
+        OperationRule operationRule;
 
         ViewHolder(View view) {
             super(view);
@@ -87,7 +87,7 @@ public class RuleRecyclerViewAdapter
                     "countView=" + countView +
                     ", contentView=" + contentView +
                     ", view=" + view +
-                    ", mItem=" + mItem +
+                    ", operationRule=" + operationRule +
                     '}';
         }
     }

@@ -43,23 +43,15 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
     private RecyclerView recyclerView;
 
-    private RuleListViewModel viewModel;
-
     @Inject
     AppDatabase database;
-
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule_list);
 
-        viewModel = ViewModelProviders.of(this).get(RuleListViewModel.class);
+        RuleListViewModel viewModel = ViewModelProviders.of(this).get(RuleListViewModel.class);
 
         //Action Bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -77,15 +69,19 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        FragmentManager fragmentManager = null;
         if (findViewById(R.id.rule_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            fragmentManager = getFragmentManager();
         }
 
-        setupRecyclerView();
+        final FragmentManager finalFragmentManager = fragmentManager;
+        viewModel.getOperationRuleList().observe(this, operationRules -> {
+            recyclerView.setAdapter(new RuleRecyclerViewAdapter(finalFragmentManager, operationRules));
+        });
     }
 
     @Override
@@ -103,18 +99,6 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecyclerView() {
-        FragmentManager fragmentManager = null;
-        if (mTwoPane) {
-            fragmentManager = getFragmentManager();
-        }
-
-        final FragmentManager finalFragmentManager = fragmentManager;
-        viewModel.getOperationRuleList().observe(this, operationRules -> {
-            recyclerView.setAdapter(new RuleRecyclerViewAdapter(finalFragmentManager, operationRules));
-        });
     }
 
     @Override
