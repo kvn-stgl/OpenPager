@@ -12,13 +12,15 @@ import dagger.android.AndroidInjector;
 import de.openfiresource.falarm.dagger.module.ActivityBuildersModule;
 import de.openfiresource.falarm.dagger.module.DatabaseModule;
 import de.openfiresource.falarm.dagger.module.PreferencesModule;
+import de.openfiresource.falarm.dagger.module.ViewModelModule;
 
 @Singleton
 @Component(modules = {
         AndroidInjectionModule.class,
         ActivityBuildersModule.class,
         DatabaseModule.class,
-        PreferencesModule.class
+        PreferencesModule.class,
+        ViewModelModule.class
 })
 public interface AppComponent extends AndroidInjector {
 
