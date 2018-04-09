@@ -30,8 +30,7 @@ public class RuleRecyclerViewAdapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rule_list_content, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rule_list_content, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,20 +41,20 @@ public class RuleRecyclerViewAdapter
         holder.contentView.setText(operationRules.get(position).getTitle());
 
         holder.view.setOnClickListener((clickedView) -> {
-                if (fragmentManager != null) {
-                    Bundle arguments = new Bundle();
-                    arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
-                    RuleDetailFragment fragment = new RuleDetailFragment();
-                    fragment.setArguments(arguments);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.rule_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = clickedView.getContext();
-                    Intent intent = new Intent(context, RuleDetailActivity.class);
-                    intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
-                    context.startActivity(intent);
-                }
+            if (fragmentManager != null) {
+                Bundle arguments = new Bundle();
+                arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
+                RuleDetailFragment fragment = new RuleDetailFragment();
+                fragment.setArguments(arguments);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.rule_detail_container, fragment)
+                        .commit();
+            } else {
+                Context context = clickedView.getContext();
+                Intent intent = new Intent(context, RuleDetailActivity.class);
+                intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
+                context.startActivity(intent);
+            }
         });
     }
 
@@ -64,7 +63,7 @@ public class RuleRecyclerViewAdapter
         return operationRules.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView countView;
 
@@ -76,7 +75,7 @@ public class RuleRecyclerViewAdapter
 
         ViewHolder(View view) {
             super(view);
-            this.view  = view;
+            this.view = view;
             countView = view.findViewById(R.id.id);
             contentView = view.findViewById(R.id.content);
         }
