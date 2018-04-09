@@ -8,28 +8,34 @@ import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.database.OperationRule;
 
 public class Notification {
+
     private Context context;
 
     private SharedPreferences sharedPreferences;
 
-    private long mRuleId;
+    private long ruleId;
 
-    public Notification(long ruleId, Context context) {
+    private Notification(long ruleId, Context context) {
         this.context = context;
-        this.mRuleId = ruleId;
+        this.ruleId = ruleId;
         this.sharedPreferences = context.getSharedPreferences(getSharedPreferencesName(ruleId), Context.MODE_PRIVATE);
     }
 
-    public void loadDefault() {
-        PreferenceManager.setDefaultValues(context, getSharedPreferencesName(mRuleId), Context.MODE_PRIVATE, R.xml.pref_notification, false);
+    public static Notification get(long ruleId, Context context) {
+        return new Notification(ruleId, context);
     }
 
     public static Notification byRule(OperationRule rule, Context context) {
         long id = 0;
-        if (rule != null && rule.isOwnNotification())
+        if (rule != null && rule.isOwnNotification()) {
             id = rule.getId();
+        }
 
-        return new Notification(id, context);
+        return get(id, context);
+    }
+
+    public void loadDefault() {
+        PreferenceManager.setDefaultValues(context, getSharedPreferencesName(ruleId), Context.MODE_PRIVATE, R.xml.pref_notification, false);
     }
 
     /**

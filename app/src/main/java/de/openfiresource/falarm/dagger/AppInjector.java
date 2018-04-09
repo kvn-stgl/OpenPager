@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import dagger.android.AndroidInjection;
+import dagger.android.HasFragmentInjector;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
 import de.openfiresource.falarm.App;
@@ -71,7 +72,7 @@ public class AppInjector {
     }
 
     private static void handleActivity(Activity activity) {
-        if (activity instanceof HasSupportFragmentInjector || activity instanceof Injectable) {
+        if (activity instanceof HasSupportFragmentInjector || activity instanceof HasFragmentInjector || activity instanceof Injectable) {
             AndroidInjection.inject(activity);
         }
         if (activity instanceof FragmentActivity) {
@@ -87,6 +88,7 @@ public class AppInjector {
                             }
                         }
                     }, true);
+
         }
     }
 }

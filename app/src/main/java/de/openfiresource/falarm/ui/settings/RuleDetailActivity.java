@@ -1,11 +1,17 @@
 package de.openfiresource.falarm.ui.settings;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
 import de.openfiresource.falarm.R;
 
 /**
@@ -14,7 +20,10 @@ import de.openfiresource.falarm.R;
  * item details are presented side-by-side with a list of items
  * in a {@link RuleListActivity}.
  */
-public class RuleDetailActivity extends AppCompatActivity {
+public class RuleDetailActivity extends AppCompatActivity implements HasFragmentInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +50,7 @@ public class RuleDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, getIntent().getLongExtra(RuleDetailFragment.ARG_ITEM_ID, 0));
+            arguments.putLong(RuleDetailFragment.ARG_RULE_ID, getIntent().getLongExtra(RuleDetailFragment.ARG_RULE_ID, 0));
 
             RuleDetailFragment fragment = new RuleDetailFragment();
             fragment.setArguments(arguments);
@@ -56,12 +65,19 @@ public class RuleDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if(getFragmentManager().getBackStackEntryCount() > 0)
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
                 getFragmentManager().popBackStack();
-            else
+            } else {
                 NavUtils.navigateUpFromSameTask(this);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public AndroidInjector<Fragment> fragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 }

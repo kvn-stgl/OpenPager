@@ -1,6 +1,7 @@
 package de.openfiresource.falarm.ui.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -8,15 +9,24 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.AppDatabase;
+import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationRule;
+import io.reactivex.Completable;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A fragment representing a single Rule detail screen.
@@ -24,24 +34,23 @@ import de.openfiresource.falarm.models.database.OperationRule;
  * in two-pane mode (on tablets) or a {@link RuleDetailActivity}
  * on handsets.
  */
-public class RuleDetailFragment extends PreferenceFragment {
+public class RuleDetailFragment extends PreferenceFragment implements Injectable {
+
+    private static final String TAG = "RuleDetailFragment";
+
     /**
-     * The fragment argument representing the item ID that this fragment
+     * The fragment argument representing the rule ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_RULE_ID = "rule_id";
 
     /**
      * The actual notification rule.
      */
     private OperationRule operationRule;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public RuleDetailFragment() {
-    }
+    @Inject
+    AppDatabase database;
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -71,18 +80,30 @@ public class RuleDetailFragment extends PreferenceFragment {
             e.printStackTrace();
         }
 
-        //todo: save operationRule
+        Completable.fromAction(() -> database.operationRuleDao().updateOperationRule(operationRule))
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: save operation rule");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: save operation rule: ", e);
+                    }
+                });
 
         return true;
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            long id = getArguments().getLong(ARG_ITEM_ID);
-            operationRule = AppDatabase.getInstance(getActivity()).operationRuleDao().findById(id);
+        if (getArguments().containsKey(ARG_RULE_ID)) {
+            long id = getArguments().getLong(ARG_RULE_ID);
+            operationRule = database.operationRuleDao().findById(id);
 
             final Activity activity = this.getActivity();
             Toolbar appBarLayout = activity.findViewById(R.id.toolbar);
@@ -129,8 +150,20 @@ public class RuleDetailFragment extends PreferenceFragment {
                         .setMessage(getString(R.string.pref_desc_delete))
                         .setPositiveButton(getString(R.string.delete),
                                 (dialog, whichButton) -> {
-                                    // new Notification(operationRule.getId(), getActivity()).delete();
-                                    // todo: delete operationRule
+                                    Completable.fromAction(() -> database.operationRuleDao().deleteOperationRule(operationRule))
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe(new DisposableCompletableObserver() {
+                                                @Override
+                                                public void onComplete() {
+                                                    Log.d(TAG, "onComplete: delete operation rule");
+                                                    Notification.byRule(operationRule, getActivity()).delete();
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Log.e(TAG, "onError deleting operation rule: ", e);
+                                                }
+                                            });
 
                                     if (activity.getClass().equals(RuleDetailActivity.class)) {
                                         activity.navigateUpTo(new Intent(activity, RuleListActivity.class));
@@ -180,5 +213,13 @@ public class RuleDetailFragment extends PreferenceFragment {
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // We have to inject here because this Fragment is not a SupportFragment
+        AndroidInjection.inject(this);
     }
 }

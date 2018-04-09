@@ -35,7 +35,7 @@ public class App extends Application implements HasActivityInjector {
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-        new Notification(0, this).loadDefault();
+        Notification.get(0, this).loadDefault();
     }
 
     @Override

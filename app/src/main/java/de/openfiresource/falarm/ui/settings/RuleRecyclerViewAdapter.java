@@ -43,7 +43,7 @@ public class RuleRecyclerViewAdapter
         holder.view.setOnClickListener((clickedView) -> {
             if (fragmentManager != null) {
                 Bundle arguments = new Bundle();
-                arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
+                arguments.putLong(RuleDetailFragment.ARG_RULE_ID, holder.operationRule.getId());
                 RuleDetailFragment fragment = new RuleDetailFragment();
                 fragment.setArguments(arguments);
                 fragmentManager.beginTransaction()
@@ -52,7 +52,7 @@ public class RuleRecyclerViewAdapter
             } else {
                 Context context = clickedView.getContext();
                 Intent intent = new Intent(context, RuleDetailActivity.class);
-                intent.putExtra(RuleDetailFragment.ARG_ITEM_ID, holder.operationRule.getId());
+                intent.putExtra(RuleDetailFragment.ARG_RULE_ID, holder.operationRule.getId());
                 context.startActivity(intent);
             }
         });

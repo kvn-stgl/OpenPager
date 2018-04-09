@@ -1,5 +1,6 @@
 package de.openfiresource.falarm.ui.settings;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,8 +19,10 @@ import android.widget.EditText;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
 import de.openfiresource.falarm.R;
-import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationRule;
@@ -36,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RuleListActivity extends AppCompatActivity implements View.OnClickListener, Injectable {
+public class RuleListActivity extends AppCompatActivity implements View.OnClickListener, HasFragmentInjector {
 
     private static final String TAG = "RuleListActivity";
 
@@ -44,6 +47,9 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
     @Inject
     AppDatabase database;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -124,7 +130,7 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onSuccess(Long operationRuleId) {
                             Log.d(TAG, "onClick: rule created with id: " + operationRuleId);
-                            new Notification(operationRuleId, getApplication()).loadDefault();
+                            Notification.get(operationRuleId, getApplication()).loadDefault();
                         }
 
                         @Override
@@ -139,5 +145,10 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
         });
 
         builder.show();
+    }
+
+    @Override
+    public AndroidInjector<Fragment> fragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 }

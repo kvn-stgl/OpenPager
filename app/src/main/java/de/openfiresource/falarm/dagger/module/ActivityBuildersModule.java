@@ -17,10 +17,10 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector
     abstract OperationActivity bindOperationActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = RuleDetailActivityModule.class)
     abstract RuleDetailActivity bindRuleDetailActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = RuleDetailActivityModule.class)
     abstract RuleListActivity bindRuleListActivity();
 
     @ContributesAndroidInjector

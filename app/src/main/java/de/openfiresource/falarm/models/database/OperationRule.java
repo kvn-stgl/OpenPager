@@ -91,4 +91,14 @@ public class OperationRule {
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
+    /**
+     * Cast the string to int.
+     * The is used by the preferences.
+     *
+     * @param priority the priority as string
+     */
+    public void setPriority(String priority) {
+        this.priority = Integer.parseInt(priority);
+    }
 }
