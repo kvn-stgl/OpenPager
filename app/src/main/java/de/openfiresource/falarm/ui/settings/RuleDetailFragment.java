@@ -87,7 +87,7 @@ public class RuleDetailFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            long id = getArguments().getInt(ARG_ITEM_ID);
+            long id = getArguments().getLong(ARG_ITEM_ID);
             operationRule = AppDatabase.getInstance(getActivity()).operationRuleDao().findById(id);
 
             final Activity activity = this.getActivity();

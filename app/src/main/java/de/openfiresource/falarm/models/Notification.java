@@ -8,20 +8,20 @@ import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.database.OperationRule;
 
 public class Notification {
-    private Context mContext;
+    private Context context;
 
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private long mRuleId;
 
-    public Notification(long ruleId, Context mContext) {
-        this.mContext = mContext;
+    public Notification(long ruleId, Context context) {
+        this.context = context;
         this.mRuleId = ruleId;
-        this.mSharedPreferences = mContext.getSharedPreferences(getSharedPreferencesName(ruleId), Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(getSharedPreferencesName(ruleId), Context.MODE_PRIVATE);
     }
 
     public void loadDefault() {
-        PreferenceManager.setDefaultValues(mContext, getSharedPreferencesName(mRuleId), Context.MODE_PRIVATE, R.xml.pref_notification, false);
+        PreferenceManager.setDefaultValues(context, getSharedPreferencesName(mRuleId), Context.MODE_PRIVATE, R.xml.pref_notification, false);
     }
 
     public static Notification byRule(OperationRule rule, Context context) {
@@ -47,8 +47,8 @@ public class Notification {
      * @return True, wenn ein Ton gespielt wird.
      */
     public boolean isPlayingSound() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getBoolean("notifications_play_sound", true);
+        assert sharedPreferences != null;
+        return sharedPreferences.getBoolean("notifications_play_sound", true);
     }
 
     /**
@@ -57,8 +57,8 @@ public class Notification {
      * @return Alarmton.
      */
     public String getRingtone() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getString("notifications_new_message_ringtone", "");
+        assert sharedPreferences != null;
+        return sharedPreferences.getString("notifications_new_message_ringtone", "");
     }
 
     /**
@@ -67,8 +67,8 @@ public class Notification {
      * @return Volume in Prozent, 0 wenn Telefonlautstärke.
      */
     public String getNewMessageVolume() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getString("notifications_new_message_volume", "0");
+        assert sharedPreferences != null;
+        return sharedPreferences.getString("notifications_new_message_volume", "0");
     }
 
     /**
@@ -77,8 +77,8 @@ public class Notification {
      * @return Dauer, 0 wenn aus.
      */
     public String getNewMessageVibrate() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getString("notifications_new_message_vibrate", "1000");
+        assert sharedPreferences != null;
+        return sharedPreferences.getString("notifications_new_message_vibrate", "1000");
     }
 
     /**
@@ -87,8 +87,8 @@ public class Notification {
      * @return True, wenn blinken
      */
     public Boolean isNewMessageLED() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getBoolean("notifications_new_message_led", false);
+        assert sharedPreferences != null;
+        return sharedPreferences.getBoolean("notifications_new_message_led", false);
     }
 
     /**
@@ -97,11 +97,11 @@ public class Notification {
      * @return True, wenn aktiviert
      */
     public Boolean isSpeakServiceEnabled() {
-        assert mSharedPreferences != null;
-        return mSharedPreferences.getBoolean("notifications_speak", false);
+        assert sharedPreferences != null;
+        return sharedPreferences.getBoolean("notifications_speak", false);
     }
 
     public void delete() {
-        mSharedPreferences.edit().clear().apply();
+        sharedPreferences.edit().clear().apply();
     }
 }

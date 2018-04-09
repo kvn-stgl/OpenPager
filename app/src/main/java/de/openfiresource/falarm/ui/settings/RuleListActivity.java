@@ -1,10 +1,7 @@
 package de.openfiresource.falarm.ui.settings;
 
 import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
@@ -18,9 +15,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.ButterKnife;
+import javax.inject.Inject;
+
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.dagger.Injectable;
+import de.openfiresource.falarm.models.AppDatabase;
+import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationRule;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * An activity representing a list of Rules. This activity
@@ -30,7 +35,7 @@ import de.openfiresource.falarm.models.database.OperationRule;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RuleListActivity extends AppCompatActivity implements View.OnClickListener {
+public class RuleListActivity extends AppCompatActivity implements View.OnClickListener, Injectable {
 
     public static final String INTENT_RULE_CHANGED = "de.openfiresource.falarm.ui.changedRule";
 
@@ -38,24 +43,15 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
     private RecyclerView recyclerView;
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            setupRecyclerView();
-        }
-    };
+    @Inject
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule_list);
-        ButterKnife.bind(this);
+
+        RuleListViewModel viewModel = ViewModelProviders.of(this).get(RuleListViewModel.class);
 
         //Action Bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,34 +69,20 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        FragmentManager fragmentManager = null;
         if (findViewById(R.id.rule_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            fragmentManager = getFragmentManager();
         }
 
-        setupRecyclerView();
+        final FragmentManager finalFragmentManager = fragmentManager;
+        viewModel.getOperationRuleList().observe(this, operationRules -> {
+            recyclerView.setAdapter(new RuleRecyclerViewAdapter(finalFragmentManager, operationRules));
+        });
     }
-
-
-    @Override
-    protected void onStart() {
-        //Broadcast receiver
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(INTENT_RULE_CHANGED);
-        registerReceiver(receiver, filterSend);
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        this.unregisterReceiver(this.receiver);
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,15 +101,6 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView() {
-        FragmentManager fragmentManager = null;
-        if (mTwoPane) {
-            fragmentManager = getFragmentManager();
-        }
-
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(fragmentManager, getApplicationContext()));
-    }
-
     @Override
     public void onClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -140,13 +113,23 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
         // Set up the buttons
         builder.setPositiveButton(getString(R.string.create), (dialog, which) -> {
-            OperationRule newRule = new OperationRule(input.getText().toString());
 
-            Log.d(TAG, "onClick: rule created with id: ");
+            OperationRule operationRule = new OperationRule(input.getText().toString());
+            Single.fromCallable(() -> database.operationRuleDao().insertOperationRule(operationRule))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<Long>() {
+                        @Override
+                        public void onSuccess(Long operationRuleId) {
+                            Log.d(TAG, "onClick: rule created with id: " + operationRuleId);
+                            new Notification(operationRuleId, getApplication()).loadDefault();
+                        }
 
-            // fixme: save rule to database
-            // new Notification(newRule.getId(), getApplication()).loadDefault();
-            setupRecyclerView();
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, "onError saving operation rule: ", e);
+                        }
+                    });
         });
 
         builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> {

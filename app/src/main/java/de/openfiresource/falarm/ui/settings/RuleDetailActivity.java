@@ -2,13 +2,10 @@ package de.openfiresource.falarm.ui.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.openfiresource.falarm.R;
 
 /**
@@ -19,15 +16,11 @@ import de.openfiresource.falarm.R;
  */
 public class RuleDetailActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule_detail);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -48,8 +41,7 @@ public class RuleDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putLong(RuleDetailFragment.ARG_ITEM_ID,
-                    getIntent().getLongExtra(RuleDetailFragment.ARG_ITEM_ID, 0));
+            arguments.putLong(RuleDetailFragment.ARG_ITEM_ID, getIntent().getLongExtra(RuleDetailFragment.ARG_ITEM_ID, 0));
 
             RuleDetailFragment fragment = new RuleDetailFragment();
             fragment.setArguments(arguments);

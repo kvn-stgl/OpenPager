@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -102,22 +101,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
     public void onResume() {
         PlayServiceUtils.checkPlayServices(this);
         super.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        //Broadcast receiver
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(INTENT_RECEIVED_MESSAGE);
-        registerReceiver(receiver, filterSend);
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        this.unregisterReceiver(this.receiver);
     }
 
     private void updateNotifications() {
