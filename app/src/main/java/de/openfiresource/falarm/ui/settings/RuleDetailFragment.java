@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
 
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.AppDatabase;
-import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationRule;
 
 /**
@@ -74,11 +73,6 @@ public class RuleDetailFragment extends PreferenceFragment {
 
         //todo: save operationRule
 
-        //Send Broadcast (title or time changed)
-        Intent brIntent = new Intent();
-        brIntent.setAction(RuleListActivity.INTENT_RULE_CHANGED);
-        getActivity().sendBroadcast(brIntent);
-
         return true;
     };
 
@@ -135,14 +129,14 @@ public class RuleDetailFragment extends PreferenceFragment {
                         .setMessage(getString(R.string.pref_desc_delete))
                         .setPositiveButton(getString(R.string.delete),
                                 (dialog, whichButton) -> {
-                                    new Notification(operationRule.getId(), getActivity()).delete();
-
+                                    // new Notification(operationRule.getId(), getActivity()).delete();
                                     // todo: delete operationRule
 
-                                    if (activity.getClass().equals(RuleDetailActivity.class))
+                                    if (activity.getClass().equals(RuleDetailActivity.class)) {
                                         activity.navigateUpTo(new Intent(activity, RuleListActivity.class));
-                                    else
+                                    } else {
                                         startActivity(new Intent(activity, RuleListActivity.class));
+                                    }
                                 })
                         .setNegativeButton(getString(R.string.cancel),
                                 (dialog, whichButton) -> {

@@ -38,8 +38,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RuleListActivity extends AppCompatActivity implements View.OnClickListener, Injectable {
 
-    public static final String INTENT_RULE_CHANGED = "de.openfiresource.falarm.ui.changedRule";
-
     private static final String TAG = "RuleListActivity";
 
     private RecyclerView recyclerView;
