@@ -39,7 +39,7 @@ public class RuleRecyclerViewAdapter
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.operationRule = operationRules.get(position);
         holder.countView.setText(Integer.toString(position + 1));
-        holder.contentView.setText(operationRules.get(position).toString());
+        holder.contentView.setText(operationRules.get(position).getTitle());
 
         holder.view.setOnClickListener((clickedView) -> {
                 if (fragmentManager != null) {

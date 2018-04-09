@@ -14,20 +14,20 @@ import java.util.List;
 public interface OperationRuleDao {
 
     @Query("SELECT * FROM operation_rule")
-    public LiveData<List<OperationRule>> getAllAsync();
+    LiveData<List<OperationRule>> getAllAsync();
 
     @Query("SELECT * FROM operation_rule")
-    public List<OperationRule> getAll();
+    List<OperationRule> getAll();
 
     @Query("SELECT * FROM operation_rule WHERE id = :id LIMIT 1")
-    public OperationRule findById(long id);
+    OperationRule findById(long id);
 
     @Insert
-    public Long insertOperationRule(OperationRule operationRule);
+    Long insertOperationRule(OperationRule operationRule);
 
     @Update
-    public void updateOperationRule(OperationRule operationRule);
+    void updateOperationRule(OperationRule operationRule);
 
     @Delete
-    public void deleteOperationRule(OperationRule operationRule);
+    void deleteOperationRule(OperationRule operationRule);
 }

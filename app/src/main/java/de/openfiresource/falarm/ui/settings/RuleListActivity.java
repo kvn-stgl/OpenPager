@@ -1,6 +1,7 @@
 package de.openfiresource.falarm.ui.settings;
 
 import android.app.FragmentManager;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -46,12 +47,15 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
     @Inject
     AppDatabase database;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule_list);
 
-        RuleListViewModel viewModel = ViewModelProviders.of(this).get(RuleListViewModel.class);
+        RuleListViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(RuleListViewModel.class);
 
         //Action Bar
         Toolbar toolbar = findViewById(R.id.toolbar);
