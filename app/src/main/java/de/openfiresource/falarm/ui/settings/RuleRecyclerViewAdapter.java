@@ -21,8 +21,10 @@ public class RuleRecyclerViewAdapter
 
     private final List<OperationRule> operationRules;
     private final FragmentManager fragmentManager;
+    private final Context context;
 
-    RuleRecyclerViewAdapter(FragmentManager fragmentManager, List<OperationRule> operationRules) {
+    RuleRecyclerViewAdapter(Context context, FragmentManager fragmentManager, List<OperationRule> operationRules) {
+        this.context = context;
         this.operationRules = operationRules;
         this.fragmentManager = fragmentManager;
     }
@@ -38,7 +40,10 @@ public class RuleRecyclerViewAdapter
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.operationRule = operationRules.get(position);
         holder.countView.setText(Integer.toString(position + 1));
-        holder.contentView.setText(operationRules.get(position).getTitle()); // todo: add time
+        holder.contentView.setText(context.getString(R.string.operation_rules_name,
+                holder.operationRule.getTitle(),
+                holder.operationRule.getStartTime(),
+                holder.operationRule.getStopTime()));
 
         holder.view.setOnClickListener((clickedView) -> {
             if (fragmentManager != null) {

@@ -88,7 +88,7 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
 
         final FragmentManager finalFragmentManager = fragmentManager;
         viewModel.getOperationRuleList().observe(this, operationRules -> {
-            recyclerView.setAdapter(new RuleRecyclerViewAdapter(finalFragmentManager, operationRules));
+            recyclerView.setAdapter(new RuleRecyclerViewAdapter(this, finalFragmentManager, operationRules));
         });
     }
 

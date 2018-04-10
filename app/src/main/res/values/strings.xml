@@ -7,12 +7,16 @@
     <string name="action_stopSpeak">Vorlesen anhalten</string>
 
     <string name="send_to">Sende zu</string>
+    <string name="only_param_string" translatable="false">%1$s</string>
 
     <!-- Operation -->
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Karte</string>
     <string name="operation_tab_osm">OFM</string>
     <string name="operation_confirm">Alarm bestätigen</string>
+
+    <!-- Operation rules -->
+    <string name="operation_rules_name">%1$s (%2$s - %3$s)</string>
 
     <!-- Strings related to Main -->
     <string name="welcome_card_title">Willkommen beim fAlarm</string>

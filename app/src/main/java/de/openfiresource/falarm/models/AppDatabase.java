@@ -26,7 +26,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract OperationRuleDao operationRuleDao();
 
-
+    // todo: Remove getInstance
     @Deprecated
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
