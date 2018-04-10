@@ -1,7 +1,6 @@
 package de.openfiresource.falarm.service;
 
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -17,19 +16,25 @@ import android.telephony.TelephonyManager;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.inject.Inject;
+
+import dagger.android.DaggerService;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.OperationActivity;
 
-public class SpeakService extends Service implements TextToSpeech.OnInitListener {
+public class SpeakService extends DaggerService implements TextToSpeech.OnInitListener {
     public static final String STOP_NOW = "stop_now";
     private Vector<OperationMessage> queue = new Vector<>();
 
     private TextToSpeech tts;
     private boolean initialized = false;
     private boolean temporaryDisable = false;
+
+    @Inject
+    AppDatabase database;
 
     @Nullable
     @Override
@@ -124,7 +129,7 @@ public class SpeakService extends Service implements TextToSpeech.OnInitListener
         if (stopInstead && tts != null) {
             this.tts.stop();
         } else if (operationId != 0 && !temporaryDisable) {
-            OperationMessage operationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(operationId);
+            OperationMessage operationMessage = database.operationMessageDao().findById(operationId);
 
             //TODO: Delay inmplementation
             int delaySend = 0;

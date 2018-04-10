@@ -29,13 +29,12 @@ import static de.openfiresource.falarm.utils.EncryptionUtils.decrypt;
 
 public class OperationHelper {
 
-    public static OperationMessage CreateOperationFromFCM(Context context, Map<String, String> extras) {
+    public static OperationMessage createOperationFromFCM(Context context, AppDatabase database, Map<String, String> extras) {
 
         OperationMessage incoming = new OperationMessage();
         Set<String> keys = extras.keySet();
         JSONObject content = new JSONObject();
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean encryption = prefs.getBoolean("sync_encryption", false);
         String encryptionKey = prefs.getString("sync_password", "");
 
@@ -97,7 +96,7 @@ public class OperationHelper {
         SimpleDateFormat ho = new SimpleDateFormat("HH:mm", Locale.GERMAN);
         Calendar now = Calendar.getInstance();
 
-        for (OperationRule rule : AppDatabase.getInstance(context).operationRuleDao().getAll()) {
+        for (OperationRule rule : database.operationRuleDao().getAll()) {
             Calendar startValue = GregorianCalendar.getInstance();
             Calendar stopValue = GregorianCalendar.getInstance();
             try {

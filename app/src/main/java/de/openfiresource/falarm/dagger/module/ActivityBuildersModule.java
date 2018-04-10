@@ -2,6 +2,9 @@ package de.openfiresource.falarm.dagger.module;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
+import de.openfiresource.falarm.MyFirebaseMessagingService;
+import de.openfiresource.falarm.service.AlarmService;
+import de.openfiresource.falarm.service.SpeakService;
 import de.openfiresource.falarm.ui.MainActivity;
 import de.openfiresource.falarm.ui.OperationActivity;
 import de.openfiresource.falarm.ui.settings.RuleDetailActivity;
@@ -14,7 +17,7 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector
     abstract MainActivity bindMainActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = OperationActivityModule.class)
     abstract OperationActivity bindOperationActivity();
 
     @ContributesAndroidInjector(modules = RuleDetailActivityModule.class)
@@ -25,4 +28,13 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract SettingsActivity bindSettingsActivity();
+
+    @ContributesAndroidInjector
+    abstract AlarmService bindAlarmService();
+
+    @ContributesAndroidInjector
+    abstract SpeakService bindSpeakService();
+
+    @ContributesAndroidInjector
+    abstract MyFirebaseMessagingService bindFirebaseService();
 }

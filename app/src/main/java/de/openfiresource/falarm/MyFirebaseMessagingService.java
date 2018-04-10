@@ -9,6 +9,10 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.MainActivity;
@@ -18,6 +22,15 @@ import de.openfiresource.falarm.utils.OperationHelper;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+
+    @Inject
+    AppDatabase database;
+
+    @Override
+    public void onCreate() {
+        AndroidInjection.inject(this);
+        super.onCreate();
+    }
 
     /**
      * Called when message is received.
@@ -46,7 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0 && activate) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            OperationMessage operationMessage = OperationHelper.CreateOperationFromFCM(this, remoteMessage.getData());
+            OperationMessage operationMessage = OperationHelper.createOperationFromFCM(this, database, remoteMessage.getData());
             if (operationMessage != null) {
                 // todo: save operation
                 // long notificationId = operationMessage.save();

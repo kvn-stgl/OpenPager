@@ -23,8 +23,13 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
@@ -32,20 +37,13 @@ import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.service.SpeakService;
 
-public class OperationActivity extends AppCompatActivity {
+public class OperationActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> supportFragmentInjector;
 
     public static final String EXTRA_ID = "extra_id";
     public static final String EXTRA_TYPE_ALARM = "alarm";
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private OperationMessage mOperationMessage;
     private Notification mNotification;
@@ -63,6 +61,9 @@ public class OperationActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @Inject
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class OperationActivity extends AppCompatActivity {
 
         long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
         if (notificationId != 0) {
-            mOperationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(notificationId);
+            mOperationMessage = database.operationMessageDao().findById(notificationId);
             if(mOperationMessage != null) {
                 OperationRule operationRule = mOperationMessage.getRule();
                 mNotification = Notification.byRule(operationRule, this);
@@ -96,7 +97,7 @@ public class OperationActivity extends AppCompatActivity {
 
                 // Create the adapter that will return a fragment for each of the three
                 // primary sections of the activity.
-                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mHaveMap);
+                SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mHaveMap);
 
                 // Set up the ViewPager with the sections adapter.
                 mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -178,6 +179,11 @@ public class OperationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return supportFragmentInjector;
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -188,7 +194,7 @@ public class OperationActivity extends AppCompatActivity {
         private List<String> mItemNames = new ArrayList<>();
         private List<Fragment> mItemValues = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm, boolean withMap) {
+        SectionsPagerAdapter(FragmentManager fm, boolean withMap) {
             super(fm);
             mWithMap = withMap;
 

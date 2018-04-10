@@ -18,21 +18,21 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.service.SpeakService;
 
-/**
- * Created by stieglit on 12.08.2016.
- */
-public class OperationFragment extends Fragment {
+public class OperationFragment extends Fragment implements Injectable {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ID = "id";
     private static final String ARG_ALARM = "alarm";
@@ -54,6 +54,9 @@ public class OperationFragment extends Fragment {
 
     @BindView(R.id.operation_received)
     Button buttonOperationReceived;
+
+    @Inject
+    AppDatabase database;
 
     public OperationFragment() {
         // Required empty public constructor
@@ -82,7 +85,7 @@ public class OperationFragment extends Fragment {
         if (getArguments() != null) {
             long notificationId = getArguments().getLong(ARG_ID);
 
-            mOperationMessage = AppDatabase.getInstance(requireContext()).operationMessageDao().findById(notificationId);
+            mOperationMessage = database.operationMessageDao().findById(notificationId);
             mIsAlarm = getArguments().getBoolean(ARG_ALARM, false);
         }
     }

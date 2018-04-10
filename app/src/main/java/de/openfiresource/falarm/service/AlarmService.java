@@ -1,7 +1,6 @@
 package de.openfiresource.falarm.service;
 
 import android.Manifest;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +20,9 @@ import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
+import javax.inject.Inject;
+
+import dagger.android.DaggerService;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
@@ -28,7 +30,7 @@ import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.OperationActivity;
 
 
-public class AlarmService extends Service {
+public class AlarmService extends DaggerService {
     private static final String TAG = "AlarmService";
 
     // Time period between two vibration events
@@ -57,20 +59,23 @@ public class AlarmService extends Service {
         return true;
     };
 
+    @Inject
+    AppDatabase database;
+
     @Override
     public void onCreate() {
+        super.onCreate();
+
         HandlerThread ht = new HandlerThread("alarm_serviceHandlerThread");
         ht.start();
         mHandler = new Handler(ht.getLooper());
-
-        super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
 
-        OperationMessage mOperationMessage = AppDatabase.getInstance(this).operationMessageDao().findById(operationId);
+        OperationMessage mOperationMessage = database.operationMessageDao().findById(operationId);
 
         OperationRule rule = mOperationMessage.getRule();
         mNotification = Notification.byRule(rule, this);
