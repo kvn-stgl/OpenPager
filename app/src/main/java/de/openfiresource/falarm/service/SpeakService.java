@@ -123,7 +123,7 @@ public class SpeakService extends DaggerService implements TextToSpeech.OnInitLi
             throw new java.lang.IllegalArgumentException("No intent found.");
         }
 
-        long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
+        long operationId = intent.getLongExtra(OperationActivity.OPERATION_ID, 0);
         boolean stopInstead = intent.getExtras().getBoolean(SpeakService.STOP_NOW);
 
         if (stopInstead && tts != null) {

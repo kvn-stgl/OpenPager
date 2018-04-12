@@ -73,7 +73,7 @@ public class AlarmService extends DaggerService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long operationId = intent.getLongExtra(OperationActivity.EXTRA_ID, 0);
+        long operationId = intent.getLongExtra(OperationActivity.OPERATION_ID, 0);
 
         OperationMessage mOperationMessage = database.operationMessageDao().findById(operationId);
 
@@ -85,7 +85,7 @@ public class AlarmService extends DaggerService {
 
         // Start the activity where you can stop alarm
         Intent i = new Intent(this, OperationActivity.class);
-        i.putExtra(OperationActivity.EXTRA_ID, mOperationMessage.getId());
+        i.putExtra(OperationActivity.OPERATION_ID, mOperationMessage.getId());
         i.putExtra(OperationActivity.EXTRA_TYPE_ALARM, true);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);

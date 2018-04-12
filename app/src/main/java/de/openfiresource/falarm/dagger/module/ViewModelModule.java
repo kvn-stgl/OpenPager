@@ -8,10 +8,16 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 import de.openfiresource.falarm.dagger.ViewModelFactory;
 import de.openfiresource.falarm.dagger.ViewModelKey;
+import de.openfiresource.falarm.ui.OperationListViewModel;
 import de.openfiresource.falarm.ui.settings.RuleListViewModel;
 
 @Module
 public abstract class ViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OperationListViewModel.class)
+    abstract ViewModel bindOperationListViewModel(OperationListViewModel operationListViewModel);
 
     @Binds
     @IntoMap

@@ -2,6 +2,9 @@ package de.openfiresource.falarm;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ContentProvider;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
@@ -13,13 +16,28 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import dagger.android.HasBroadcastReceiverInjector;
+import dagger.android.HasServiceInjector;
 import de.openfiresource.falarm.dagger.AppInjector;
 import de.openfiresource.falarm.models.Notification;
 
-public class App extends Application implements HasActivityInjector {
+public class App extends Application implements
+        HasActivityInjector,
+        HasServiceInjector,
+        HasBroadcastReceiverInjector {
+
 
     @Inject
-    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+    DispatchingAndroidInjector<Activity> activityInjector;
+
+    @Inject
+    DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector;
+
+    @Inject
+    DispatchingAndroidInjector<Service> serviceInjector;
+
+    @Inject
+    DispatchingAndroidInjector<ContentProvider> contentProviderInjector;
 
     private AppComponent component;
 
@@ -50,6 +68,16 @@ public class App extends Application implements HasActivityInjector {
 
     @Override
     public AndroidInjector<Activity> activityInjector() {
-        return activityDispatchingAndroidInjector;
+        return activityInjector;
+    }
+
+    @Override
+    public AndroidInjector<Service> serviceInjector() {
+        return serviceInjector;
+    }
+
+    @Override
+    public AndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
+        return broadcastReceiverInjector;
     }
 }

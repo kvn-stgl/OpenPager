@@ -104,7 +104,7 @@ public class OperationFragment extends Fragment implements Injectable {
         if(notification.isSpeakServiceEnabled() && notification.isPlayingSound()) {
             Intent intentData = new Intent(getContext(),
                     SpeakService.class);
-            intentData.putExtra(OperationActivity.EXTRA_ID, mOperationMessage.getId());
+            intentData.putExtra(OperationActivity.OPERATION_ID, mOperationMessage.getId());
             getActivity().startService(intentData);
         }
     }

@@ -36,14 +36,13 @@ import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.service.SpeakService;
-import de.openfiresource.falarm.ui.MainActivity;
 
 public class OperationActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     @Inject
     DispatchingAndroidInjector<Fragment> supportFragmentInjector;
 
-    public static final String EXTRA_ID = "extra_id";
+    public static final String OPERATION_ID = "extra_id";
     public static final String EXTRA_TYPE_ALARM = "alarm";
 
     private OperationMessage mOperationMessage;
@@ -87,7 +86,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
                     WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
         }
 
-        long notificationId = getIntent().getLongExtra(EXTRA_ID, 0);
+        long notificationId = getIntent().getLongExtra(OPERATION_ID, 0);
         if (notificationId != 0) {
             mOperationMessage = database.operationMessageDao().findById(notificationId);
             if(mOperationMessage != null) {

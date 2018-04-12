@@ -88,6 +88,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$extSupportLibraryVersion"
     implementation "com.android.support:support-annotations:$extSupportLibraryVersion"
 
+
     /**
      * Play services
      */

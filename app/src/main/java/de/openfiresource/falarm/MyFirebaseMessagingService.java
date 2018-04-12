@@ -15,9 +15,11 @@ import dagger.android.AndroidInjection;
 import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
-import de.openfiresource.falarm.ui.MainActivity;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.OperationHelper;
+import io.reactivex.Single;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -61,22 +63,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             OperationMessage operationMessage = OperationHelper.createOperationFromFCM(this, database, remoteMessage.getData());
             if (operationMessage != null) {
-                // todo: save operation
-                // long notificationId = operationMessage.save();
-//
-//                //Send Broadcast
-//                Intent brIntent = new Intent();
-//                brIntent.setAction(MainActivity.INTENT_RECEIVED_MESSAGE);
-//                sendBroadcast(brIntent);
 
-                //Start alarm Service
-                Intent intentData = new Intent(getBaseContext(),
-                        AlarmService.class);
-                intentData.putExtra(OperationActivity.EXTRA_ID, 0); // todo: send operation id
+                Single.fromCallable(() -> database.operationMessageDao().insertOperationMessage(operationMessage))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new DisposableSingleObserver<Long>() {
+                            @Override
+                            public void onSuccess(Long id) {
+                                //Start alarm Service
+                                Intent intentData = new Intent(getBaseContext(), AlarmService.class);
+                                intentData.putExtra(OperationActivity.OPERATION_ID, id);
 
-                //Firt stop old service when exist, then start new
-                stopService(intentData);
-                startService(intentData);
+                                //First stop old service when exist, then start new
+                                stopService(intentData);
+                                startService(intentData);
+
+                                dispose();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: error saving operation", e);
+                                dispose();
+                            }
+                        });
             }
         }
     }
