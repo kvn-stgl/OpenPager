@@ -86,7 +86,7 @@ public class AlarmService extends DaggerService {
         // Start the activity where you can stop alarm
         Intent i = new Intent(this, OperationActivity.class);
         i.putExtra(OperationActivity.OPERATION_ID, mOperationMessage.getId());
-        i.putExtra(OperationActivity.EXTRA_TYPE_ALARM, true);
+        i.putExtra(OperationActivity.IS_ALARM, true);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
 
