@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,27 +47,15 @@ public class OperationListFragment extends Fragment implements Injectable {
         OperationListAdapter adapter = new OperationListAdapter();
         adapter.setOperationEventListener(new OperationListAdapter.OperationEventListener() {
             @Override
-            public void onClickOperation(OperationMessage operation) {
+            public void onSelectClick(OperationMessage operation) {
                 Intent intent = new Intent(requireActivity(), OperationActivity.class);
                 intent.putExtra(OperationActivity.OPERATION_ID, operation.getId());
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClickOperation(OperationMessage operation) {
-                final CharSequence[] items = {getString(R.string.delete)};
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setTitle(R.string.main_long_click_header);
-                builder.setItems(items, (dialog, item) -> {
-                    switch (item) {
-                        case 0:
-                            database.operationMessageDao().deleteOperationMessage(operation);
-                            break;
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+            public void onDeleteClick(OperationMessage operation) {
+                database.operationMessageDao().deleteOperationMessage(operation);
             }
         });
 

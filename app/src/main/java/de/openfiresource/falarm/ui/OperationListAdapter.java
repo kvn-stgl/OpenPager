@@ -44,16 +44,16 @@ public class OperationListAdapter extends RecyclerView.Adapter<OperationListAdap
         ViewOperationItemBinding binding = ViewOperationItemBinding.inflate(layoutInflater, parent, false);
         return new ViewHolder(binding, new OperationEventListener() {
             @Override
-            public void onClickOperation(OperationMessage operation) {
+            public void onSelectClick(OperationMessage operation) {
                 if (operationEventListener != null) {
-                    operationEventListener.onClickOperation(operation);
+                    operationEventListener.onSelectClick(operation);
                 }
             }
 
             @Override
-            public void onLongClickOperation(OperationMessage operation) {
+            public void onDeleteClick(OperationMessage operation) {
                 if (operationEventListener != null) {
-                    operationEventListener.onLongClickOperation(operation);
+                    operationEventListener.onDeleteClick(operation);
                 }
             }
         });
@@ -77,18 +77,16 @@ public class OperationListAdapter extends RecyclerView.Adapter<OperationListAdap
             super(itemView.getRoot());
             this.binding = itemView;
 
-            itemView.getRoot().setOnClickListener(v -> {
+            itemView.layoutSelect.setOnClickListener(v -> {
                 if (binding.getOperation() != null) {
-                    listener.onClickOperation(binding.getOperation());
+                    listener.onSelectClick(binding.getOperation());
                 }
             });
 
-            itemView.getRoot().setOnLongClickListener(v -> {
+            itemView.layoutDelete.setOnClickListener(v -> {
                 if (binding.getOperation() != null) {
-                    listener.onLongClickOperation(binding.getOperation());
+                    listener.onDeleteClick(binding.getOperation());
                 }
-
-                return true;
             });
         }
 
@@ -98,8 +96,8 @@ public class OperationListAdapter extends RecyclerView.Adapter<OperationListAdap
     }
 
     interface OperationEventListener {
-        void onClickOperation(OperationMessage operation);
+        void onSelectClick(OperationMessage operation);
 
-        void onLongClickOperation(OperationMessage operation);
+        void onDeleteClick(OperationMessage operation);
     }
 }
