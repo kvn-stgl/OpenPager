@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.ui;
+package de.openfiresource.falarm.ui.operation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +36,7 @@ import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.service.SpeakService;
+import de.openfiresource.falarm.ui.MainActivity;
 
 public class OperationActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -157,11 +158,6 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
                         .setPositiveButton(android.R.string.ok, (dialog, id1) -> {
 
                             // todo delete operation
-
-                            //Send Broadcast
-                            Intent brIntent = new Intent();
-                            brIntent.setAction(MainActivity.INTENT_RECEIVED_MESSAGE);
-                            sendBroadcast(brIntent);
 
                             NavUtils.navigateUpFromSameTask(this);
                         })

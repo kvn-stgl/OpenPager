@@ -26,7 +26,6 @@ import java.util.List;
 
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.Notification;
-import de.openfiresource.falarm.ui.AppCompatPreferenceActivity;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="de.openfiresource.falarm.ui.OperationActivity">
+    tools:mContext="de.openfiresource.falarm.ui.operation.OperationActivity">
     <item
         android:id="@+id/action_navigation"
         android:orderInCategory="0"

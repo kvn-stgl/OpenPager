@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements Injectable {
 
     private static final String TAG = "MainActivity";
 
-    public static final String INTENT_RECEIVED_MESSAGE = "de.openfiresource.falarm.ui.receivedMessage";
     public static final String PREF_SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
 
     @Inject

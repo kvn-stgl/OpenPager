@@ -77,7 +77,7 @@
         </activity>
 
         <activity
-            android:name=".ui.OperationActivity"
+            android:name=".ui.operation.OperationActivity"
             android:label="@string/title_activity_operation"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

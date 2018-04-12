@@ -27,7 +27,7 @@ import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
-import de.openfiresource.falarm.ui.OperationActivity;
+import de.openfiresource.falarm.ui.operation.OperationActivity;
 
 
 public class AlarmService extends DaggerService {

@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.ui;
+package de.openfiresource.falarm.ui.operation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

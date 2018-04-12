@@ -16,7 +16,7 @@ import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.MainActivity;
-import de.openfiresource.falarm.ui.OperationActivity;
+import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.OperationHelper;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -63,11 +63,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (operationMessage != null) {
                 // todo: save operation
                 // long notificationId = operationMessage.save();
-
-                //Send Broadcast
-                Intent brIntent = new Intent();
-                brIntent.setAction(MainActivity.INTENT_RECEIVED_MESSAGE);
-                sendBroadcast(brIntent);
+//
+//                //Send Broadcast
+//                Intent brIntent = new Intent();
+//                brIntent.setAction(MainActivity.INTENT_RECEIVED_MESSAGE);
+//                sendBroadcast(brIntent);
 
                 //Start alarm Service
                 Intent intentData = new Intent(getBaseContext(),
