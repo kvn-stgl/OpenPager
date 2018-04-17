@@ -13,11 +13,9 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import de.openfiresource.falarm.models.AppDatabase;
-import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.OperationHelper;
-import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -61,32 +59,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0 && activate) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            OperationMessage operationMessage = OperationHelper.createOperationFromFCM(this, database, remoteMessage.getData());
-            if (operationMessage != null) {
+            OperationHelper.createOperationFromFCM(this, database, remoteMessage.getData())
+                    .observeOn(Schedulers.io())
+                    .map(operationMessage -> database.operationMessageDao().insertOperationMessage(operationMessage))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new DisposableSingleObserver<Long>() {
+                        @Override
+                        public void onSuccess(Long id) {
+                            //Start alarm Service
+                            Intent intentData = new Intent(getBaseContext(), AlarmService.class);
+                            intentData.putExtra(OperationActivity.OPERATION_ID, id);
 
-                Single.fromCallable(() -> database.operationMessageDao().insertOperationMessage(operationMessage))
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new DisposableSingleObserver<Long>() {
-                            @Override
-                            public void onSuccess(Long id) {
-                                //Start alarm Service
-                                Intent intentData = new Intent(getBaseContext(), AlarmService.class);
-                                intentData.putExtra(OperationActivity.OPERATION_ID, id);
+                            //First stop old service when exist, then start new
+                            stopService(intentData);
+                            startService(intentData);
 
-                                //First stop old service when exist, then start new
-                                stopService(intentData);
-                                startService(intentData);
+                            dispose();
+                        }
 
-                                dispose();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "onError: error saving operation", e);
-                                dispose();
-                            }
-                        });
-            }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, "onError: error saving operation", e);
+                            dispose();
+                        }
+                    });
         }
     }
     // [END receive_message]
