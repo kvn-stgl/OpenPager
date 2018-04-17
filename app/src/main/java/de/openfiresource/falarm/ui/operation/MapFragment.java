@@ -41,17 +41,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap = googleMap;
 
-        mMap.setTrafficEnabled(true);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+        googleMap.setTrafficEnabled(true);
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
         }
-        mMap.getUiSettings().setAllGesturesEnabled(true);
+        googleMap.getUiSettings().setAllGesturesEnabled(true);
 
         LatLng place = new LatLng(mLat, mLng);
-        mMap.addMarker(new MarkerOptions().position(place).title("Operation place"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, startZoomLevel));
+        googleMap.addMarker(new MarkerOptions().position(place).title("Operation place"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, startZoomLevel));
     }
 }

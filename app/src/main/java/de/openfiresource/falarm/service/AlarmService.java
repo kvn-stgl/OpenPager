@@ -3,7 +3,6 @@ package de.openfiresource.falarm.service;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -13,7 +12,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -28,6 +26,7 @@ import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
+import de.openfiresource.falarm.utils.Preferences;
 
 
 public class AlarmService extends DaggerService {
@@ -61,6 +60,9 @@ public class AlarmService extends DaggerService {
 
     @Inject
     AppDatabase database;
+
+    @Inject
+    Preferences preferences;
 
     @Override
     public void onCreate() {
@@ -121,10 +123,9 @@ public class AlarmService extends DaggerService {
         mPlayer = new MediaPlayer();
         mPlayer.setOnErrorListener(mErrorListener);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int alarmTimeout = Integer.parseInt(preferences.getString("general_alarm_timeout", "120"));
+        int alarmTimeout = preferences.getAlarmTimeout();
         if (alarmTimeout > 0) {
-            mHandler.postDelayed(() -> stopSelf(), alarmTimeout * 1000);
+            mHandler.postDelayed(this::stopSelf, alarmTimeout * 1000);
         }
 
         try {

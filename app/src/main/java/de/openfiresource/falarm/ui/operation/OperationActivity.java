@@ -2,12 +2,11 @@ package de.openfiresource.falarm.ui.operation;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -37,6 +36,7 @@ import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.service.SpeakService;
+import de.openfiresource.falarm.utils.Preferences;
 
 public class OperationActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -57,6 +57,9 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
 
     @Inject
     AppDatabase database;
+
+    @Inject
+    Preferences preferences;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -95,9 +98,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
                     OperationRule operationRule = operationMessage.getRule();
                     Notification notification = Notification.byRule(operationRule, getApplicationContext());
 
-                    boolean hasMap = !TextUtils.isEmpty(operationMessage.getLatlng());
-
-                    SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, isAlarm, hasMap, operationMessage);
+                    SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, operationMessage);
 
                     // Set up the ViewPager with the sections adapter.
                     ViewPager viewPager = findViewById(R.id.container);
@@ -126,9 +127,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
             OperationRule operationRule = operation.getRule();
             Notification notification = Notification.byRule(operationRule, getApplicationContext());
 
-            boolean hasMap = !TextUtils.isEmpty(operation.getLatlng());
-
-            if (!hasMap) {
+            if (operation.getLatLngPair() == null) {
                 menu.getItem(0).setVisible(false);
             }
 
@@ -154,11 +153,22 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
                 return true;
 
             case R.id.action_navigation:
-                if (operation != null) {
-                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + operation.getLatlng().replace(';', ','));
+                if (operation != null && operation.getLatLngPair() != null) {
+                    Pair<Double, Double> latlng = operation.getLatLngPair();
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latlng.first + "," + latlng.second);
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
-                    startActivity(mapIntent);
+
+                    try {
+                        startActivity(mapIntent);
+                    } catch (ActivityNotFoundException e) {
+                        new AlertDialog.Builder(this)
+                                .setMessage(R.string.operation_map_activity_alert)
+                                .setCancelable(true)
+                                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                                .create()
+                                .show();
+                    }
                 }
                 return true;
 
@@ -199,36 +209,32 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private boolean hasMap;
+        private final List<String> pageTitles = new ArrayList<>();
+        private final List<Fragment> pageFragments = new ArrayList<>();
 
-        private List<String> pageTitles = new ArrayList<>();
-        private List<Fragment> pageFragments = new ArrayList<>();
+        private final OperationMessage operationMessage;
 
-        SectionsPagerAdapter(FragmentManager fm, Context context, boolean isAlarm, boolean withMap, OperationMessage operationMessage) {
+        SectionsPagerAdapter(FragmentManager fm, Context context, OperationMessage operationMessage) {
             super(fm);
-            hasMap = withMap;
+            this.operationMessage = operationMessage;
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String alarmMaps = preferences.getString("general_alarm_maps", "both");
+            String alarmMaps = preferences.getAlarmMaps();
 
             pageTitles.add(context.getString(R.string.operation_tab_info));
-            pageFragments.add(OperationFragment.newInstance(operationMessage.getId(), isAlarm));
+            pageFragments.add(OperationFragment.newInstance());
 
-            if (hasMap) {
-                String[] latlng = operationMessage.getLatlng().split(";");
-                double lat = Double.parseDouble(latlng[0]);
-                double lng = Double.parseDouble(latlng[1]);
-
+            Pair<Double, Double> latlng = operationMessage.getLatLngPair();
+            if (latlng != null) {
                 if (alarmMaps.equals("both") || alarmMaps.equals("gmap")) {
                     pageTitles.add(context.getString(R.string.operation_tab_map));
-                    pageFragments.add(MapFragment.newInstance(lat, lng));
+                    pageFragments.add(MapFragment.newInstance(latlng.first, latlng.second));
                 }
 
                 if (alarmMaps.equals("both") || alarmMaps.equals("ofm")) {
                     pageTitles.add(context.getString(R.string.operation_tab_osm));
-                    pageFragments.add(OsmMapFragment.newInstance(lat, lng));
+                    pageFragments.add(OsmMapFragment.newInstance());
                 }
             }
         }
@@ -240,7 +246,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
 
         @Override
         public int getCount() {
-            if (hasMap) {
+            if (operationMessage.getLatLngPair() != null) {
                 return pageTitles.size();
             } else {
                 return 1;

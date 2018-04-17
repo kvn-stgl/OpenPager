@@ -2,8 +2,6 @@ package de.openfiresource.falarm;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -16,6 +14,7 @@ import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.OperationHelper;
+import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -25,6 +24,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Inject
     AppDatabase database;
+
+    @Inject
+    Preferences preferences;
 
     @Override
     public void onCreate() {
@@ -53,13 +55,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean activate = preferences.getBoolean("activate", true);
-
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0 && activate) {
+        if (remoteMessage.getData().size() > 0 && preferences.isPushActive()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            OperationHelper.createOperationFromFCM(this, database, remoteMessage.getData())
+            OperationHelper.createOperationFromFCM(preferences, database, remoteMessage.getData())
                     .observeOn(Schedulers.io())
                     .map(operationMessage -> database.operationMessageDao().insertOperationMessage(operationMessage))
                     .subscribeOn(Schedulers.io())

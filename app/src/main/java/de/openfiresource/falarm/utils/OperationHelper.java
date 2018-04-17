@@ -1,8 +1,5 @@
 package de.openfiresource.falarm.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
@@ -27,13 +24,12 @@ import static de.openfiresource.falarm.utils.EncryptionUtils.decrypt;
 
 public class OperationHelper {
 
-    public static Single<OperationMessage> createOperationFromFCM(Context context, AppDatabase database, Map<String, String> extras) {
+    public static Single<OperationMessage> createOperationFromFCM(Preferences preferences, AppDatabase database, Map<String, String> extras) {
         return Single.create(emitter -> {
             OperationMessage incoming = new OperationMessage();
             Set<String> keys = extras.keySet();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean encryption = prefs.getBoolean("sync_encryption", false);
-            String encryptionKey = prefs.getString("sync_password", "");
+            boolean encryption = preferences.isSyncEncryptionEnabled();
+            String encryptionKey = preferences.getSyncEncryptionPassword();
 
             try {
                 for (String string : keys) {
@@ -142,6 +138,7 @@ public class OperationHelper {
 
             Logger.d("Incoming operation: %s\n%s", incoming.getTitle(), incoming.getMessage());
 
+            incoming.setAlarm(true);
             incoming.setSeen(false);
             incoming.setRule(bestRule);
             incoming.setTimestampIncoming(now.getTime());

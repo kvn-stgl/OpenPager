@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.openfiresource.falarm.utils.Preferences;
 
 @Module(includes = AppModule.class)
 public class PreferencesModule {
@@ -16,5 +17,11 @@ public class PreferencesModule {
     @Singleton
     SharedPreferences provideSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    @Provides
+    @Singleton
+    Preferences providePreferences(SharedPreferences sharedPreferences) {
+        return new Preferences(sharedPreferences);
     }
 }

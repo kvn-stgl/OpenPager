@@ -68,6 +68,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_operation">Alarm message</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="operation_map_activity_alert">Google Maps is not installed.</string>
     <string name="title_rule_detail">Rule details</string>
     <string name="title_rule_list">Rule</string>
     <string name="welcome_card_subtitle">The AlarmApp for OpenFireSource!</string>

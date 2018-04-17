@@ -26,6 +26,7 @@ import java.util.List;
 
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.Notification;
+import de.openfiresource.falarm.utils.Constants;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -194,8 +195,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
 
-            bindPreferenceSummaryToValue(findPreference("general_alarm_timeout"));
-            bindPreferenceSummaryToValue(findPreference("general_alarm_maps"));
+            bindPreferenceSummaryToValue(findPreference(Constants.PREF_GENERAL_ALARM_TIMEOUT));
+            bindPreferenceSummaryToValue(findPreference(Constants.PREF_GENERAL_ALARM_MAPS));
         }
 
         @Override

@@ -19,6 +19,7 @@ public class DatabaseModule {
     AppDatabase provideAppDatabase(Context context) {
         return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE)
                 .allowMainThreadQueries() // todo: Remove this as soon as possible
+                .fallbackToDestructiveMigration()
                 .build();
     }
 }
