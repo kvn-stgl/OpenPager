@@ -17,7 +17,7 @@
     <string name="operation_map_activity_alert">Google Maps ist nicht installiert.</string>
 
     <!-- Operation rules -->
-    <string name="operation_rules_name">%1$s (%2$s - %3$s)</string>
+    <string name="operation_rules_name" translatable="false">%1$s (%2$s - %3$s)</string>
 
     <!-- Strings related to Main -->
     <string name="welcome_card_title">Willkommen beim fAlarm</string>

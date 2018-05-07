@@ -106,13 +106,14 @@
         </service>
         <!-- [END firebase_service] -->
 
-        <!-- [START firebase_iid_service] -->
-        <service android:name=".MyFirebaseInstanceIDService">
+        <!-- FirebaseInstanceIdService performs security checks at runtime, no need for explicit permissions despite exported="true" -->
+        <service
+            android:name=".MyFirebaseInstanceIDService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END firebase_iid_service] -->
 
         <service
             android:name=".service.AlarmService"

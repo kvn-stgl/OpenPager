@@ -17,7 +17,7 @@ buildscript {
 
 ext {
     extSupportLibraryVersion = '27.1.1'
-    extPlayServiceVersion = '12.0.1'
+    extPlayServiceVersion = '15.0.0'
     extCompileSdkVersion = 27
     extBuildToolsVersion = '27.0.3'
 }

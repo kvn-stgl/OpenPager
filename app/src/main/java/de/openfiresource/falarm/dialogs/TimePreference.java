@@ -1,22 +1,21 @@
 package de.openfiresource.falarm.dialogs;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.preference.DialogPreference;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.TimePicker;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.TimePicker;
+import java.util.Locale;
 
 public class TimePreference extends DialogPreference implements TimePicker.OnTimeChangedListener {
     private String timeString;
@@ -28,6 +27,10 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public TimePreference(Context context) {
+        super(context);
     }
 
     /**
@@ -83,8 +86,8 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
      *
      * @return the SimpleDateFormat used for XML times
      */
-    public static DateFormat formatter() {
-        return new SimpleDateFormat("HH:mm");
+    private static DateFormat formatter() {
+        return new SimpleDateFormat("HH:mm", Locale.getDefault());
     }
 
     /**
@@ -93,7 +96,7 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
      *
      * @return the SimpleDateFormat used for summary dates
      */
-    public static DateFormat summaryFormatter(Context context) {
+    private static DateFormat summaryFormatter(Context context) {
         return android.text.format.DateFormat.getTimeFormat(context);
     }
 
@@ -165,7 +168,7 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
      *
      * @return the Calendar set to the default date
      */
-    public static Calendar defaultCalendar() {
+    private static Calendar defaultCalendar() {
         return new GregorianCalendar(1970, 0, 1, 0, 0);
     }
 
@@ -174,7 +177,7 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
      *
      * @return a String representation of the default time
      */
-    public static String defaultCalendarString() {
+    private static String defaultCalendarString() {
         return formatter().format(defaultCalendar().getTime());
     }
 

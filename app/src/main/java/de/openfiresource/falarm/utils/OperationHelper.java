@@ -64,7 +64,7 @@ public class OperationHelper {
                                 value = decrypt(value, encryptionKey);
                             }
                             try {
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
                                 incoming.setTimestamp(dateFormat.parse(value));
                             } catch (ParseException e) {
                                 // TODO to user

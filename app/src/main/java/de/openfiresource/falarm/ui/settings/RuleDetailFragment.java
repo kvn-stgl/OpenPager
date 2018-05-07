@@ -15,6 +15,7 @@ import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -183,7 +184,7 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
 
     private String getMethodFromPrefKey(Preference preference, String type) {
         String methodName = preference.getKey().substring(5); //Cut rule_
-        methodName = type + methodName.substring(0, 1).toUpperCase() + methodName.substring(1); //GetX
+        methodName = type + methodName.substring(0, 1).toUpperCase(Locale.ROOT) + methodName.substring(1); //GetX
         return methodName;
     }
 
