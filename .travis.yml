@@ -33,4 +33,4 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-script: ./gradlew assembleDebug
+script: ./gradlew clean assembleDebug test lint
