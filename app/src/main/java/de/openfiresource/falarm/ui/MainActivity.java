@@ -14,10 +14,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener;
-import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
+import com.gun0912.tedpermission.TedPermissionResult;
+import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 import javax.inject.Inject;
 
@@ -25,10 +25,10 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import de.openfiresource.falarm.R;
-import de.openfiresource.falarm.dialogs.MainMultiplePermissionsListener;
 import de.openfiresource.falarm.ui.settings.RuleListActivity;
 import de.openfiresource.falarm.ui.settings.SettingsActivity;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
+import io.reactivex.observers.DisposableSingleObserver;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -61,20 +61,36 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     }
 
     private void checkPermissions() {
-        CompositeMultiplePermissionsListener compositeMultiplePermissionsListener = new CompositeMultiplePermissionsListener(new MainMultiplePermissionsListener(this),
-                SnackbarOnAnyDeniedMultiplePermissionsListener.Builder.with(rootView,
-                        R.string.permission_rationale_message)
-                        .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
-                        .build());
-
-        Dexter.withActivity(this)
-                .withPermissions(
+        TedRx2Permission.with(this)
+                .setRationaleTitle(R.string.permission_rationale_title)
+                .setRationaleMessage(R.string.permission_rationale_message)
+                .setDeniedTitle(R.string.permission_denied_title)
+                .setDeniedMessage(R.string.permission_denied_message)
+                .setPermissions(
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).withListener(compositeMultiplePermissionsListener)
-                .check();
+                )
+                .request()
+                .subscribe(new DisposableSingleObserver<TedPermissionResult>() {
+                    @Override
+                    public void onSuccess(TedPermissionResult tedPermissionResult) {
+                        if (tedPermissionResult.isGranted()) {
+                            Toast.makeText(getBaseContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getBaseContext(), "Permission Denied\n" + tedPermissionResult.getDeniedPermissions().toString(), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        dispose();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: Error while fetching permissions", e);
+                        dispose();
+                    }
+                });
     }
 
     private int getVersionCode() {
