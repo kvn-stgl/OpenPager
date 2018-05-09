@@ -4,7 +4,6 @@ package de.openfiresource.falarm.service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -12,6 +11,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import java.util.Locale;
 import java.util.Vector;
@@ -25,9 +25,12 @@ import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 
-public class SpeakService extends DaggerService implements TextToSpeech.OnInitListener {
+public class SpeakService extends DaggerService {
+
+    private static final String TAG = "SpeakService";
+    
     public static final String STOP_NOW = "stop_now";
-    private Vector<OperationMessage> queue = new Vector<>();
+    private final Vector<OperationMessage> queue = new Vector<>();
 
     private TextToSpeech tts;
     private boolean initialized = false;
@@ -42,26 +45,6 @@ public class SpeakService extends DaggerService implements TextToSpeech.OnInitLi
         return null;
     }
 
-    /**
-     * Init the TTS System.
-     *
-     * @param status
-     */
-    public void onInit(int status) {
-        tts.setLanguage(Locale.GERMAN);
-
-        if (status == TextToSpeech.SUCCESS) {
-            synchronized (queue) {
-                initialized = true;
-
-                for (OperationMessage message : queue) {
-                    this.speak(message);
-                }
-
-                queue.clear();
-            }
-        }
-    }
 
     /**
      * Handler for TTS Messages.
@@ -89,19 +72,19 @@ public class SpeakService extends DaggerService implements TextToSpeech.OnInitLi
         float volume = Integer.parseInt(notification.getNewMessageVolume());
 
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int amStreamMusicMaxVol = am.getStreamMaxVolume(am.STREAM_MUSIC);
-
-        if (volume != 0) {
-            int amVolume = (int) (volume * amStreamMusicMaxVol) / 100;
-            am.setStreamVolume(am.STREAM_MUSIC, amVolume, 0);
-        }
-        String utteranceId = "id" + this.hashCode();
-
-        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        if (am != null) {
+            int amStreamMusicMaxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            if (volume != 0) {
+                int amVolume = (int) (volume * amStreamMusicMaxVol) / 100;
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, amVolume, 0);
+            }
         } else {
-            tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null);
+            Log.e(TAG, "speak: AudioManager is null");
         }
+
+
+        String utteranceId = "id" + this.hashCode();
+        tts.speak(operationMessage.getMessage(), TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     @Override
@@ -109,9 +92,27 @@ public class SpeakService extends DaggerService implements TextToSpeech.OnInitLi
         super.onCreate();
 
         TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if(tm != null) {
+            tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        } else {
+            Log.e(TAG, "onCreate: TelephonyManager is null");
+        }
 
-        this.tts = new TextToSpeech(this, this);
+        tts = new TextToSpeech(this, status -> {
+            tts.setLanguage(Locale.GERMAN);
+
+            if (status == TextToSpeech.SUCCESS) {
+                synchronized (queue) {
+                    initialized = true;
+
+                    for (OperationMessage message : queue) {
+                        speak(message);
+                    }
+
+                    queue.clear();
+                }
+            }
+        });
     }
 
     @Override

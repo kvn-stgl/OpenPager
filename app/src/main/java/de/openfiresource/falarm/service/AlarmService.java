@@ -30,10 +30,12 @@ import de.openfiresource.falarm.utils.Preferences;
 
 
 public class AlarmService extends DaggerService {
+
     private static final String TAG = "AlarmService";
 
     // Time period between two vibration events
     private final static int VIBRATE_DELAY_TIME = 1000;
+
     private MediaPlayer mPlayer;
     private Vibrator mVibrator;
     private int mVibrateDelayTime;
@@ -131,11 +133,11 @@ public class AlarmService extends DaggerService {
         try {
             // add vibration to alarm alert if it is set
             mVibrateDelayTime = Integer.parseInt(mNotification.getNewMessageVibrate());
-            if (mVibrateDelayTime > 0
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
+            if (mVibrateDelayTime > 0 && ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
                 mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 mHandler.post(mVibrationRunnable);
             }
+
             // Player setup is here
             if (mNotification.isPlayingSound()) {
                 String ringtone = mNotification.getRingtone(); // App.getState().settings().ringtone();
