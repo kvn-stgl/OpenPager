@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public class OperationViewModel extends ViewModel {
 
     private static final String TAG = "OperationViewModel";
 
-    private final Context context;
+    private final WeakReference<Context> context;
 
     private final MutableLiveData<Long> operationId = new MutableLiveData<>();
 
@@ -34,7 +35,7 @@ public class OperationViewModel extends ViewModel {
 
     @Inject
     OperationViewModel(final @NonNull Context context, final @NonNull AppDatabase database) {
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.operation = Transformations.switchMap(operationId, database.operationMessageDao()::findByIdAsync);
         this.timer = Transformations.switchMap(operation, operation -> LiveDataReactiveStreams.fromPublisher(createTimer(operation)));
 
@@ -58,7 +59,7 @@ public class OperationViewModel extends ViewModel {
                 .interval(0,1, TimeUnit.SECONDS, Schedulers.io())
                 .switchMapSingle(interval ->
                         Single.create(
-                                emitter -> emitter.onSuccess(TimeHelper.getDiffText(context, operation.getTimestamp()))
+                                emitter -> emitter.onSuccess(TimeHelper.getDiffText(context.get(), operation.getTimestamp()))
                         )
                 );
     }
