@@ -45,6 +45,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        htmlReport true
+        htmlOutput file("lint-report.html")
+        textOutput 'stdout'
+        textReport true
+        abortOnError true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -89,10 +97,10 @@ dependencies {
     /**
      * Play services
      */
-    implementation "com.google.firebase:firebase-core:$extPlayServiceVersion"
-    implementation "com.google.firebase:firebase-messaging:$extPlayServiceVersion"
-    implementation "com.google.android.gms:play-services-maps:$extPlayServiceVersion"
-    implementation "com.google.android.gms:play-services-analytics:$extPlayServiceVersion"
+    implementation "com.google.firebase:firebase-core:15.0.2"
+    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    implementation "com.google.android.gms:play-services-maps:15.0.1"
+    implementation "com.google.android.gms:play-services-analytics:15.0.2"
 
     /**
      * RxJava
@@ -160,5 +168,3 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
-
-apply plugin: 'com.google.gms.google-services'
