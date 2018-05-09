@@ -1,6 +1,7 @@
 package de.openfiresource.falarm.models.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -30,6 +31,15 @@ public class OperationMessage {
 
     private boolean seen;
     private boolean alarm;
+
+    @ForeignKey(entity = OperationRule.class,
+            parentColumns = "id",
+            childColumns = "operationRuleId",
+            onDelete = ForeignKey.SET_NULL)
+    private Long operationRuleId;
+
+    @Ignore
+    private OperationRule operationRule;
 
     @Ignore
     public OperationMessage() {
@@ -79,7 +89,7 @@ public class OperationMessage {
 
     @Nullable
     public Pair<Double, Double> getLatLngPair() {
-        if(TextUtils.isEmpty(latlng)) {
+        if (TextUtils.isEmpty(latlng)) {
             return null;
         }
 
@@ -126,12 +136,32 @@ public class OperationMessage {
         this.alarm = alarm;
     }
 
-    public OperationRule getRule() {
-        return new OperationRule("Example");
+    public Long getOperationRuleId() {
+        return operationRuleId;
     }
 
-    public void setRule(OperationRule operationRule) {
+    public void setOperationRuleId(Long operationRuleId) {
+        this.operationRuleId = operationRuleId;
+    }
 
+    /**
+     * Important: Do not use this to get the current rule from the DB.
+     * It's only for temporary saving in a attribute of the class.
+     *
+     * @deprecated
+     * @return current rule
+     */
+    @Nullable
+    public OperationRule getRule() {
+        return this.operationRule;
+    }
+
+    /**
+     * Do not use this to save the rule into the db.
+     * @deprecated
+     */
+    public void setOperationRule(OperationRule operationRule) {
+        this.operationRule = operationRule;
     }
 
     @Override

@@ -79,9 +79,8 @@ public class AlarmService extends DaggerService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         long operationId = intent.getLongExtra(OperationActivity.OPERATION_ID, 0);
 
-        OperationMessage mOperationMessage = database.operationMessageDao().findById(operationId);
-
-        OperationRule rule = mOperationMessage.getRule();
+        OperationMessage operationMessage = database.operationMessageDao().findById(operationId);
+        OperationRule rule = database.operationRuleDao().findById(operationMessage.getOperationRuleId());
         mNotification = Notification.byRule(rule, this);
 
         //Start alarm Service
@@ -89,7 +88,7 @@ public class AlarmService extends DaggerService {
 
         // Start the activity where you can stop alarm
         Intent i = new Intent(this, OperationActivity.class);
-        i.putExtra(OperationActivity.OPERATION_ID, mOperationMessage.getId());
+        i.putExtra(OperationActivity.OPERATION_ID, operationMessage.getId());
         i.putExtra(OperationActivity.IS_ALARM, true);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);

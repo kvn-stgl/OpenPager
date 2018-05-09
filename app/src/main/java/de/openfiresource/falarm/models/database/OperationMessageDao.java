@@ -9,6 +9,8 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface OperationMessageDao {
 
@@ -22,7 +24,7 @@ public interface OperationMessageDao {
     OperationMessage findById(long id);
 
     @Query("SELECT * FROM operation_message WHERE id = :id LIMIT 1")
-    LiveData<OperationMessage> findByIdAsync(long id);
+    Flowable<OperationMessage> findByIdAsync(long id);
 
     @Insert
     long insertOperationMessage(OperationMessage operationMessage);

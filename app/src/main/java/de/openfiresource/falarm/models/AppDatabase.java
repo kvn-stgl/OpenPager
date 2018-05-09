@@ -14,7 +14,7 @@ import de.openfiresource.falarm.utils.RoomConverter;
 @Database(entities = {
         de.openfiresource.falarm.models.database.OperationMessage.class,
         de.openfiresource.falarm.models.database.OperationRule.class
-}, version = 2)
+}, version = 3)
 @TypeConverters({RoomConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

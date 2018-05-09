@@ -140,8 +140,11 @@ public class OperationHelper {
 
             incoming.setAlarm(true);
             incoming.setSeen(false);
-            incoming.setRule(bestRule);
             incoming.setTimestampIncoming(now.getTime());
+
+            if(bestRule != null) {
+                incoming.setOperationRuleId(bestRule.getId());
+            }
 
             if (incoming.getTimestamp() == null)
                 incoming.setTimestamp(now.getTime());

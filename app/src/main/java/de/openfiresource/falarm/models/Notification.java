@@ -3,6 +3,7 @@ package de.openfiresource.falarm.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.models.database.OperationRule;
@@ -25,7 +26,7 @@ public class Notification {
         return new Notification(ruleId, context);
     }
 
-    public static Notification byRule(OperationRule rule, Context context) {
+    public static Notification byRule(@Nullable OperationRule rule, Context context) {
         long id = 0;
         if (rule != null && rule.isOwnNotification()) {
             id = rule.getId();

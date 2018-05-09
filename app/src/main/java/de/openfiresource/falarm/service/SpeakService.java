@@ -66,7 +66,7 @@ public class SpeakService extends DaggerService {
         if (temporaryDisable || operationMessage == null)
             return;
 
-        OperationRule rule = operationMessage.getRule();
+        OperationRule rule = database.operationRuleDao().findById(operationMessage.getOperationRuleId());
         Notification notification = Notification.byRule(rule, this);
 
         float volume = Integer.parseInt(notification.getNewMessageVolume());

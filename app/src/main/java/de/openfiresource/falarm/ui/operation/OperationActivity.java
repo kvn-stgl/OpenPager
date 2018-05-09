@@ -95,8 +95,12 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
         viewModel.getOperation()
                 .observe(this, operationMessage -> {
                     operation = operationMessage;
-                    OperationRule operationRule = operationMessage.getRule();
-                    Notification notification = Notification.byRule(operationRule, getApplicationContext());
+
+                    if (operation == null) {
+                        return;
+                    }
+
+                    Notification notification = Notification.byRule(operation.getRule(), getApplicationContext());
 
                     SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, operationMessage);
 

@@ -36,7 +36,12 @@ public class OperationViewModel extends ViewModel {
     @Inject
     OperationViewModel(final @NonNull Context context, final @NonNull AppDatabase database) {
         this.context = new WeakReference<>(context);
-        this.operation = Transformations.switchMap(operationId, database.operationMessageDao()::findByIdAsync);
+        this.operation = Transformations.switchMap(operationId, id -> LiveDataReactiveStreams.fromPublisher(
+                database.operationMessageDao().findByIdAsync(id).map(operation -> {
+                    operation.setOperationRule(database.operationRuleDao().findById(operation.getOperationRuleId()));
+                    return operation;
+                }))
+        );
         this.timer = Transformations.switchMap(operation, operation -> LiveDataReactiveStreams.fromPublisher(createTimer(operation)));
 
         Log.d(TAG, "OperationViewModel() called");
@@ -56,7 +61,7 @@ public class OperationViewModel extends ViewModel {
 
     private Flowable<String> createTimer(OperationMessage operation) {
         return Flowable
-                .interval(0,1, TimeUnit.SECONDS, Schedulers.io())
+                .interval(0, 1, TimeUnit.SECONDS, Schedulers.io())
                 .switchMapSingle(interval ->
                         Single.create(
                                 emitter -> emitter.onSuccess(TimeHelper.getDiffText(context.get(), operation.getTimestamp()))

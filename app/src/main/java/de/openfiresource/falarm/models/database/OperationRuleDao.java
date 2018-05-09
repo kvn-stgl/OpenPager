@@ -22,6 +22,9 @@ public interface OperationRuleDao {
     @Query("SELECT * FROM operation_rule WHERE id = :id LIMIT 1")
     OperationRule findById(long id);
 
+    @Query("SELECT * FROM operation_rule WHERE id = :id LIMIT 1")
+    LiveData<OperationRule> findByIdAsync(long id);
+
     @Insert
     Long insertOperationRule(OperationRule operationRule);
 
