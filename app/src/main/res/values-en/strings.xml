@@ -9,6 +9,22 @@
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="delete">Delete</string>
+    <plurals name="time_helper_diff_day">
+        <item quantity="one">%d day, </item>
+        <item quantity="other">%d days, </item>
+    </plurals>
+    <plurals name="time_helper_diff_hour">
+        <item quantity="one">%d hour, </item>
+        <item quantity="other">%d hours, </item>
+    </plurals>
+    <plurals name="time_helper_diff_minute">
+        <item quantity="one">%d minute, </item>
+        <item quantity="other">%d minutes, </item>
+    </plurals>
+    <plurals name="time_helper_diff_second">
+        <item quantity="one">%d second, </item>
+        <item quantity="other">%d seconds, </item>
+    </plurals>
     <string name="fcm_key_copied">FCM-ID copied in the clipboard!</string>
     <string name="aboutLibraries_description_text">fAlarm is a alarm app for German firefighters. Have fun with it :=)</string>
     <string name="main_dialog_delete">Alarm seriously delete?</string>

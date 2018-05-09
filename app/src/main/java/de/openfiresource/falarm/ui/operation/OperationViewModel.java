@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -23,6 +24,8 @@ public class OperationViewModel extends ViewModel {
 
     private static final String TAG = "OperationViewModel";
 
+    private final Context context;
+
     private final MutableLiveData<Long> operationId = new MutableLiveData<>();
 
     private final LiveData<OperationMessage> operation;
@@ -30,7 +33,8 @@ public class OperationViewModel extends ViewModel {
     private final LiveData<String> timer;
 
     @Inject
-    OperationViewModel(final @NonNull AppDatabase database) {
+    OperationViewModel(final @NonNull Context context, final @NonNull AppDatabase database) {
+        this.context = context;
         this.operation = Transformations.switchMap(operationId, database.operationMessageDao()::findByIdAsync);
         this.timer = Transformations.switchMap(operation, operation -> LiveDataReactiveStreams.fromPublisher(createTimer(operation)));
 
@@ -54,7 +58,7 @@ public class OperationViewModel extends ViewModel {
                 .interval(0,1, TimeUnit.SECONDS, Schedulers.io())
                 .switchMapSingle(interval ->
                         Single.create(
-                                emitter -> emitter.onSuccess(TimeHelper.getDiffText(operation.getTimestamp()))
+                                emitter -> emitter.onSuccess(TimeHelper.getDiffText(context, operation.getTimestamp()))
                         )
                 );
     }

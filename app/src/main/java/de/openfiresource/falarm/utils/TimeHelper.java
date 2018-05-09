@@ -1,9 +1,13 @@
 package de.openfiresource.falarm.utils;
 
+import android.content.Context;
+
 import java.util.Date;
 
+import de.openfiresource.falarm.R;
+
 public class TimeHelper {
-    public static String getDiffText(Date timestamp) {
+    public static String getDiffText(Context context, Date timestamp) {
         Date actual = new Date();
         long diffInSeconds = (actual.getTime() - timestamp.getTime()) / 1000;
         long diff[] = new long[]{0, 0, 0, 0};
@@ -18,13 +22,17 @@ public class TimeHelper {
 
         //String
         String text = "vor ";
-        if (diff[0] > 0)
-            text += String.format("%d Tag%s, ", diff[0], diff[0] > 1 ? "e" : "");
-        if (diff[1] > 0)
-            text += String.format("%d Stunde%s, ", diff[1], diff[1] > 1 ? "n" : "");
-        if (diff[2] > 0)
-            text += String.format("%d Minute%s, ", diff[2], diff[2] > 1 ? "n" : "");
+        if (diff[0] > 0) {
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_day, (int) diff[0], diff[0]);
+        }
+        if (diff[1] > 0) {
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_hour, (int) diff[1], diff[1]);
+        }
+        if (diff[2] > 0) {
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_minute, (int) diff[2], diff[2]);
+        }
 
-        return text + String.format("%d Sekunde%s", diff[3], diff[3] > 1 ? "n" : "");
+        text += context.getResources().getQuantityString(R.plurals.time_helper_diff_second, (int) diff[3], diff[3]);
+        return text;
     }
 }
