@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -104,6 +105,10 @@ public class OperationMessage {
         this.latlng = latlng;
     }
 
+    public String getOperationTime() {
+        return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(getTimestamp());
+    }
+
     public Date getTimestamp() {
         return timestamp;
     }
@@ -137,6 +142,10 @@ public class OperationMessage {
     }
 
     public Long getOperationRuleId() {
+        if(operationRuleId == null) {
+            return 0L;
+        }
+
         return operationRuleId;
     }
 
