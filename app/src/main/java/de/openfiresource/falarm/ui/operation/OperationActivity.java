@@ -100,8 +100,6 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
                         return;
                     }
 
-                    Notification notification = Notification.byRule(operation.getRule(), getApplicationContext());
-
                     SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, operationMessage);
 
                     // Set up the ViewPager with the sections adapter.
