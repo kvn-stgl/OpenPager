@@ -14,10 +14,10 @@ import io.reactivex.Flowable;
 @Dao
 public interface OperationMessageDao {
 
-    @Query("SELECT * FROM operation_message")
+    @Query("SELECT * FROM operation_message ORDER BY timestamp DESC")
     LiveData<List<OperationMessage>> getAllAsync();
 
-    @Query("SELECT * FROM operation_message")
+    @Query("SELECT * FROM operation_message ORDER BY timestamp DESC")
     List<OperationMessage> getAll();
 
     @Query("SELECT * FROM operation_message WHERE id = :id LIMIT 1")

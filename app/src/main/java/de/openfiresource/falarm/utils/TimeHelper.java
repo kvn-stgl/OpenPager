@@ -23,13 +23,13 @@ public class TimeHelper {
         //String
         String text = "vor ";
         if (diff[0] > 0) {
-            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_day, (int) diff[0], diff[0]);
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_day, (int) diff[0], diff[0]) + " ";
         }
         if (diff[1] > 0) {
-            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_hour, (int) diff[1], diff[1]);
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_hour, (int) diff[1], diff[1]) + " ";
         }
         if (diff[2] > 0) {
-            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_minute, (int) diff[2], diff[2]);
+            text += context.getResources().getQuantityString(R.plurals.time_helper_diff_minute, (int) diff[2], diff[2]) + " ";
         }
 
         text += context.getResources().getQuantityString(R.plurals.time_helper_diff_second, (int) diff[3], diff[3]);
