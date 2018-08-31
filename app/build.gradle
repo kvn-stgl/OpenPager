@@ -95,10 +95,10 @@ dependencies {
     /**
      * Play services
      */
-    implementation "com.google.firebase:firebase-core:15.0.2"
-    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    implementation "com.google.firebase:firebase-core:16.0.3"
+    implementation "com.google.firebase:firebase-messaging:17.3.0"
     implementation "com.google.android.gms:play-services-maps:15.0.1"
-    implementation "com.google.android.gms:play-services-analytics:15.0.2"
+    implementation "com.google.android.gms:play-services-analytics:16.0.3"
 
     /**
      * RxJava
@@ -129,14 +129,14 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:common-java8:1.1.1"
 
     // Room
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
     // Java8 support for Lifecycles
     implementation "android.arch.lifecycle:common-java8:1.1.1"
 
     // RxJava support for Room (use 1.1.0-beta1 for latest alpha)
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
 
     // ReactiveStreams support for LiveData
     implementation "android.arch.lifecycle:reactivestreams:1.1.1"
@@ -158,7 +158,7 @@ dependencies {
     testImplementation "android.arch.core:core-testing:1.1.1"
 
     // Test helpers for Room
-    testImplementation "android.arch.persistence.room:testing:1.0.0"
+    testImplementation "android.arch.persistence.room:testing:1.1.1"
 
     /**
      * LeakCanary
@@ -167,4 +167,4 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
 
-// apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
