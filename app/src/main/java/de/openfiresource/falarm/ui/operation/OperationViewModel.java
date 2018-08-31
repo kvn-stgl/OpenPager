@@ -38,7 +38,9 @@ public class OperationViewModel extends ViewModel {
         this.context = new WeakReference<>(context);
         this.operation = Transformations.switchMap(operationId, id -> LiveDataReactiveStreams.fromPublisher(
                 database.operationMessageDao().findByIdAsync(id).map(operation -> {
-                    operation.setOperationRule(database.operationRuleDao().findById(operation.getOperationRuleId()));
+                    if (operation.getOperationRuleId() != null) {
+                        operation.setOperationRule(database.operationRuleDao().findById(operation.getOperationRuleId()));
+                    }
                     return operation;
                 }))
         );
