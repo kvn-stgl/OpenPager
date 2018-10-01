@@ -7,15 +7,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.google.gms:google-services:4.1.0'
     }
 }
 
 ext {
-    extSupportLibraryVersion = '27.1.1'
-    extCompileSdkVersion = 27
-    extBuildToolsVersion = '27.0.3'
+    extSupportLibraryVersion = '28.0.0'
+    extCompileSdkVersion = 28
+    extBuildToolsVersion = '28.0.3'
 }
 
 allprojects {
