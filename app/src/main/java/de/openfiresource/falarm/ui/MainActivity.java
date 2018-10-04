@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.TedPermissionResult;
@@ -30,7 +28,7 @@ import de.openfiresource.falarm.ui.settings.SettingsActivity;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 import io.reactivex.observers.DisposableSingleObserver;
 
-public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MainActivity extends BaseRevealActivity implements HasSupportFragmentInjector {
 
     private static final String TAG = "MainActivity";
 
@@ -42,15 +40,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     SharedPreferences sharedPreferences;
 
-    ViewGroup rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
-
-        rootView = findViewById(android.R.id.content);
 
         checkPermissions();
 

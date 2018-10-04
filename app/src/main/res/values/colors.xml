@@ -9,4 +9,8 @@
     <color name="colorWhite">#FFFFFF</color>
 
     <color name="colorDivider">#d9d9d9</color>
+
+    <color name="mb_gray">#ffdedede</color>
+    <color name="mb_blue">#ff0099cc</color>
+    <color name="mb_blue_dark">#ff00719b</color>
 </resources>
