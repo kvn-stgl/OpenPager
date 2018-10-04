@@ -20,6 +20,7 @@ import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.HasServiceInjector;
 import de.openfiresource.falarm.dagger.AppInjector;
 import de.openfiresource.falarm.models.Notification;
+import timber.log.Timber;
 
 public class App extends Application implements
         HasActivityInjector,
@@ -48,6 +49,12 @@ public class App extends Application implements
         component = AppInjector.init(this);
 
         LeakCanary.install(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            // TODO: 05.10.2018 CrashReportingTree
+        }
 
         //Load Default settings
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
