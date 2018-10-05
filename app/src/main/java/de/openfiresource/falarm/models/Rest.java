@@ -3,11 +3,13 @@ package de.openfiresource.falarm.models;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import de.openfiresource.falarm.models.api.Device;
 import de.openfiresource.falarm.models.api.OpenPagerService;
 import de.openfiresource.falarm.models.api.UserKey;
 import de.openfiresource.falarm.models.api.UserLogin;
-import de.openfiresource.falarm.models.rest.TokenInterceptor;
+import de.openfiresource.falarm.models.api.TokenInterceptor;
 import de.openfiresource.falarm.utils.Preferences;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
@@ -48,7 +50,11 @@ public class Rest {
         return service.login(userLogin).subscribeOn(Schedulers.io());
     }
 
-    public Single<ResponseBody> logout() {
+    Single<ResponseBody> logout() {
         return service.logout().subscribeOn(Schedulers.io());
+    }
+
+    Completable putDeviceInfo(Device device) {
+        return service.putDeviceInfo(device.getFcmToken(), device).subscribeOn(Schedulers.io());
     }
 }

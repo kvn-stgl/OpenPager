@@ -206,6 +206,8 @@
     <string name="pref_desc_priority">Welche Priorität hat die Regel?</string>
     <string name="pref_title_speak">Alarmnachricht vorlesen</string>
     <string name="pref_desc_speak">Liest die Alarmnachricht vor, nachdem diese bestätigt wurde.</string>
+    <string name="pref_fcm_alert_title">Push-Key erneut registrieren?</string>
+    <string name="pref_fcm_alert_message">Der Push-Key wird erneut beim Server registriert.</string>
 
     <!-- General -->
     <string name="cancel">Abbrechen</string>

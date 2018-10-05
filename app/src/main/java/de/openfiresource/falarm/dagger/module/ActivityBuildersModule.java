@@ -34,7 +34,7 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector(modules = RuleDetailActivityModule.class)
     abstract RuleListActivity bindRuleListActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = SettingsActivityModule.class)
     abstract SettingsActivity bindSettingsActivity();
 
     @ContributesAndroidInjector

@@ -2,7 +2,7 @@ package de.openfiresource.falarm;
 
 
 import android.content.Intent;
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -11,12 +11,15 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import de.openfiresource.falarm.models.AppDatabase;
+import de.openfiresource.falarm.models.UserRepository;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.OperationHelper;
 import de.openfiresource.falarm.utils.Preferences;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -27,6 +30,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Inject
     Preferences preferences;
+
+    @Inject
+    UserRepository userRepository;
 
     @Override
     public void onCreate() {
@@ -53,11 +59,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // [END_EXCLUDE]
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Timber.d("From: %s", remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0 && preferences.isPushActive()) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Timber.d("Message data payload: %s", remoteMessage.getData());
             OperationHelper.createOperationFromFCM(preferences, database, remoteMessage.getData())
                     .observeOn(Schedulers.io())
                     .map(operationMessage -> database.operationMessageDao().insertOperationMessage(operationMessage))
@@ -78,11 +84,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.e(TAG, "onError: error saving operation", e);
+                            Timber.e(e, "onError: error saving operation");
                             dispose();
                         }
                     });
         }
     }
     // [END receive_message]
+
+    /**
+     * Called if InstanceID token is updated. This may occur if the security of
+     * the previous token had been compromised. Note that this is called when the InstanceID token
+     * is initially generated so this is where you would retrieve the token.
+     */
+    @Override
+    public void onNewToken(String token) {
+        Timber.d("Refreshed token: %s", token);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        sendRegistrationToServer(token);
+    }
+    // [END on_new_token]
+
+
+    /**
+     * Persist token to third-party servers.
+     * <p>
+     * Modify this method to associate the user's FCM InstanceID token with any server-side account
+     * maintained by your application.
+     *
+     * @param token The new token.
+     */
+    private void sendRegistrationToServer(String token) {
+        if(!TextUtils.isEmpty(preferences.getUserKey().get())) {
+            userRepository.sendDeviceInfo(token)
+                    .subscribe(new DisposableCompletableObserver() {
+                        @Override
+                        public void onComplete() {
+                            Timber.d("Successfully sent token %s to server", token);
+                            dispose();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e, "Error sending token to server");
+                            dispose();
+                        }
+                    });
+        }
+    }
 }

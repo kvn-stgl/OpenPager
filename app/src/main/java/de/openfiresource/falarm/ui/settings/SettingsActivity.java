@@ -1,7 +1,9 @@
 package de.openfiresource.falarm.ui.settings;
 
 
+import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -17,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -24,9 +27,19 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
 import de.openfiresource.falarm.R;
+import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.Notification;
+import de.openfiresource.falarm.models.UserRepository;
 import de.openfiresource.falarm.utils.Constants;
+import io.reactivex.observers.DisposableCompletableObserver;
+import timber.log.Timber;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -39,7 +52,8 @@ import de.openfiresource.falarm.utils.Constants;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity implements HasFragmentInjector {
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -89,6 +103,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         return true;
     };
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -177,6 +194,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    @Override
+    public AndroidInjector<Fragment> fragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 
     /**
@@ -269,9 +291,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     public static class DataSyncPreferenceFragment extends PreferenceFragment {
+
+        @Inject
+        public UserRepository userRepository;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            AndroidInjection.inject(this);
+
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
@@ -286,26 +315,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             final String token = FirebaseInstanceId.getInstance().getToken();
             fcmPreference.setSummary(token);
             fcmPreference.setOnPreferenceClickListener(preference -> {
-
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, token);
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-
-                /**
-                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                 android.content.ClipData clip = android.content.ClipData.newPlainText("FCM-ID", token);
-                 clipboard.setPrimaryClip(clip);
-
-                 //Show a toast
-                 String message = getString(R.string.fcm_key_copied);
-                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
-                 toast.show(); */
-
+                new AlertDialog
+                        .Builder(getActivity())
+                        .setTitle(R.string.pref_fcm_alert_title)
+                        .setMessage(R.string.pref_fcm_alert_message)
+                        .setPositiveButton(android.R.string.yes, (dialog, id) -> sendFCMKey())
+                        .setNegativeButton(android.R.string.no, (dialog, id) -> {
+                            // User cancelled the dialog
+                        }).create().show();
                 return true;
             });
             getPreferenceScreen().addPreference(fcmPreference);
+        }
+
+        private void sendFCMKey() {
+            String token = FirebaseInstanceId.getInstance().getToken();
+            userRepository.sendDeviceInfo(token)
+                    .subscribe(new DisposableCompletableObserver() {
+                        @Override
+                        public void onComplete() {
+                            Timber.d("Successfully sent token %s to server", token);
+                            dispose();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e, "Error sending token to server");
+                            dispose();
+                        }
+                    });
         }
 
         @Override

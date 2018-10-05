@@ -36,7 +36,10 @@ import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.UserRepository;
 import de.openfiresource.falarm.models.api.UserKey;
 import de.openfiresource.falarm.utils.ValidatonHelper;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import timber.log.Timber;
 
@@ -160,10 +163,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             userRepository.login(email, password)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> signInButton.startAnimation())
-                    .subscribe(new DisposableSingleObserver<UserKey>() {
+                    .subscribe(new DisposableCompletableObserver() {
                         @Override
-                        public void onSuccess(UserKey userKey) {
+                        public void onComplete() {
                             presentActivity(signInButton);
+                            dispose();
                         }
 
                         @Override
@@ -175,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             Timber.e(e, "Login failed");
                             signInButton.revertAnimation();
+                            dispose();
                         }
                     });
         }

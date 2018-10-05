@@ -1,4 +1,4 @@
-package de.openfiresource.falarm.models.rest;
+package de.openfiresource.falarm.models.api;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
