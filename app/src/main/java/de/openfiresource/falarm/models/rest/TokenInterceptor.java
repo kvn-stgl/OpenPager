@@ -18,6 +18,7 @@ public class TokenInterceptor implements Interceptor {
 
     /**
      * Constructor for Token interceptor
+     *
      * @param preferences
      */
     public TokenInterceptor(Preferences preferences) {
