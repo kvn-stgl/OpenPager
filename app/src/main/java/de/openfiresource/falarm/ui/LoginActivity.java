@@ -155,10 +155,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Credential credential = new Credential.Builder(email)
-                    .setPassword(password)
-                    .build();
-
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             userRepository.login(email, password)

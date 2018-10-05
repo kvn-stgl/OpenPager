@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import de.openfiresource.falarm.models.api.OpenPagerService;
 import de.openfiresource.falarm.models.api.UserKey;
 import de.openfiresource.falarm.models.api.UserLogin;
+import de.openfiresource.falarm.models.rest.TokenInterceptor;
+import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
@@ -22,13 +24,14 @@ public class Rest {
     private final OpenPagerService service;
 
     @Inject
-    Rest() {
+    Rest(Preferences preferences) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .addInterceptor(new TokenInterceptor(preferences))
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
