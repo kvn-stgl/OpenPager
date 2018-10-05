@@ -230,6 +230,7 @@
     <string name="error_invalid_password">Das Passwort ist zu kurz</string>
     <string name="error_incorrect_password">Das Passwort ist nicht korrekt</string>
     <string name="error_field_required">Dieses Feld ist ein Pflichtfeld</string>
+    <string name="error_invalid_credentials">E-Mail oder Passwort falsch</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

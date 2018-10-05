@@ -7,6 +7,7 @@ import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.service.SpeakService;
 import de.openfiresource.falarm.ui.LoginActivity;
 import de.openfiresource.falarm.ui.MainActivity;
+import de.openfiresource.falarm.ui.StartActivity;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.ui.settings.RuleDetailActivity;
 import de.openfiresource.falarm.ui.settings.RuleListActivity;
@@ -17,6 +18,9 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = MainActivityModule.class)
     abstract MainActivity bindMainActivity();
+
+    @ContributesAndroidInjector
+    abstract StartActivity bindStartActivity();
 
     @ContributesAndroidInjector()
     abstract LoginActivity bindLoginActivity();

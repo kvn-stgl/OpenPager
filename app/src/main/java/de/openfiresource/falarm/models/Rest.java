@@ -1,11 +1,10 @@
 package de.openfiresource.falarm.models;
 
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.openfiresource.falarm.models.api.OpenPagerService;
+import de.openfiresource.falarm.models.api.UserKey;
 import de.openfiresource.falarm.models.api.UserLogin;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -42,7 +41,7 @@ public class Rest {
         service = retrofit.create(OpenPagerService.class);
     }
 
-    public Single<ResponseBody> login(UserLogin userLogin) {
+    Single<UserKey> login(UserLogin userLogin) {
         return service.login(userLogin).subscribeOn(Schedulers.io());
     }
 

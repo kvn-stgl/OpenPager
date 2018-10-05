@@ -9,16 +9,16 @@ import retrofit2.http.PUT;
 
 public interface OpenPagerService {
 
-    @POST("auth/login")
-    Single<ResponseBody> login(@Body UserLogin user);
+    @POST("auth/login/")
+    Single<UserKey> login(@Body UserLogin user);
 
-    @POST("auth/logout")
+    @POST("auth/logout/")
     Single<ResponseBody> logout();
 
-    @GET("auth/user")
+    @GET("auth/user/")
     Single<User> getUser();
 
-    @PUT("auth/user")
+    @PUT("auth/user/")
     Single<User> putUser();
 
 }

@@ -68,6 +68,9 @@ dependencies {
 
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
 
+    /**
+     * Retrofit
+     */
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -100,10 +103,11 @@ dependencies {
     /**
      * Play services
      */
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.google.firebase:firebase-messaging:17.3.2'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
-    implementation 'com.google.android.gms:play-services-analytics:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.4'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     /**
      * RxJava
@@ -112,6 +116,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'nl.littlerobots.rxlint:rxlint:1.6.1'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     /**
      * Dagger

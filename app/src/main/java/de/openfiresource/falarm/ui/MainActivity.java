@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -27,6 +26,7 @@ import de.openfiresource.falarm.ui.settings.RuleListActivity;
 import de.openfiresource.falarm.ui.settings.SettingsActivity;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
 import io.reactivex.observers.DisposableSingleObserver;
+import timber.log.Timber;
 
 public class MainActivity extends BaseRevealActivity implements HasSupportFragmentInjector {
 
@@ -82,7 +82,7 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: Error while fetching permissions", e);
+                        Timber.e(e, "onError: Error while fetching permissions");
                         dispose();
                     }
                 });
@@ -94,7 +94,7 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
             PackageInfo pi = pm.getPackageInfo(getBaseContext().getPackageName(), 0);
             return pi.versionCode;
         } catch (PackageManager.NameNotFoundException ex) {
-            Log.e(TAG, "getVersionCode: ", ex);
+            Timber.e(ex, "getVersionCode: ");
         }
         return 0;
     }

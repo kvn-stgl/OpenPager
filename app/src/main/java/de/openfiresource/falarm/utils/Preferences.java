@@ -2,12 +2,21 @@ package de.openfiresource.falarm.utils;
 
 import android.content.SharedPreferences;
 
+import com.f2prateek.rx.preferences2.Preference;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
+
 public class Preferences {
 
     private final SharedPreferences sharedPreferences;
+    private final RxSharedPreferences rxPreferences;
 
     public Preferences(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
+        rxPreferences = RxSharedPreferences.create(sharedPreferences);
+    }
+
+    public Preference<String> getUserKey() {
+        return rxPreferences.getString("user_key", "");
     }
 
     public int getAlarmFontSize() {
