@@ -27,16 +27,25 @@ public class TokenInterceptor implements Interceptor {
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        Request original = chain.request();
-        Request modifiedRequest = original;
+        Request request = chain.request();
 
-        String token = preferences.getUserKey().get();
-        if (!TextUtils.isEmpty(token)) {
-            modifiedRequest = original.newBuilder()
-                    .addHeader(header, "Token " + token)
-                    .build();
+        Request.Builder builder = request.newBuilder();
+        builder.header("Accept", "application/json"); //if necessary, say to consume JSON
+
+        String token = preferences.getUserKey().get(); //save token of this request for future
+        setAuthHeader(builder, token); //write current token to request
+
+        request = builder.build(); //overwrite old request
+        Response response = chain.proceed(request); //perform request, here original request will be executed
+
+        if (response.code() == 401) { //if unauthorized
+            // TODO: 07.10.2018 logout
         }
+        return response;
+    }
 
-        return chain.proceed(modifiedRequest);
+    private void setAuthHeader(Request.Builder builder, String token) {
+        if (!TextUtils.isEmpty(token)) //Add Auth token to each request if authorized
+            builder.header("Authorization", String.format("Token %s", token));
     }
 }

@@ -15,7 +15,7 @@ public interface OpenPagerService {
     Single<UserKey> login(@Body UserLogin user);
 
     @POST("auth/logout/")
-    Single<ResponseBody> logout();
+    Completable logout();
 
     @GET("auth/user/")
     Single<User> getUser();

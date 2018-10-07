@@ -3,6 +3,7 @@
     <string name="action_rules">Regeln</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_about">Über</string>
+    <string name="action_logout">Ausloggen</string>
     <string name="action_navigation">Navi</string>
     <string name="action_stopSpeak">Vorlesen anhalten</string>
 
@@ -223,6 +224,7 @@
     <string name="permission_denied_title">Berechtigungen</string>
     <string name="permission_denied_message">Ohne diese Berechtigungen wird fAlarm nicht oder nur eingeschränkt arbeiten..</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_logout">Sign out</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -233,6 +235,7 @@
     <string name="error_incorrect_password">Das Passwort ist nicht korrekt</string>
     <string name="error_field_required">Dieses Feld ist ein Pflichtfeld</string>
     <string name="error_invalid_credentials">E-Mail oder Passwort falsch</string>
+    <string name="error_invalid_logout">Logout nicht möglich (keine Internetverbindung)</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

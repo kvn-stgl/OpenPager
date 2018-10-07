@@ -8,6 +8,7 @@ import de.openfiresource.falarm.models.api.OpenPagerService;
 import de.openfiresource.falarm.models.api.UserKey;
 import de.openfiresource.falarm.models.api.UserLogin;
 import de.openfiresource.falarm.models.api.TokenInterceptor;
+import de.openfiresource.falarm.utils.Constants;
 import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -30,14 +31,13 @@ public class Rest {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
                 .addInterceptor(new TokenInterceptor(preferences))
+                .addInterceptor(logging)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://area51.openpager.de/api/v1/")
+                .baseUrl(Constants.BACKEND_URL_API)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -50,7 +50,7 @@ public class Rest {
         return service.login(userLogin).subscribeOn(Schedulers.io());
     }
 
-    Single<ResponseBody> logout() {
+    Completable logout() {
         return service.logout().subscribeOn(Schedulers.io());
     }
 

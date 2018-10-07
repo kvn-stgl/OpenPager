@@ -10,6 +10,7 @@ import de.openfiresource.falarm.models.api.UserLogin;
 import de.openfiresource.falarm.utils.DeviceInfoHelper;
 import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.Completable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 @Singleton
@@ -39,6 +40,11 @@ public class UserRepository {
                 })
                 .flatMapCompletable(userKey -> sendDeviceInfo(FirebaseInstanceId.getInstance().getToken()))
                 .doOnError(throwable -> preferences.getUserKey().set(""));
+    }
+
+    public Completable logout() {
+        return rest.logout()
+                .doOnComplete(() -> preferences.getUserKey().set(""));
     }
 
     public Completable sendDeviceInfo(String fcmToken) {

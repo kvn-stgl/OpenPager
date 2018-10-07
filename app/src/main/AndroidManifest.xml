@@ -46,7 +46,11 @@
             android:theme="@style/AppTheme.Transparent" />
         <activity
             android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".ui.LogoutActivity"
+            android:label="@string/title_activity_logout" />
         <activity
             android:name=".ui.StartActivity"
             android:label="@string/app_name"

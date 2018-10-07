@@ -6,6 +6,7 @@ import de.openfiresource.falarm.MyFirebaseMessagingService;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.service.SpeakService;
 import de.openfiresource.falarm.ui.LoginActivity;
+import de.openfiresource.falarm.ui.LogoutActivity;
 import de.openfiresource.falarm.ui.MainActivity;
 import de.openfiresource.falarm.ui.StartActivity;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
@@ -24,6 +25,9 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector()
     abstract LoginActivity bindLoginActivity();
+
+    @ContributesAndroidInjector()
+    abstract LogoutActivity bindLogoutActivity();
 
     @ContributesAndroidInjector(modules = OperationActivityModule.class)
     abstract OperationActivity bindOperationActivity();

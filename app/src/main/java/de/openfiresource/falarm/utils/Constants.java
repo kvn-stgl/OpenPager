@@ -2,6 +2,14 @@ package de.openfiresource.falarm.utils;
 
 public class Constants {
 
+    public static final String BACKEND_URL = "http://area51.openpager.de";
+
+    public static final String BACKEND_URL_API = BACKEND_URL + "/api/v1/";
+
+    public static final String BACKEND_URL_SIGN_UP = BACKEND_URL + "/accounts/signup/";
+
+    public static final String BACKEND_URL_PASSWORD_RESET = BACKEND_URL + "/accounts/password/reset/";
+
     public static final String PREF_GENERAL_ALARM_FONTSIZE = "general_alarm_fontsize";
 
     public static final String PREF_GENERAL_ALARM_TIMEOUT = "general_alarm_timeout";

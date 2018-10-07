@@ -30,8 +30,6 @@ import timber.log.Timber;
 
 public class MainActivity extends BaseRevealActivity implements HasSupportFragmentInjector {
 
-    private static final String TAG = "MainActivity";
-
     public static final String PREF_SHOW_WELCOME_CARD_VERSION = "showWelcomeCardVersion";
 
     @Inject
@@ -39,8 +37,7 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
 
     @Inject
     SharedPreferences sharedPreferences;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,6 +162,10 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
                 return true;
             case R.id.action_settings:
                 intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_logout:
+                intent = new Intent(this, LogoutActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_about:
