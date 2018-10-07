@@ -2,7 +2,7 @@ package de.openfiresource.falarm.utils;
 
 public class Constants {
 
-    public static final String BACKEND_URL = "http://area51.openpager.de";
+    private static final String BACKEND_URL = "https://area51.openpager.de";
 
     public static final String BACKEND_URL_API = BACKEND_URL + "/api/v1/";
 
