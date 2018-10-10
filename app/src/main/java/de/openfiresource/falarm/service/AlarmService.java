@@ -16,8 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
-import com.orhanobut.logger.Logger;
-
 import javax.inject.Inject;
 
 import dagger.android.DaggerService;
@@ -27,11 +25,10 @@ import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import de.openfiresource.falarm.ui.operation.OperationActivity;
 import de.openfiresource.falarm.utils.Preferences;
+import timber.log.Timber;
 
 
 public class AlarmService extends DaggerService {
-
-    private static final String TAG = "AlarmService";
 
     // Time period between two vibration events
     private final static int VIBRATE_DELAY_TIME = 1000;
@@ -158,7 +155,7 @@ public class AlarmService extends DaggerService {
             }
 
         } catch (Exception e) {
-            Logger.e(e, "Error playing alarm");
+            Timber.e(e, "Error playing alarm");
             stopSelf();
         }
     }

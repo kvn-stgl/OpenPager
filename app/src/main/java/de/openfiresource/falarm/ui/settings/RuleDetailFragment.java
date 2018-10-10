@@ -11,8 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.orhanobut.logger.Logger;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
@@ -28,6 +26,7 @@ import de.openfiresource.falarm.models.database.OperationRule;
 import io.reactivex.Completable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * A fragment representing a single Rule detail screen.
@@ -57,9 +56,10 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
      * A preference value change listener that updates the preference's summary
      * to reflect its new value and save the preference to the database.
      */
-    private Preference.OnPreferenceChangeListener sBindPreferenceToDatabaseListener = (preference, value) -> {
-        if (value == null)
+    private final Preference.OnPreferenceChangeListener sBindPreferenceToDatabaseListener = (preference, value) -> {
+        if (value == null) {
             return true;
+        }
         String methodName = getMethodFromPrefKey(preference, "set");
         String stringValue = value.toString();
         Method setter;
@@ -74,9 +74,9 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
                 preference.setSummary(stringValue);
             }
         } catch (SecurityException e) {
-            Logger.e(e, "Security Exception on relfection");
+            Timber.e(e, "Security Exception on relfection");
         } catch (NoSuchMethodException e) {
-            Logger.e(e, "Getter not found");
+            Timber.e(e, "Getter not found");
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -99,7 +99,7 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
     };
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_RULE_ID)) {
@@ -196,21 +196,24 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
         // current value.
         Method getter;
         String type = "get";
-        if (preference instanceof CheckBoxPreference) type = "is";
+        if (preference instanceof CheckBoxPreference) {
+            type = "is";
+        }
         String methodName = getMethodFromPrefKey(preference, type);
 
         try {
             getter = operationRule.getClass().getMethod(methodName);
             Object value = getter.invoke(operationRule);
 
-            if (preference instanceof CheckBoxPreference)
+            if (preference instanceof CheckBoxPreference) {
                 ((CheckBoxPreference) preference).setChecked((Boolean) value);
+            }
 
             sBindPreferenceToDatabaseListener.onPreferenceChange(preference, value);
         } catch (SecurityException e) {
-            Logger.e(e, "Security Exception on relfection");
+            Timber.e(e, "Security Exception on relfection");
         } catch (NoSuchMethodException e) {
-            Logger.e(e, "Getter not found");
+            Timber.e(e, "Getter not found");
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

@@ -9,7 +9,10 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 
+import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -51,7 +54,12 @@ public class App extends Application implements
         LeakCanary.install(this);
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+            Timber.plant(new Timber.DebugTree() {
+                @Override
+                protected void log(int priority, String tag, @NotNull String message, Throwable t) {
+                    Logger.log(priority, tag, message, t);
+                }
+            });
         } else {
             // TODO: 05.10.2018 CrashReportingTree
         }

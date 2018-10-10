@@ -2,10 +2,7 @@ package de.openfiresource.falarm.utils;
 
 import android.text.TextUtils;
 
-import com.orhanobut.logger.Logger;
-
 import java.net.URLDecoder;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -122,7 +119,7 @@ public class OperationHelper {
                         stopValue.add(Calendar.DATE, +1);
                     }
                 } catch (ParseException e) {
-                    Logger.e(e, "Error parsing start/stop time");
+                    Timber.e(e, "Error parsing start/stop time");
                     e.printStackTrace();
                 }
 

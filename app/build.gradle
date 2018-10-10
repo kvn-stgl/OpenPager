@@ -81,11 +81,6 @@ dependencies {
      * Timber logging
      */
     implementation 'com.jakewharton.timber:timber:4.7.1'
-
-
-    /**
-     * Things to remove
-     */
     implementation 'com.orhanobut:logger:1.15'
 
     /**
