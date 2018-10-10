@@ -19,6 +19,7 @@ import de.openfiresource.falarm.models.AppDatabase;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.models.database.OperationRule;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 import static de.openfiresource.falarm.utils.EncryptionUtils.decrypt;
 
@@ -34,41 +35,45 @@ public class OperationHelper {
             try {
                 for (String string : keys) {
                     String value = URLDecoder.decode(extras.get(string), EncryptionUtils.CHARACTER_ENCODING);
+
+                    if (TextUtils.isEmpty(value)) {
+                        continue;
+                    }
+
                     switch (string) {
-                        case "awf_message":
-                            if (encryption) {
-                                value = decrypt(value, encryptionKey);
-                            }
-                            incoming.setMessage(value);
-                            break;
-                        case "awf_title":
-                            if (encryption) {
-                                value = decrypt(value, encryptionKey);
-                            }
-                            incoming.setTitle(value);
-                            break;
-                        case "awf_key":
+                        case "key":
                             if (encryption) {
                                 value = decrypt(value, encryptionKey);
                             }
                             incoming.setKey(value);
                             break;
-                        case "awf_latlng":
+                        case "title":
+                            if (encryption) {
+                                value = decrypt(value, encryptionKey);
+                            }
+                            incoming.setTitle(value);
+                            break;
+                        case "message":
+                            if (encryption) {
+                                value = decrypt(value, encryptionKey);
+                            }
+                            incoming.setMessage(value);
+                            break;
+                        case "destination":
                             if (encryption) {
                                 value = decrypt(value, encryptionKey);
                             }
                             incoming.setLatlng(value);
                             break;
-                        case "awf_timestamp":
+                        case "time":
                             if (encryption) {
                                 value = decrypt(value, encryptionKey);
                             }
                             try {
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                                incoming.setTimestamp(dateFormat.parse(value));
-                            } catch (ParseException e) {
-                                // TODO to user
-                                Logger.e(e, "Error parsing incoming date");
+                                long timestamp = Long.parseLong(value);
+                                incoming.setTimestamp(new Date(timestamp * 1000));
+                            } catch (NumberFormatException e) {
+                                Timber.e(e, "Error parsing incoming date");
                             }
                             break;
                         default:
@@ -76,7 +81,7 @@ public class OperationHelper {
                     }
                 }
             } catch (Exception exception) {
-                Logger.e(exception, "Error parsing incoming Operation");
+                Timber.e(exception, "Error parsing incoming Operation");
                 emitter.onError(exception);
                 return;
             }
@@ -136,13 +141,13 @@ public class OperationHelper {
                 }
             }
 
-            Logger.d("Incoming operation: %s\n%s", incoming.getTitle(), incoming.getMessage());
+            Timber.d("Incoming operation: %s\n%s", incoming.getTitle(), incoming.getMessage());
 
             incoming.setAlarm(true);
             incoming.setSeen(false);
             incoming.setTimestampIncoming(now.getTime());
 
-            if(bestRule != null) {
+            if (bestRule != null) {
                 incoming.setOperationRuleId(bestRule.getId());
             }
 
