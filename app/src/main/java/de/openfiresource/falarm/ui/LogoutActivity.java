@@ -82,7 +82,7 @@ public class LogoutActivity extends AppCompatActivity implements Injectable {
 
     private void startActivity(Class<?> cls) {
         Intent intent = new Intent(this, cls);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }

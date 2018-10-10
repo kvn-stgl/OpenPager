@@ -117,6 +117,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         customTabActivityHelper.unbindCustomTabsService(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        signInButton.dispose();
+    }
+
     private void openBrowser(Uri uri) {
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
                 .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -279,12 +285,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        signInButton.dispose();
-    }
-
     public void presentActivity(View view) {
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, view, "transition");
@@ -292,6 +292,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int revealY = (int) (view.getY() + view.getHeight() / 2);
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(BaseRevealActivity.EXTRA_CIRCULAR_REVEAL_X, revealX);
         intent.putExtra(BaseRevealActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
