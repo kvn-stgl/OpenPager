@@ -2,6 +2,8 @@ package de.openfiresource.falarm.models;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.net.UnknownHostException;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -10,8 +12,6 @@ import de.openfiresource.falarm.models.api.UserLogin;
 import de.openfiresource.falarm.utils.DeviceInfoHelper;
 import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.Completable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 
 @Singleton
 public class UserRepository {
@@ -44,6 +44,15 @@ public class UserRepository {
 
     public Completable logout() {
         return rest.logout()
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof UnknownHostException) {
+                        return Completable.error(throwable);
+                    }
+
+                    // We don't know if it's a server error so we have to log out the user
+                    preferences.getUserKey().set("");
+                    return Completable.complete();
+                })
                 .doOnComplete(() -> preferences.getUserKey().set(""));
     }
 

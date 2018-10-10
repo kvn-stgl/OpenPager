@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
     implementation 'gun0912.ted:tedpermission-rx2:2.2.0'
 
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
@@ -76,7 +77,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
-
+    /**
+     * Timber logging
+     */
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
 
@@ -99,6 +102,7 @@ dependencies {
     implementation "com.android.support:support-v4:$extSupportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$extSupportLibraryVersion"
     implementation "com.android.support:support-annotations:$extSupportLibraryVersion"
+    implementation "com.android.support:customtabs:$extSupportLibraryVersion"
 
     /**
      * Play services

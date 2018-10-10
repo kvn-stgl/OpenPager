@@ -11,9 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -22,8 +24,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-
-import com.google.android.gms.auth.api.credentials.Credential;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,12 @@ import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.UserRepository;
-import de.openfiresource.falarm.models.api.UserKey;
+import de.openfiresource.falarm.utils.Constants;
 import de.openfiresource.falarm.utils.ValidatonHelper;
-import io.reactivex.CompletableObserver;
+import de.openfiresource.falarm.utils.customtab.BrowserFallback;
+import de.openfiresource.falarm.utils.customtab.CustomTabActivityHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import timber.log.Timber;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -59,6 +58,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView emailView;
     private EditText passwordView;
     private CircularProgressButton signInButton;
+
+    private CustomTabActivityHelper customTabActivityHelper;
+
+    private final Uri uriRegister = Uri.parse(Constants.BACKEND_URL_SIGN_UP);
+    private final Uri uriPasswordReset = Uri.parse(Constants.BACKEND_URL_PASSWORD_RESET);
 
     @Inject
     public UserRepository userRepository;
@@ -82,6 +86,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         signInButton = findViewById(R.id.email_sign_in_button);
         signInButton.setOnClickListener(view -> attemptLogin());
+
+        findViewById(R.id.button_register).setOnClickListener(view -> openBrowser(uriRegister));
+        findViewById(R.id.button_password_reset).setOnClickListener(view -> openBrowser(uriPasswordReset));
+
+        customTabActivityHelper = new CustomTabActivityHelper();
+        customTabActivityHelper.setConnectionCallback(new CustomTabActivityHelper.ConnectionCallback() {
+            @Override
+            public void onCustomTabsConnected() {
+                customTabActivityHelper.mayLaunchUrl(uriRegister, null, null);
+            }
+
+            @Override
+            public void onCustomTabsDisconnected() {
+
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        customTabActivityHelper.bindCustomTabsService(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customTabActivityHelper.unbindCustomTabsService(this);
+    }
+
+    private void openBrowser(Uri uri) {
+        CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .build();
+        CustomTabActivityHelper.openCustomTab(this, customTabsIntent, uri, new BrowserFallback());
     }
 
     private void populateAutoComplete() {
