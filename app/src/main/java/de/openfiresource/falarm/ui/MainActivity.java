@@ -21,10 +21,12 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import de.openfiresource.falarm.BuildConfig;
 import de.openfiresource.falarm.R;
 import de.openfiresource.falarm.ui.settings.RuleListActivity;
 import de.openfiresource.falarm.ui.settings.SettingsActivity;
 import de.openfiresource.falarm.utils.PlayServiceUtils;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import timber.log.Timber;
 
@@ -37,7 +39,9 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
 
     @Inject
     SharedPreferences sharedPreferences;
-    
+
+    Disposable permissionDisposeable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,7 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
     }
 
     private void checkPermissions() {
-        TedRx2Permission.with(this)
+        permissionDisposeable = TedRx2Permission.with(this)
                 .setRationaleTitle(R.string.permission_rationale_title)
                 .setRationaleMessage(R.string.permission_rationale_message)
                 .setDeniedTitle(R.string.permission_denied_title)
@@ -65,24 +69,34 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 .request()
-                .subscribe(new DisposableSingleObserver<TedPermissionResult>() {
+                .subscribeWith(new DisposableSingleObserver<TedPermissionResult>() {
                     @Override
                     public void onSuccess(TedPermissionResult tedPermissionResult) {
-                        if (tedPermissionResult.isGranted()) {
-                            Toast.makeText(getBaseContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getBaseContext(), "Permission Denied\n" + tedPermissionResult.getDeniedPermissions().toString(), Toast.LENGTH_SHORT)
-                                    .show();
+                        if (BuildConfig.DEBUG) {
+                            if (tedPermissionResult.isGranted()) {
+                                Toast.makeText(getBaseContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getBaseContext(), "Permission Denied\n" + tedPermissionResult.getDeniedPermissions().toString(), Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
-                        dispose();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "onError: Error while fetching permissions");
-                        dispose();
                     }
                 });
+    }
+
+    @Override
+    protected void onStop() {
+        if (permissionDisposeable != null && !permissionDisposeable.isDisposed()) {
+            permissionDisposeable.dispose();
+            permissionDisposeable = null;
+        }
+
+        super.onStop();
     }
 
     private int getVersionCode() {

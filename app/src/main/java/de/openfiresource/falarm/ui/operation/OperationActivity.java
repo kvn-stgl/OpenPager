@@ -176,7 +176,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
 
             case R.id.action_stopSpeak:
                 Intent intentData = new Intent(getBaseContext(), SpeakService.class);
-                intentData.putExtra(SpeakService.STOP_NOW, true);
+                intentData.putExtra(SpeakService.INTENT_STOP_NOW, true);
                 startService(intentData);
                 return true;
 

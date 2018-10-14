@@ -9,10 +9,7 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 
-import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
-
-import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -23,7 +20,6 @@ import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.HasServiceInjector;
 import de.openfiresource.falarm.dagger.AppInjector;
 import de.openfiresource.falarm.models.Notification;
-import timber.log.Timber;
 
 public class App extends Application implements
         HasActivityInjector,
@@ -52,17 +48,6 @@ public class App extends Application implements
         component = AppInjector.init(this);
 
         LeakCanary.install(this);
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree() {
-                @Override
-                protected void log(int priority, String tag, @NotNull String message, Throwable t) {
-                    Logger.log(priority, tag, message, t);
-                }
-            });
-        } else {
-            // TODO: 05.10.2018 CrashReportingTree
-        }
 
         //Load Default settings
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);

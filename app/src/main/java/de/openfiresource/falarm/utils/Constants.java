@@ -4,7 +4,7 @@ public class Constants {
 
     private static final String BACKEND_URL = "https://area51.openpager.de";
 
-    public static final String BACKEND_URL_API = BACKEND_URL + "/api/v1/";
+    public static final String BACKEND_URL_API = BACKEND_URL + "/api/";
 
     public static final String BACKEND_URL_SIGN_UP = BACKEND_URL + "/accounts/signup/";
 
