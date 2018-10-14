@@ -11,9 +11,10 @@
 
     <item
         android:id="@+id/action_stopSpeak"
+        android:icon="@drawable/ic_baseline_volume_mute_24px"
         android:orderInCategory="1"
         android:title="@string/action_stopSpeak"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_delete"

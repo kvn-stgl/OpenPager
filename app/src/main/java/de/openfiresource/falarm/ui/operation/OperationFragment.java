@@ -3,17 +3,13 @@ package de.openfiresource.falarm.ui.operation;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import javax.inject.Inject;
 
@@ -24,11 +20,11 @@ import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.database.OperationMessage;
 import de.openfiresource.falarm.service.AlarmService;
 import de.openfiresource.falarm.service.SpeakService;
-import de.openfiresource.falarm.utils.Constants;
 import de.openfiresource.falarm.utils.Preferences;
 import io.reactivex.Completable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class OperationFragment extends Fragment implements Injectable {
 
@@ -90,12 +86,12 @@ public class OperationFragment extends Fragment implements Injectable {
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete: saving operation");
+                        Timber.d("onComplete: saving operation");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: saving operation", e);
+                        Timber.e(e, "onError: saving operation");
                     }
                 });
 
