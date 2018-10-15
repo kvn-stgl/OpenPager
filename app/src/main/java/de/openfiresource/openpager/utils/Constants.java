@@ -1,8 +1,10 @@
 package de.openfiresource.openpager.utils;
 
+import de.openfiresource.openpager.Properties;
+
 public class Constants {
 
-    private static final String BACKEND_URL = "https://area51.openpager.de";
+    private static final String BACKEND_URL = Properties.BACKEND_URL;
 
     public static final String BACKEND_URL_API = BACKEND_URL + "/api/";
 
