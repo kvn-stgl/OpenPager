@@ -129,8 +129,17 @@
             android:name=".service.SpeakService"
             android:enabled="true"
             android:exported="false" />
-
         <service android:name=".utils.customtab.KeepAliveService" />
+
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.openfiresource.falarm.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

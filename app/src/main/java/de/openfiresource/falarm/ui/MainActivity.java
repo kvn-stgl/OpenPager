@@ -183,7 +183,8 @@ public class MainActivity extends BaseRevealActivity implements HasSupportFragme
                 startActivity(intent);
                 return true;
             case R.id.action_about:
-                // todo: Create About section
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
                 return true;
         }
 

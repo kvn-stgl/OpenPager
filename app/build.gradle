@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: "com.jaredsburrows.license"
 apply plugin: 'idea'
+
+licenseReport {
+    generateHtmlReport = true
+    generateJsonReport = true
+
+    copyHtmlReportToAssets = true
+    copyJsonReportToAssets = false
+}
 
 // CI
 def isCi = "true".equals(System.getenv("CI"))
@@ -64,6 +73,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+    implementation 'com.github.medyo:android-about-page:1.2.4'
 
     implementation 'gun0912.ted:tedpermission-rx2:2.2.0'
 

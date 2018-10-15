@@ -9,7 +9,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:4.1.0'
+        classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
     }
+
 }
 
 ext {

@@ -7,6 +7,7 @@
     <string name="action_navigation">Navi</string>
     <string name="action_stopSpeak">Vorlesen anhalten</string>
 
+    <string name="oss_licenses">Open Source Licenses</string>
     <string name="send_to">Sende zu</string>
     <string name="only_param_string" translatable="false">%1$s</string>
 
@@ -241,4 +242,5 @@
     </string>
     <string name="login_register">Registrieren</string>
     <string name="login_forgot_password">Passwort vergessen</string>
+    <string name="title_activity_about">About us</string>
 </resources>
