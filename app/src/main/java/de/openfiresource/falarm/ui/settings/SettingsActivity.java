@@ -3,7 +3,6 @@ package de.openfiresource.falarm.ui.settings;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -17,11 +16,14 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -34,7 +36,6 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
 import de.openfiresource.falarm.R;
-import de.openfiresource.falarm.dagger.Injectable;
 import de.openfiresource.falarm.models.Notification;
 import de.openfiresource.falarm.models.UserRepository;
 import de.openfiresource.falarm.utils.Constants;
@@ -58,7 +59,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Has
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
+    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {
@@ -150,11 +151,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Has
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+
+        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
+        AppBarLayout bar = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.view_settings_toolbar, root, false);
+        Toolbar toolbar = (Toolbar) bar.getChildAt(0);
+        root.addView(bar, 0); // insert at top
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -189,6 +193,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Has
      * This method stops fragment injection in malicious applications.
      * Make sure to deny any unknown fragments here.
      */
+    @Override
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
