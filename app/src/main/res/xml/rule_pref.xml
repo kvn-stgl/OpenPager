@@ -23,12 +23,12 @@
         android:summary="@string/pref_desc_priority"
         android:title="@string/pref_title_priority" />
 
-    <de.openfiresource.falarm.dialogs.TimePreference
+    <de.openfiresource.openpager.dialogs.TimePreference
         android:defaultValue="00:00"
         android:key="rule_startTime"
         android:title="@string/pref_title_starttime" />
 
-    <de.openfiresource.falarm.dialogs.TimePreference
+    <de.openfiresource.openpager.dialogs.TimePreference
         android:defaultValue="23:59"
         android:key="rule_stopTime"
         android:title="@string/pref_title_stoptime" />

@@ -9,7 +9,7 @@
 
         <variable
             name="operation"
-            type="de.openfiresource.falarm.models.database.OperationMessage" />
+            type="de.openfiresource.openpager.models.database.OperationMessage" />
     </data>
 
     <com.chauthai.swipereveallayout.SwipeRevealLayout

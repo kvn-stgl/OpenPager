@@ -41,13 +41,19 @@ android {
         preDexLibraries = preDexEnabled && !isCi
     }
     defaultConfig {
-        applicationId "de.openfiresource.falarm"
+        applicationId "de.openfiresource.openpager"
         minSdkVersion 21
         targetSdkVersion extCompileSdkVersion
         versionCode 7
-        versionName '1.1.4'
+        versionName '1.0.0'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     lintOptions {
         htmlReport true

@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "451524092715",
-    "firebase_url": "https://falarm-62672.firebaseio.com",
-    "project_id": "falarm-62672",
-    "storage_bucket": "falarm-62672.appspot.com"
+    "project_number": "961543001128",
+    "firebase_url": "https://openpager-5a60b.firebaseio.com",
+    "project_id": "openpager-5a60b",
+    "storage_bucket": "openpager-5a60b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:451524092715:android:09f578e15d8457d4",
+        "mobilesdk_app_id": "1:961543001128:android:00a8d163898be03e",
         "android_client_info": {
-          "package_name": "de.openfiresource.falarm"
+          "package_name": "de.openfiresource.openpager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "451524092715-5ekq9etemdel8kuuck7v4fb2hjnn9qbv.apps.googleusercontent.com",
+          "client_id": "961543001128-qvaj056clle6007jbcf81kf0f3o2msps.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMz0XWrBMm9Vhezv0vSjvXMwi8BQ_KxaI"
+          "current_key": "AIzaSyBPhgFKIRPT9itdh6AFpdt_uo8BTsFnJSw"
         }
       ],
       "services": {

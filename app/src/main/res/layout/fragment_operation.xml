@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="de.openfiresource.falarm.ui.operation.OperationViewModel" />
+            type="de.openfiresource.openpager.ui.operation.OperationViewModel" />
     </data>
 
     <RelativeLayout

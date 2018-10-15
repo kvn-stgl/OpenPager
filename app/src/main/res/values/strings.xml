@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">fAlarm</string>
+    <string name="app_name">OpenPager</string>
     <string name="action_rules">Regeln</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_about">Über</string>
@@ -39,7 +39,7 @@
     <string name="operation_rules_name" translatable="false">%1$s (%2$s - %3$s)</string>
 
     <!-- Strings related to Main -->
-    <string name="welcome_card_title">Willkommen beim fAlarm</string>
+    <string name="welcome_card_title">Willkommen beim OpenPager</string>
     <string name="welcome_card_subtitle">Der AlarmierungsApp für OpenFireSource!</string>
     <string name="welcome_card_desc">Um alamiert werden zu können, musst du deiner Zuständigen
         Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
@@ -68,7 +68,7 @@
     <!-- Strings related to About -->
     <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
     <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
-    <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
+    <string name="aboutLibraries_description_text">OpenPager ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
     <string name="title_activity_settings">Einstellungen</string>
 
     <!-- Strings related to Settings -->
@@ -221,9 +221,9 @@
 
     <!-- Permission -->
     <string name="permission_rationale_title">Berechtigungen</string>
-    <string name="permission_rationale_message">Folgende Berechtigungen sind für den vollen Funktionsumfang von fAlarm notwendig.</string>
+    <string name="permission_rationale_message">Folgende Berechtigungen sind für den vollen Funktionsumfang von OpenPager notwendig.</string>
     <string name="permission_denied_title">Berechtigungen</string>
-    <string name="permission_denied_message">Ohne diese Berechtigungen wird fAlarm nicht oder nur eingeschränkt arbeiten..</string>
+    <string name="permission_denied_message">Ohne diese Berechtigungen wird OpenPager nicht oder nur eingeschränkt arbeiten..</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_logout">Sign out</string>
 
