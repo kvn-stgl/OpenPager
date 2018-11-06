@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:mContext="de.openfiresource.falarm.ui.RuleListActivity">
+    tools:mContext="de.openfiresource.openpager.ui.settings.RuleListActivity">
 
     <!--
     This layout is a two-pane layout for the Rules
@@ -26,7 +26,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:mContext="de.openfiresource.falarm.ui.RuleListActivity"
+        tools:mContext="de.openfiresource.openpager.ui.settings.RuleListActivity"
         tools:listitem="@layout/rule_list_content" />
 
     <FrameLayout

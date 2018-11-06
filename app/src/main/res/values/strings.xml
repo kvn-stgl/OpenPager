@@ -1,21 +1,45 @@
 <resources>
-    <string name="app_name">fAlarm</string>
+    <string name="app_name">OpenPager</string>
     <string name="action_rules">Regeln</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_about">Über</string>
+    <string name="action_logout">Ausloggen</string>
     <string name="action_navigation">Navi</string>
     <string name="action_stopSpeak">Vorlesen anhalten</string>
 
+    <string name="oss_licenses">Open Source Licenses</string>
     <string name="send_to">Sende zu</string>
+    <string name="only_param_string" translatable="false">%1$s</string>
+
+    <plurals name="time_helper_diff_day">
+        <item quantity="one">%d Tag, </item>
+        <item quantity="other">%d Tage, </item>
+    </plurals>
+    <plurals name="time_helper_diff_hour">
+        <item quantity="one">%d Stunde, </item>
+        <item quantity="other">%d Stunden, </item>
+    </plurals>
+    <plurals name="time_helper_diff_minute">
+        <item quantity="one">%d Minute, </item>
+        <item quantity="other">%d Minuten, </item>
+    </plurals>
+    <plurals name="time_helper_diff_second">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
+    </plurals>
 
     <!-- Operation -->
     <string name="operation_tab_info">Info</string>
     <string name="operation_tab_map">Karte</string>
     <string name="operation_tab_osm">OFM</string>
     <string name="operation_confirm">Alarm bestätigen</string>
+    <string name="operation_map_activity_alert">Google Maps ist nicht installiert.</string>
+
+    <!-- Operation rules -->
+    <string name="operation_rules_name" translatable="false">%1$s (%2$s - %3$s)</string>
 
     <!-- Strings related to Main -->
-    <string name="welcome_card_title">Willkommen beim fAlarm</string>
+    <string name="welcome_card_title">Willkommen beim OpenPager</string>
     <string name="welcome_card_subtitle">Der AlarmierungsApp für OpenFireSource!</string>
     <string name="welcome_card_desc">Um alamiert werden zu können, musst du deiner Zuständigen
         Person deine FCM-ID (zu finden in den Einstellungen) zukommen lassen.
@@ -44,7 +68,7 @@
     <!-- Strings related to About -->
     <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
     <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
-    <string name="aboutLibraries_description_text">fAlarm ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
+    <string name="aboutLibraries_description_text">OpenPager ist eine AlarmierungsApp für AlarmWorkflow. Viel Spaß damit :=)</string>
     <string name="title_activity_settings">Einstellungen</string>
 
     <!-- Strings related to Settings -->
@@ -184,6 +208,8 @@
     <string name="pref_desc_priority">Welche Priorität hat die Regel?</string>
     <string name="pref_title_speak">Alarmnachricht vorlesen</string>
     <string name="pref_desc_speak">Liest die Alarmnachricht vor, nachdem diese bestätigt wurde.</string>
+    <string name="pref_fcm_alert_title">Push-Key erneut registrieren?</string>
+    <string name="pref_fcm_alert_message">Der Push-Key wird erneut beim Server registriert.</string>
 
     <!-- General -->
     <string name="cancel">Abbrechen</string>
@@ -195,6 +221,26 @@
 
     <!-- Permission -->
     <string name="permission_rationale_title">Berechtigungen</string>
-    <string name="permission_rationale_message">Diese Berechtigungen sind für den vollen Funktionsumfang von fAlarm notwendig.</string>
-    <string name="permission_rationale_settings_button_text">SETTINGS</string>
+    <string name="permission_rationale_message">Folgende Berechtigungen sind für den vollen Funktionsumfang von OpenPager notwendig.</string>
+    <string name="permission_denied_title">Berechtigungen</string>
+    <string name="permission_denied_message">Ohne diese Berechtigungen wird OpenPager nicht oder nur eingeschränkt arbeiten..</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_logout">Sign out</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="error_invalid_email">E-Mail ist nicht korrekt</string>
+    <string name="error_invalid_password">Das Passwort ist zu kurz</string>
+    <string name="error_incorrect_password">Das Passwort ist nicht korrekt</string>
+    <string name="error_field_required">Dieses Feld ist ein Pflichtfeld</string>
+    <string name="error_invalid_credentials">E-Mail oder Passwort falsch</string>
+    <string name="error_invalid_logout">Logout nicht möglich (keine Internetverbindung)</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="login_register">Registrieren</string>
+    <string name="login_forgot_password">Passwort vergessen</string>
+    <string name="title_activity_about">About us</string>
 </resources>

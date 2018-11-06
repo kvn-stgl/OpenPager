@@ -7,7 +7,7 @@
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=F6:F0:6C:54:87:92:62:26:AC:49:36:27:2E:E2:95:1B:6B:B1:4E:06%3Bde.openfiresource.falarm.ui
 
     You can also add your credentials to an existing key, using this line:
-    F6:F0:6C:54:87:92:62:26:AC:49:36:27:2E:E2:95:1B:6B:B1:4E:06;de.openfiresource.falarm.ui
+    F6:F0:6C:54:87:92:62:26:AC:49:36:27:2E:E2:95:1B:6B:B1:4E:06;de.openfiresource.de.openfiresource.openpager.ui
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
