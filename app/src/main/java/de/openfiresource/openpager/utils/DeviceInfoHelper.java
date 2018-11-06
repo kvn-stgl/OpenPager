@@ -6,16 +6,7 @@ import de.openfiresource.openpager.models.api.Device;
 
 public class DeviceInfoHelper {
     public static Device create(String fcmToken) {
-        Device.Builder builder = new Device.Builder();
-
-        builder.fcmToken(fcmToken)
-                .device(Build.DEVICE)
-                .deviceName(getDeviceName())
-                .manufacturer(Build.MANUFACTURER)
-                .platform("Android")
-                .version(Build.VERSION.RELEASE);
-
-        return builder.build();
+        return new Device(fcmToken, Build.DEVICE, getDeviceName(), Build.MANUFACTURER, Build.VERSION.RELEASE, "Android");
     }
 
     private static String getDeviceName() {

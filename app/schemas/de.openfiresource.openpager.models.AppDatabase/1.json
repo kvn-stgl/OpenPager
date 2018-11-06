@@ -2,18 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "297cee7c572339a068a380eea4f61b9f",
+    "identityHash": "714801554c6b79ac2c74fe22cbfaabb2",
     "entities": [
       {
         "tableName": "operation_message",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `key` TEXT NOT NULL, `title` TEXT, `message` TEXT, `latlng` TEXT, `timestamp` INTEGER, `timestampIncoming` INTEGER, `seen` INTEGER NOT NULL, `alarm` INTEGER NOT NULL, `operationRuleId` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `message` TEXT NOT NULL, `latlng` TEXT, `timestamp` INTEGER, `timestampIncoming` INTEGER, `seen` INTEGER NOT NULL, `isAlarm` INTEGER NOT NULL, `operationRuleId` INTEGER)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "key",
             "columnName": "key",
@@ -21,16 +15,22 @@
             "notNull": true
           },
           {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "message",
             "columnName": "message",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "latlng",
@@ -57,8 +57,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "alarm",
-            "columnName": "alarm",
+            "fieldPath": "isAlarm",
+            "columnName": "isAlarm",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -80,18 +80,18 @@
       },
       {
         "tableName": "operation_rule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `searchText` TEXT, `startTime` TEXT, `stopTime` TEXT, `activate` INTEGER NOT NULL, `ownNotification` INTEGER NOT NULL, `priority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `searchText` TEXT, `startTime` TEXT NOT NULL, `stopTime` TEXT NOT NULL, `isActivate` INTEGER NOT NULL, `isOwnNotification` INTEGER NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -104,23 +104,23 @@
             "fieldPath": "startTime",
             "columnName": "startTime",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "stopTime",
             "columnName": "stopTime",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "activate",
-            "columnName": "activate",
+            "fieldPath": "isActivate",
+            "columnName": "isActivate",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "ownNotification",
-            "columnName": "ownNotification",
+            "fieldPath": "isOwnNotification",
+            "columnName": "isOwnNotification",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -143,7 +143,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"297cee7c572339a068a380eea4f61b9f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"714801554c6b79ac2c74fe22cbfaabb2\")"
     ]
   }
 }

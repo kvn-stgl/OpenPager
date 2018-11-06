@@ -53,8 +53,10 @@ public class AlarmService extends DaggerService {
         long operationId = intent.getLongExtra(OperationActivity.OPERATION_ID, 0);
 
         OperationMessage operationMessage = database.operationMessageDao().findById(operationId);
-        OperationRule rule = database.operationRuleDao().findById(operationMessage.getOperationRuleId());
-        mNotification = Notification.byRule(rule, this);
+        long operationRuleId = operationMessage.getOperationRuleId() != null ?
+                operationMessage.getOperationRuleId() : 0;
+        OperationRule rule = database.operationRuleDao().findById(operationId);
+        mNotification = Notification.Companion.byRule(rule, this);
 
         //Start alarm Service
         startPlayer();

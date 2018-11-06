@@ -94,7 +94,7 @@ public class OperationHelper {
             SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm", Locale.GERMAN);
             Calendar now = Calendar.getInstance();
 
-            for (OperationRule rule : database.operationRuleDao().getAll()) {
+            for (OperationRule rule : database.operationRuleDao().all()) {
                 Calendar startValue = GregorianCalendar.getInstance();
                 Calendar stopValue = GregorianCalendar.getInstance();
                 try {

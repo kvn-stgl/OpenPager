@@ -96,7 +96,7 @@ public class OperationFragment extends Fragment implements Injectable {
                 });
 
         //Start speak service
-        Notification notification = Notification.byRule(operation.getRule(), getContext());
+        Notification notification = Notification.Companion.byRule(operation.getRule(), getContext());
 
         if (notification.isSpeakServiceEnabled() && notification.isPlayingSound()) {
             Intent intentData = new Intent(getContext(), SpeakService.class);

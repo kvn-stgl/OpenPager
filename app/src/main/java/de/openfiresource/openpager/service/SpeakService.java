@@ -125,8 +125,10 @@ public class SpeakService extends DaggerService {
             return;
         }
 
-        OperationRule rule = database.operationRuleDao().findById(operationMessage.getOperationRuleId());
-        Notification notification = Notification.byRule(rule, this);
+        long operationRuleId = operationMessage.getOperationRuleId() != null ?
+                operationMessage.getOperationRuleId() : 0;
+        OperationRule rule = database.operationRuleDao().findById(operationRuleId);
+        Notification notification = Notification.Companion.byRule(rule, this);
 
         float volume = Integer.parseInt(notification.getNewMessageVolume());
 

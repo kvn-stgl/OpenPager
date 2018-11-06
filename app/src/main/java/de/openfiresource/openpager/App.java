@@ -53,7 +53,7 @@ public class App extends Application implements
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-        Notification.get(0, this).loadDefault();
+        Notification.Companion.get(0, this).loadDefault();
     }
 
     @Override

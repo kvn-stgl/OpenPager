@@ -130,7 +130,7 @@ public class RuleListActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onSuccess(Long operationRuleId) {
                             Log.d(TAG, "onClick: rule created with id: " + operationRuleId);
-                            Notification.get(operationRuleId, getApplication()).loadDefault();
+                            Notification.Companion.get(operationRuleId, getApplication()).loadDefault();
                         }
 
                         @Override

@@ -127,7 +127,7 @@ public class OperationActivity extends AppCompatActivity implements HasSupportFr
         if (menu != null && operation != null) {
 
             OperationRule operationRule = operation.getRule();
-            Notification notification = Notification.byRule(operationRule, getApplicationContext());
+            Notification notification = Notification.Companion.byRule(operationRule, getApplicationContext());
 
             if (operation.getLatLngPair() == null) {
                 menu.getItem(0).setVisible(false);

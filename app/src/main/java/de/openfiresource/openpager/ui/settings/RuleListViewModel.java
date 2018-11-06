@@ -17,10 +17,10 @@ public class RuleListViewModel extends ViewModel {
 
     @Inject
     RuleListViewModel(final @NonNull AppDatabase database) {
-        operationRuleList = database.operationRuleDao().getAllAsync();
+        operationRuleList = database.operationRuleDao().allAsync();
     }
 
-    public LiveData<List<OperationRule>> getOperationRuleList() {
+    LiveData<List<OperationRule>> getOperationRuleList() {
         return operationRuleList;
     }
 }

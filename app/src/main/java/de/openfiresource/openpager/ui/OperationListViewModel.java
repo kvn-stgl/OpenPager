@@ -17,10 +17,10 @@ public class OperationListViewModel extends ViewModel {
 
     @Inject
     OperationListViewModel(final @NonNull AppDatabase database) {
-        operationMessageList = database.operationMessageDao().getAllAsync();
+        operationMessageList = database.operationMessageDao().allAsync();
     }
 
-    public LiveData<List<OperationMessage>> getOperationMessageList() {
+    LiveData<List<OperationMessage>> getOperationMessageList() {
         return operationMessageList;
     }
 }

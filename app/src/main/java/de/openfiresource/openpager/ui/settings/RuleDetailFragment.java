@@ -157,7 +157,7 @@ public class RuleDetailFragment extends PreferenceFragment implements Injectable
                                                 @Override
                                                 public void onComplete() {
                                                     Log.d(TAG, "onComplete: delete operation rule");
-                                                    Notification.byRule(operationRule, getActivity()).delete();
+                                                    Notification.Companion.byRule(operationRule, getActivity()).delete();
                                                 }
 
                                                 @Override

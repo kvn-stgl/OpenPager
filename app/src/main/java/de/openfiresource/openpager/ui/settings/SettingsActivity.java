@@ -265,7 +265,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Has
             }
 
             mPreferenceManager = getPreferenceManager();
-            mPreferenceManager.setSharedPreferencesName(Notification.getSharedPreferencesName(mRuleId));
+            mPreferenceManager.setSharedPreferencesName(Notification.Companion.getSharedPreferencesName(mRuleId));
             mPreferenceManager.setSharedPreferencesMode(Context.MODE_PRIVATE);
 
             addPreferencesFromResource(R.xml.pref_notification);
